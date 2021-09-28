@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-<title>Welcome to WingsMaker-crypto | crypto</title>
+<title>Welcome to WingsMaker Github</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8" />
-<meta name="Index.html-web-app-capable" content="yes">
-<link rel="stylesheet" href="https://wingsmaker.github.io/crypto/menu_style.css">
+<meta name="mobile-web-app-capable" content="yes">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://wingsmaker.github.io/Github/menu_style.css">
 <style>
 body { font-family: Arial, Helvetica, sans-serif; background-color: white; margin: 0; }
 .blue  { color : #00f; text-decoration : none; }
@@ -64,8 +65,8 @@ body { font-family: Arial, Helvetica, sans-serif; background-color: white; margi
 
 <body>
 <div class="container">
-<h1><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h1>
-<h2>&nbspMy life long learning journey in codings.</h2>
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>My life long learning journey in coding.</h1>
 </div>
 <div id="menu"></div>  
 <hr>
@@ -85,7 +86,7 @@ body { font-family: Arial, Helvetica, sans-serif; background-color: white; margi
 </body>
 <script>
 	menu_type = 1; // 0 for horizontal , 1 for vertical
-	fetch("https://wingsmaker.github.io/crypto/menu.csv").then( r => r.text() ).then( t => processData(t) );
+	fetch("https://wingsmaker.github.io/Github/menu.csv").then( r => r.text() ).then( t => processData(t) );
 	function processData(csv) {
 		var menu_txt = '<div class="navbar" id="myNavbar">';
 		var menu_grp = '';
