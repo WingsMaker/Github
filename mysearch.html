@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8" />
 <meta name="mobile-web-app-capable" content="yes">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 <style>
 ul {
   list-style-type: none;
@@ -28,6 +29,7 @@ li a {
 
 .mainlogo {
   position: absolute;
+  top: 0px;
   margin: 10em 32.5em;
 }
 
@@ -100,7 +102,7 @@ li a {
 <h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
 <h1>Simple 3 in 1 search demo</h1>
 <br/>
-<script src="https://wingsmaker.github.io/jquery.min.js"></script>
+<div class="mainlogo"><img src="https://www.healthhub.sg/sites/assets/Assets/Programs/stay-well/phase-3/images/masthead-COVID-19.png" height="120px" width="280px" ></div>
 <nav class="header">
   <div class="col-xs-8">
     <ul>
@@ -113,8 +115,6 @@ li a {
   </div>
 </nav>
 
-<div class="mainlogo"><img src="https://www.healthhub.sg/sites/assets/Assets/Programs/stay-well/phase-3/images/masthead-COVID-19.png" height="120px" width="280px" ></div>
-<a href="https://wingsmaker.github.io/Github/mysearch.html">WingsMaker Search</a>
 <form class="form">
 <input type="text" id="searchbar" placeholder="Text Search or Type URL" onkeypress='do_searchbar(event)'>
 <input type="button" value="Google" id="google_button" onclick="do_search('g')">

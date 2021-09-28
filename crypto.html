@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<Title> Text Encryption App</Title>
+<head>
+<style type="text/css">#qr-canvas{ display:none; }</style>
+<script src="https://wingsmaker.github.io/Github/jquery-1.12.4.js"></script>
+<script src="https://wingsmaker.github.io/Github/jquery-ui.js"></script>
+<script src="https://wingsmaker.github.io/Github/crypto.js"></script>	
+</head>
+<body>
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>Text Encryption</h1>
+<br>
+<div id="header"></div>	
+<form>
+<textarea id='msg' name="Message" rows="12" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
+<br />
+<div id="outdiv">passphrase:
+<div id="result"></div>
+<input type="button" onClick="encryption()" value="Encrypt"/>
+<input type="button" onClick="decryption()" value="Decrypt"/>
+<input type="button" onClick="definekey()" value="Keypass"/>	  
+<br />
+</form>
+
+<script type="text/javascript">	
+var codedString = "";
+var msg = "";
+var keypass = "passwordkey";
+document.getElementById("result").innerHTML = keypass ;
+
+function definekey() {
+	if (typeof keypass == 'undefined') {
+		keypass = "";
+	}
+	if (keypass=="") {
+		keypass = document.getElementById("result").innerHTML;
+		keypass = keypass.replace("</b>","<b>").split("<b>")[1];
+	}
+	var txt = prompt("Enter key pass code:",keypass);
+		keypass = "<b>" + txt + "</b>"
+		document.getElementById("result").innerHTML = keypass;
+}
+
+function encryption() {
+	msg = document.getElementById('msg').value;
+	if (msg=="") {
+	alert("There is nothing to encrypt.");
+return;
+}
+if (typeof keypass == 'undefined') {
+	keypass = "";
+}
+if (keypass=="") {
+	keypass = document.getElementById("result").innerHTML;
+	keypass = keypass.replace("</b>","<b>").split("<b>")[1];
+}
+if (keypass=="") {
+	alert("Please load the passphrase file!");
+return;
+}
+	codedString =  CryptoJS.Rabbit.encrypt(msg, keypass);
+	document.getElementById("msg").value = codedString;
+}
+
+function decryption() {
+	msg = document.getElementById('msg').value;
+	if (msg=="") {
+		alert("There is nothing to decrypt.");
+	return;
+	}		  
+	if (typeof keypass == 'undefined') {
+		keypass = "";
+	}
+	if (keypass=="") {
+		keypass = document.getElementById("result").innerHTML;
+		keypass = keypass.replace("</b>","<b>").split("<b>")[1];
+	}
+	if (keypass=="") {
+		alert("Please load the passphrase file!");
+	return;
+	}
+	codedString =  CryptoJS.Rabbit.decrypt(msg, keypass).toString(CryptoJS.enc.Utf8);
+	document.getElementById("msg").value = codedString;
+}
+</script>
+</body>
+</html>

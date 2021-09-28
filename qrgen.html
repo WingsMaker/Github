@@ -1,0 +1,119 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="https://wingsmaker.github.io/Github/jquery.min.js"></script>
+<script type="text/javascript" src="https://wingsmaker.github.io/Github/qrcode.min.js"></script>
+<style type="text/css">
+body{
+    width:100%;
+}
+img{
+    border:0;
+}
+#main{
+    margin: 15px auto;
+    background:white;
+    overflow: auto;
+	width: 750px;
+}
+#header{
+    background:white;
+}
+#mainbody{
+    background: white;
+    width:100%;
+}
+#footer{
+    background:white;
+}
+#mp1{
+    font-size:35px;
+}
+#header ul{
+    margin-bottom:0;
+    margin-right:40px;
+}
+#header li{
+    display:inline;
+    padding-right: 0.5em;
+    padding-left: 0.5em;
+    font-weight: bold;
+    border-right: 1px solid #333333;
+}
+#header li a{
+    text-decoration: none;
+    color: black;
+}
+p.quote1{
+    
+    font-weight:bold;
+    margin-left:10%;
+    margin-right:10%;
+    color: black;
+}
+a{
+	color: black;
+}
+
+div.button{
+    border: 2px solid #333333;;
+    border-radius:15px;
+    width:100px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+</style>
+<script type="text/javascript">
+function create()
+{
+	var qrcode = new QRCode(document.getElementById("qrimage"), {
+		width : 400,
+		height : 400
+	});
+	var elText = document.getElementById("data");	
+	if (!elText.value) {
+		alert("Input a text");
+		elText.focus();
+		return;
+	}
+	qrcode.makeCode(elText.value);
+}
+function reset() {
+	document.getElementById("qrimage").innerHTML = "";
+	document.getElementById("data").value = "";
+
+}
+</script>
+</head>
+<body >
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>QR Code Generator</h1>
+<br>
+<div id="main">
+<div id="header">
+</div>
+<div id="mainbody">
+<table border="0" align="left">
+<tr><td>
+<p style="font-size:20px;text-align:left;">Enter text to create QR code:</p>
+<textarea cols="60" rows="8" id="data"></textarea>
+</td></tr>
+<tr><td align="left">
+<div class="button" onclick="create()">Create</div>
+<div class="button" onclick="reset()">Reset</div>
+</td></tr>
+<tr>
+</br>
+</br>
+<td align="center">
+<div id="qrimage"></div>
+</td></tr>
+</table>
+</div>
+</div>
+</body>
+</html>

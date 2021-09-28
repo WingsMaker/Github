@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<Title> Sheet Encryptor</Title>
+ <style>
+#hdr{
+	margin: 15px auto;
+	background:white;
+	text-align: center;
+	width: 750px;
+}  
+#data-table, #data-table th, #data-table td { border: 1px solid black }
+th {
+  text-align: center;
+  font-weight: bold;
+}
+td {
+  width: 150px;
+  white-space: nowrap;
+  text-align: left;
+  vertical-align: top;
+  padding: 10px;
+}
+</style>
+<title>cryptosheet</title>
+<script type="text/javascript" src="https://wingsmaker.github.io/Github/jquery.min.js"></script>
+<script type="text/javascript" src="https://wingsmaker.github.io/Github/crypto.js"></script>
+<script type="text/javascript" src='https://wingsmaker.github.io/Github/xlsx.full.min.js'></script>
+</head>
+<body> 
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>CRYPTOSHEET - Excel based password manager</h1>
+<br>
+<div id="hdr"></div>
+<form>
+Import password key from scanned QR code (must be valid password key)<br>
+or enter the password key here:
+<input type="button" onClick="definekey()" value="Keypass"/>
+<br />  
+<br />  
+Load your excel file:
+<input type="file" id="xlsfile"><br />
+<br />
+<textarea id='msg' name="Message" rows="12" cols="80" valign="top" 
+style="font-size:12px; border:solid 1px orange;"></textarea>
+<br />
+<input type="button" onClick="resetscreen()" value="Reset"/>
+<input type="button" onClick="decryption()" value="Decrypt"/>
+<input type="button" onClick="encryption()" value="Encrypt"/>
+<input type="button" onClick="saverecord()" value="Save"/>
+<input type="button" onClick="newrecord()" value="Add"/>
+<input type="button" onClick="deleterecord()" value="Delete"/>
+<input type="button" onClick="save2xls()" value="Download"/>
+<br />
+</form>
+<br />
+<div id="aoa_table"></div>
+<br />
+<div id="result"></div>
+<br />
+</body>
+
+<script>
+let editingTd;
+var tdtag = "";
+var fpath = "cryptosheet.xlsx";
+var aoa = [['#key','#content']];
+var codedString = "";
+var msg = "";
+var keypass = "passwordkey";
+
+document.getElementById("hdr").style.fontSize = "x-large";
+document.getElementById("result").innerHTML = "";
+msg = "This is an offline password manager app\nusing your password key and the excel file.";
+msg = msg + "\n\nClick 'Download' to save the changes into an excel file called " + fpath;
+msg = msg + "\n\nClick 'keypass' to predefined your password key for encryption/decryption.";
+msg = msg + "\n\nClick on the row to edit.";
+document.getElementById("msg").value = msg;
+
+let table = document.getElementById('aoa_table');
+
+table.onclick = function(event) {
+  let target = event.target.closest('.edit-cancel,.edit-ok,td');
+  if (!table.contains(target)) return;
+  if (target.nodeName == 'TD') {
+    if (editingTd) return;
+    makeTdEditable(target);
+  }
+}
+
+document.querySelector("#xlsfile").addEventListener("change", function () {
+    var file = document.querySelector("#xlsfile").files[0];
+    var type = file.name.split('.');
+    var arr_keys = [];
+    var arr_items = [];
+    var arr_dict = []
+    if (type[type.length - 1] !== 'xlsx' && type[type.length - 1] !== 'xls') {
+      alert('Please select valid excel file.');
+	  document.getElementById("xlsfile").value = "";
+      return false;
+    }
+    const reader = new FileReader();
+    reader.readAsBinaryString(file);
+    reader.onload = (e) => {	  
+	const data = e.target.result;	  
+	const wb = window.XLS.read(data, {type: 'binary' });	  
+	const newData = window.XLS.utils.sheet_to_json(wb.Sheets["memo"]);
+	cnt = newData.length;
+	for (ii in newData) {
+		kk = newData[ii]["#key"];
+		arr_keys.push(kk);
+		vv = newData[ii]['#content'];
+		arr_items.push(vv);		
+		aoa.push([kk,vv]);
+	}	  
+	showrecords();
+   }
+});
+
+function replace_all(txt, sep) {
+	return txt.split(sep).join('');
+}
+
+function read_keypass() {
+	if (typeof keypass == 'undefined') {
+		keypass = "";
+	}
+	if (keypass=="") {
+		keypass = document.getElementById("result").innerHTML;
+		keypass  = keypass.replace('</','<')
+		keypass = replace_all(keypass, '<br>');
+		keypass = replace_all(keypass, '<b>');
+	}
+	if (keypass.length > 50) {
+		keypass = "";
+	}
+	if ( keypass == "Failed to load the image" ) {
+		keypass = "";
+	}
+	return keypass;
+}
+
+function makeTdEditable(td) {
+	tdtag = td.id;
+	pos = parseInt(tdtag.substr(12,15));
+	var txt = "";
+	if ( tdtag.substr(0,12)=="data-table-A") {
+		txt = document.getElementById(tdtag).innerHTML;
+		txt = prompt("Change key as ",txt);
+		if (txt == null) {
+			return;
+		}
+		document.getElementById(tdtag).innerHTML = txt;
+		aoa[pos][0] = txt;	
+		return;
+	}
+	txt = td.innerHTML.replace("</span>","").replace('<span contenteditable="true">','')
+	if ( txt.substr(0,3) == "U2F" ) {
+		document.getElementById("msg").value = txt;
+		decryption();
+	} else {
+		txt = txt.split('<br>').join('\n');
+		document.getElementById("msg").value = txt;
+	}
+}
+
+function encryption() {
+  msg = document.getElementById("msg").value;
+  if (msg=="") {
+	alert("There is nothing to encrypt.");
+	return;		  }		  
+  var keypass = read_keypass();
+  if (keypass=="") {
+	alert("Please load the passphrase file!");
+	return;
+  }
+  codedString =  CryptoJS.Rabbit.encrypt(msg, keypass);
+  document.getElementById("msg").value = codedString;
+  return;
+}
+
+function decryption() {
+  msg = document.getElementById("msg").value;
+  if (msg=="") {
+	alert("There is nothing to decrypt.");
+	return;
+  }		  
+  var keypass = read_keypass();
+  if (keypass=="") {
+	alert("Please load the passphrase file!");
+	return;
+  }
+  codedString =  CryptoJS.Rabbit.decrypt(msg, keypass).toString(CryptoJS.enc.Utf8);
+  document.getElementById("msg").value = codedString;
+  return;
+}
+
+function saverecord() {
+	if (tdtag == "") {
+		return;
+	}
+	msg = document.getElementById("msg").value;
+	pos = parseInt(tdtag.substr(12,15));
+	aoa[pos][1] = msg;
+	msg = msg.split('\n').join('<br>');
+	document.getElementById(tdtag).innerHTML = '<span contenteditable="true">' + msg + '</span>';
+}
+
+function deleterecord() {
+	if (tdtag == "") {
+		return;
+	}
+	pos = parseInt(tdtag.substr(12,15));
+	if ( aoa.length < 2 ) {
+		aoa.splice(pos,1);
+		document.getElementById("aoa_table").innerHTML = "";
+		document.getElementById("msg").value = "";
+	} else {
+		aoa.splice(pos,1);	
+		showrecords();
+	}
+}
+
+function showrecords() {
+	arr_dict = aoa.slice(1);
+	cnt = arr_dict.length;
+	var ws = XLSX.utils.aoa_to_sheet(arr_dict);	  
+	var html_string = XLSX.utils.sheet_to_html(ws, { id: "data-table", editable: false }); // true false		
+	document.getElementById("aoa_table").innerHTML = html_string;
+	document.getElementById("msg").value = "Excel file " + file.name + " has " + cnt.toString() + " rows";	
+}
+
+function newrecord() {
+	nn = aoa.length;
+	if (nn == 1) {
+		kk = "Key #1";
+		vv = "Content #1";
+		aoa.push([kk,vv]);
+		showrecords();
+	} else {
+		var table = document.getElementById("data-table");
+		var row = table.insertRow(-1);
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		kk = "Key #" + nn.toString();
+		vv = "Content #" + nn.toString();
+		cell1.innerHTML = kk;
+		cell2.innerHTML = vv;
+		cell1.id = "data-table-A" + nn.toString();
+		cell2.id = "data-table-B" + nn.toString();
+		aoa.push([kk,vv]);	
+	}
+}
+
+function save2xls() {
+	if (aoa.length == 1) {
+		alert("There is no records found, click 'Add'.");
+		return;
+	}
+	var workbook = {
+		SheetNames: ["memo"],
+		Sheets: {}
+	};
+	workbook.Sheets["memo"] = XLSX.utils.aoa_to_sheet(aoa);
+	XLSX.writeFile(workbook, fpath );	
+	alert("File saved as " + fpath);
+}
+
+function resetscreen() {
+	aoa = [['#key','#content']];
+    document.getElementById("xlsfile").value = "";
+	document.getElementById("result").innerHTML = "";
+	document.getElementById("aoa_table").innerHTML = "";
+	document.getElementById("msg").value = "";
+	document.getElementById("qrimage").innerHTML = "";
+	alert("worksheet has been reset, please load new copy of excel file.");	
+	setimg();
+}
+
+function definekey() {
+	var keypass = read_keypass();	
+	if (typeof keypass == 'undefined') {
+		keypass = "password";
+	}
+	var txt = prompt("Enter key pass code:",keypass);
+	if (txt == null) {
+		return;
+	}
+	keypass = "<b>" + txt + "</b>"
+	document.getElementById("result").innerHTML = keypass;
+}
+</script>
+</html>
