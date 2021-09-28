@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<Title>Ascii Webcam</Title>
+<head>
+<script src="https://wingsmaker.github.io/crypto/jquery-1.12.4.js"></script>
+<script src="https://wingsmaker.github.io/crypto/jquery-ui.js"></script>
+<script src="https://wingsmaker.github.io/crypto/webcam-easy.min.js"></script>
+<script src="https://wingsmaker.github.io/crypto/camera.js"></script>
+<script src="https://wingsmaker.github.io/crypto/ascii.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="mobile-web-app-capable" content="yes">
+<base target="_top">
+</head>
+<body>
+<div>
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>Ascii Webcam</h1>
+<br>
+<h1 id="info"></h1>
+<div id="notSupported"></div>
+<p>Click start to view your ascii image</p><button id="button">start</button>
+<input type="button" onClick="showcam()" value="Show"/>
+<input type="button" onClick="hidecam()" value="Hide"/>
+</div>
+<br>
+<pre id="ascii"></pre>
+<br />
+<video id="webcam" autoplay playsinline width="640" height="480"></video>
+<canvas id="canvas" class="d-none"></canvas>
+<br />
+<script src="https://wingsmaker.github.io/crypto/ascii_cam.js"></script>
+<script type="text/javascript">
+const webcamElement = document.getElementById('webcam');
+const canvasElement = document.getElementById('canvas');
+const webcam = new Webcam(webcamElement, 'user', canvasElement, null);
+function showcam() {
+	webcam.start();
+}
+function hidecam() {
+	webcam.stop();
+}
+</script>
+</body>
+</html>
