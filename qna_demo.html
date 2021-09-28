@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="mobile-web-app-capable" content="yes">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"> </script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/qna"> </script>
+<title>Text Analytics Demo</title>
+</head>
+
+<body>
+<div>
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>Question and Answer based on content</h1>
+<br/>
+<h3>Context (you can paste your own content in the text area)</h3>
+<textarea id='context' rows="30" cols="120">
+Cloud Network engineers will perform a firmware upgrade of Extranet zone network switches. 
+After the upgrade, verification checks will be performed by Cloud Network engineers 
+together with FAs to ensure proper normalization.</textarea>
+  <h3>Question</h3>
+  <input type=text id="qn" value="what Network engineers will perform ?" style="width: 480px;"> 
+  <br>
+  <button id="search" onclick="replyme()">Search</button>
+  <br>
+  <hr>
+  <h3>Answers</h3>
+  <div id='answer'></div>
+</div>
+<script>
+let qna_model = qna.load();
+function replyme() {
+	var question = document.getElementById("qn").value;
+	var passage = document.getElementById("context").value;
+    document.getElementById( "answer" ).innerHTML = "Let me read the paragraph.....";
+	qna_model.then(model => {
+		model.findAnswers(question, passage).then(answers => {
+			var txt = "";
+			txt = answers.length==0 ? "I dunno" : answers[0].text ;
+			document.getElementById( "answer" ).innerHTML = txt;
+		});
+	});
+}
+  
+</script>
+</body>
+</html>

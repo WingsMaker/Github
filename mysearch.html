@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Simple 3 in 1 search demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="mobile-web-app-capable" content="yes">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+}
+
+li {
+  display: block;
+  float: right;
+}
+
+li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.mainlogo {
+  position: absolute;
+  top: 0px;
+  margin: 10em 32.5em;
+}
+
+#searchbar {
+  position: absolute;
+  top: 270px;
+  left: 375px;
+  width: 580px;
+  height: 30px;
+  border: 1px solid #cdcdcd;
+}
+
+#google_button {
+  position: absolute;
+  top: 310px;
+  left: 440px;
+  border: 1px solid #dcdcdc;
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #444!important;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 8px;
+  background: -webkit-linear-gradient(top, #f5f5f5, #f1f1f1);
+  border-radius: 2px;
+}
+
+#bing_button {
+  position: absolute;
+  top: 310px;
+  left: 550px;
+  border: 1px solid #dcdcdc;
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #444!important;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 8px;
+  background: -webkit-linear-gradient(top, #f5f5f5, #f1f1f1);
+  border-radius: 2px;
+}
+
+#healthhub_button {
+  position: absolute;
+  top: 310px;
+  left: 640px;
+  border: 1px solid #dcdcdc;
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #444!important;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 8px;
+  background: -webkit-linear-gradient(top, #f5f5f5, #f1f1f1);
+  border-radius: 2px;
+}
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+  margin: : 20em;
+}
+</style>
+</head>
+<base target="_top" />
+
+<body>
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>Simple 3 in 1 search demo</h1>
+<br/>
+<div class="mainlogo"><img src="https://www.healthhub.sg/sites/assets/Assets/Programs/stay-well/phase-3/images/masthead-COVID-19.png" height="120px" width="280px" ></div>
+<nav class="header">
+  <div class="col-xs-8">
+    <ul>
+      <li><a href="#"><i class="fa fa-2x fa-user-circle-o" aria-hidden="true"></i></a></li>
+      <li><a href="#"><i class="fa fa-2x fa-bell" aria-hidden="true"></i></a></li>
+      <li><a href="#"><i class="fa fa-2x fa-bars" aria-hidden="true"></i></a></li>
+      <li><a href="https://github.com/WingsMaker/Github">Github</a></li>
+      <li><a href="https://script.google.com/home">AppScript</a></li>
+    </ul>
+  </div>
+</nav>
+
+<form class="form">
+<input type="text" id="searchbar" placeholder="Text Search or Type URL" onkeypress='do_searchbar(event)'>
+<input type="button" value="Google" id="google_button" onclick="do_search('g')">
+<input type="button" value="Bing" id="bing_button" onclick="do_search('b')">
+<input type="button" value="HealthHub" id="healthhub_button" onclick="do_search('h')">
+</form>
+
+</br>
+<div class="footer">
+<p>Powered by WingsMaker</p>
+</div>
+</body>
+
+<script>
+	function do_searchbar(e){
+		if(e.keyCode == 13){
+			do_search('g');
+		}
+	}
+
+	function do_search(search_mode) {
+		var search_prefix = "";
+		var txt  = document.getElementById("searchbar").value;
+		if (search_mode=="g") {
+			search_prefix = "https://www.google.com.sg/search?q=";
+		}
+		if (search_mode=="b") {
+			search_prefix = "https://www.bing.com/search?q=";		
+		}
+		if (search_mode=="h") {
+			search_prefix = "https://www.healthhub.sg/search?k=";
+		}
+		if (search_prefix != "") {
+			var url = search_prefix + txt.split(' ').filter(function(x) { return x.length > 0 } ).join('+');
+			window.open(url);
+		}
+	}
+</script>
+</html>

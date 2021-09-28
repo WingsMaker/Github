@@ -1,0 +1,30 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Scan QR</title>
+<style type="text/css">
+img{ border:0; }
+#qr-canvas{ display:none; }
+</style>
+<script type="text/javascript" src="https://wingsmaker.github.io/Github/webqr.js"></script>
+<script type="text/javascript" src="https://wingsmaker.github.io/Github/llqrcode.js"></script>
+</head>
+<body>
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>QR Code Scanner</h1>
+<br>
+<div id="header"></div>
+<div id="result"></div>
+<div id="mainbody">
+<table class="tsel">
+<tr><td><img class="selector" id="webcamimg" onclick="setwebcam()"/></td>
+<td><img class="selector" id="qrimg" onclick="setimg()"/></td></tr>
+<tr><td><div id="outdiv"></div></td></tr></table>
+</div>
+<canvas id="qr-canvas" width="800" height="600"></canvas>
+<script type="text/javascript">load();</script>
+</body>
+</html>
