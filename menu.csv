@@ -3,11 +3,11 @@ Web Apps,Text Encryption,https://wingsmaker.github.io/Github/crypto.html
 Web Apps,QR Code Import,https://wingsmaker.github.io/Github/qr_import.html
 Web Apps,QR Code Scan,https://wingsmaker.github.io/Github/qrscan.html
 Web Apps,QR Code Generator,https://wingsmaker.github.io/Github/qrgen.html
-Github,Github for Text Encryptor,https://github.com/WingsMaker/text_encryptor
-Github,Github for Cryptosheet,https://github.com/WingsMaker/crypto
-Github,Github for QR Reader,https://github.com/WingsMaker/qr_reader
-Github,Github for QR Code Generator,https://github.com/WingsMaker/qr_gen
-Github,Github for Telepot,https://github.com/WingsMaker/telepot
+Github,Text Encryptor,https://github.com/WingsMaker/text_encryptor
+Github,Cryptosheet,https://github.com/WingsMaker/crypto
+Github,QR Reader,https://github.com/WingsMaker/qr_reader
+Github,QR Code Generator,https://github.com/WingsMaker/qr_gen
+Github,Telepot for telegram,https://github.com/WingsMaker/telepot
 Github,Resume Ranking,https://github.com/WingsMaker/ResumeRanking
 Documentations,Telepot - The Telegram API,https://telepot.readthedocs.io/en/latest/
 Documentations,FHIR HAPI,https://github.com/WingsMaker/hapi-fhir
