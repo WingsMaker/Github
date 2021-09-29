@@ -2,16 +2,17 @@
 <html>
 <Title>Ascii Webcam</Title>
 <head>
-<script src="https://wingsmaker.github.io/Github/jquery-1.12.4.js"></script>
-<script src="https://wingsmaker.github.io/Github/jquery-ui.js"></script>
-<script src="https://wingsmaker.github.io/Github/webcam-easy.min.js"></script>
-<script src="https://wingsmaker.github.io/Github/camera.js"></script>
-<script src="https://wingsmaker.github.io/Github/ascii.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="mobile-web-app-capable" content="yes">
 <base target="_top">
+<style>
+#webcam {
+  -webkit-transform: scaleX(-1); //avoid mirror effect
+  transform: scaleX(-1);
+
+}</style>
 </head>
 <body>
 <div>
@@ -21,8 +22,6 @@
 <h1 id="info"></h1>
 <div id="notSupported"></div>
 <p>Click start to view your ascii image</p><button id="button">start</button>
-<input type="button" onClick="showcam()" value="Show"/>
-<input type="button" onClick="hidecam()" value="Hide"/>
 </div>
 <br>
 <pre id="ascii"></pre>
@@ -30,17 +29,101 @@
 <video id="webcam" autoplay playsinline width="640" height="480"></video>
 <canvas id="canvas" class="d-none"></canvas>
 <br />
-<script src="https://wingsmaker.github.io/Github/ascii_cam.js"></script>
 <script type="text/javascript">
-const webcamElement = document.getElementById('webcam');
 const canvasElement = document.getElementById('canvas');
-const webcam = new Webcam(webcamElement, 'user', canvasElement, null);
-function showcam() {
-	webcam.start();
-}
-function hidecam() {
-	webcam.stop();
-}
+const w = document.getElementById('webcam');
+const b = document.getElementById("button");
+var n = document.getElementById("ascii");
+var e = !1;
+var ascii = function() {
+	function t(t, a) {
+		return {
+			red: t[a],
+			green: t[a + 1],
+			blue: t[a + 2],
+			alpha: t[a + 3]
+		}
+	}
+	function a(t, a) {
+		return Math.max(a[0], Math.min(a[1], t))
+	}
+	return {
+		fromCanvas: function(r, n) {
+			return(n = n || {}).contrast = void 0 === n.contrast ? 128 : n.contrast, n.callback = n.callback || doNothing,
+				function(r, n) {
+					for(var e = " .,:;i1tfLCG08@".split(""), o = r.getContext("2d"), l = r.width, c = r.height, h = "", i = 259 * (n.contrast + 255) / (255 * (259 - n.contrast)), u = o.getImageData(0, 0, l, c), f = 0; f < c; f += 2) {
+						for(var g = 0; g < l; g++) {
+							var d = 4 * (f * l + g),
+								s = t(u.data, d),
+								b = {
+									red: a(Math.floor((s.red - 128) * i) + 128, [0, 255]),
+									green: a(Math.floor((s.green - 128) * i) + 128, [0, 255]),
+									blue: a(Math.floor((s.blue - 128) * i) + 128, [0, 255]),
+									alpha: s.alpha
+								},
+								v = (.299 * b.red + .587 * b.green + .114 * b.blue) / 255;
+							h += e[e.length - 1 - Math.round(v * (e.length - 1))]
+						}
+						h += "\n"
+					}
+					n.callback(h)
+				}(r, n)
+		}
+	}
+}();
+var camera = function() {
+	var t, e, r, i, n;
+
+	function o() {
+		(e = document.createElement("video")).setAttribute("width", t.width), e.setAttribute("height", t.height), e.setAttribute("playsinline", "true"), e.setAttribute("webkit-playsinline", "true"), navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia, window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL, navigator.getUserMedia ? navigator.getUserMedia({
+			video: !0,
+			audio: !1
+		}, function(n) {
+			t.onSuccess(), void 0 !== e.mozSrcObject ? e.mozSrcObject = n : e.srcObject = n, (r = t.targetCanvas || document.createElement("canvas")).setAttribute("width", t.width), r.setAttribute("height", t.height), i = r.getContext("2d"), t.mirror && (i.translate(r.width, 0), i.scale(-1, 1))
+		}, t.onError) : t.onNotSupported()
+	}
+
+	function a() {
+		n && clearInterval(n), e.pause()
+	}
+	return {
+		init: function(e) {
+			var r = function() {};
+			(t = e || {}).fps = t.fps || 30, t.width = t.width || 640, t.height = t.height || 480, t.mirror = t.mirror || !1, t.targetCanvas = t.targetCanvas || null, t.onSuccess = t.onSuccess || r, t.onError = t.onError || r, t.onNotSupported = t.onNotSupported || r, t.onFrame = t.onFrame || r, o()
+		},
+		start: function() {
+			e.play(), n = setInterval(function() {
+				try {
+					i.drawImage(e, 0, 0, e.width, e.height), t.onFrame(r)
+				} catch(t) {}
+			}, Math.round(1e3 / t.fps))
+		},
+		pause: a,
+		stop: function() {
+			a(), void 0 !== e.mozSrcObject ? e.mozSrcObject = null : e.srcObject = null
+		}
+	}
+}();
+
+camera.init({
+	width: 90,
+	height: 60,
+	fps: 30,
+	mirror: !0,
+	onFrame: function(e) { ascii.fromCanvas(e, { callback: function(e) { n.innerHTML = e; } }) },
+	onSuccess: function() {
+		document.getElementById("info").style.display = "none";
+		b.style.display = "block", b.onclick = function() {
+			e ? (camera.pause(), b.innerText = "resume") : (camera.start(), b.innerText = "pause"), e = !e
+		}
+	},
+	onError: function(n) {},
+	onNotSupported: function() {
+		document.getElementById("info").style.display = "none", n.style.display = "none", 
+		document.getElementById("notSupported").style.display = "block"
+	}
+});
+navigator.mediaDevices.getUserMedia({ video : true, audio: false } ).then(t => { w.srcObject = t, w.play()});
 </script>
 </body>
 </html>
