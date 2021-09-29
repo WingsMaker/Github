@@ -77,19 +77,19 @@ document.querySelector("#csvfile").addEventListener('change', function() {
         fr.onload=function(){ 
 			lines = fr.result.split("\n");
 			cnt = lines.length;
-			table_html = "<table><caption>Agile BackLog File</caption><tr>";
+			table_html = "<table><caption>" + pathf + "</caption><tr>";
 			aoa = [];
 			headers = lines[0].split(",");
 			nn = headers.length;
-			for( jj=0; jj < nn; jj++ ) {				
-				txt = headers[jj];
-				txt = replace_all(txt,'"');
-				headers[jj] = txt;
-				table_html = table_html + '<th scope="col">' + txt + '</th>';				
-			}
+			//for( jj=0; jj < nn; jj++ ) {				
+				//txt = headers[jj];
+				//txt = replace_all(txt,'"');
+				//headers[jj] = txt;
+				//table_html = table_html + '<th scope="col">' + txt + '</th>';				
+			//}
 			aoa = [ headers ];
 			table_html = table_html + "</tr>";			
-			for( ii=1; ii < cnt; ii++ ) {
+			for( ii=0; ii < cnt; ii++ ) {
 				linedata = lines[ii].split(",");
 				kk = linedata.length;
 				table_html = table_html + "<tr>";
