@@ -1,22 +1,24 @@
-Web Apps,CryptoSheet,https://wingsmaker.github.io/Github/cryptosheet.html
-Web Apps,Text Encryption,https://wingsmaker.github.io/Github/crypto.html
-Web Apps,QR Code Import,https://wingsmaker.github.io/Github/qr_import.html
-Web Apps,QR Code Scan,https://wingsmaker.github.io/Github/qrscan.html
-Web Apps,QR Code Generator,https://wingsmaker.github.io/Github/qrgen.html
-Github,Text Encryptor,https://github.com/WingsMaker/text_encryptor
-Github,Cryptosheet,https://github.com/WingsMaker/crypto
-Github,QR Reader,https://github.com/WingsMaker/qr_reader
-Github,QR Code Generator,https://github.com/WingsMaker/qr_gen
-Github,Telepot for telegram,https://github.com/WingsMaker/telepot
-Github,Resume Ranking,https://github.com/WingsMaker/ResumeRanking
-Github,Ascii Camera,https://github.com/WingsMaker/ascii_cam
-Documentations,Telepot - The Telegram API,https://telepot.readthedocs.io/en/latest/
+Apps,Ascii Webcam,https://wingsmaker.github.io/ascii_cam/
+Apps,CryptoSheet,https://wingsmaker.github.io/Github/cryptosheet.html
+Apps,Face Mask,https://wingsmaker.github.io/Github/FaceMask.html
+Apps,Image Classifier,https://wingsmaker.github.io/Github/ImageClassAB.html
+Apps,Menu Editor,https://wingsmaker.github.io/Github/menu_editor.html
+Apps,MySearch,https://wingsmaker.github.io/Github/mysearch.html
+Apps,Q and A demo,https://wingsmaker.github.io/Github/qna_demo.html
+Apps,QR Code Generator,https://wingsmaker.github.io/Github/qrgen.html
+Apps,QR Code Import,https://wingsmaker.github.io/Github/qr_import.html
+Apps,QR Code Scan,https://wingsmaker.github.io/Github/qrscan.html
+Apps,Screen Recording,https://wingsmaker.github.io/Github/screen_record.html
+Apps,Text Encryption,https://wingsmaker.github.io/Github/crypto.html
 Documentations,FHIR HAPI,https://github.com/WingsMaker/hapi-fhir
 Documentations,HAPI Endpoint API,http://hapi.fhir.org/baseR4/swagger-ui/
-Others,Face Mask,https://wingsmaker.github.io/Github/FaceMask.html
-Others,Ascii Webcam,https://wingsmaker.github.io/ascii_cam/
-Others,Screen Recording,https://wingsmaker.github.io/Github/screen_record.html
-Others,MySearch,https://wingsmaker.github.io/Github/mysearch.html
-Others,Image Classifier,https://wingsmaker.github.io/Github/ImageClassAB.html
-Others,Q and A demo,https://wingsmaker.github.io/Github/qna_demo.html
-Infobase,,https://wingsmaker.github.io/Infobase/index.html
+Documentations,Infobase,https://wingsmaker.github.io/Infobase/index.html
+Documentations,Telepot - The Telegram API,https://telepot.readthedocs.io/en/latest/
+Github,Ascii Camera,https://github.com/WingsMaker/ascii_cam
+Github,Cryptosheet,https://github.com/WingsMaker/crypto
+Github,MmeoKeys,https://github.com/WingsMaker/MemoKeys
+Github,QR Code Generator,https://github.com/WingsMaker/qr_gen
+Github,QR Reader,https://github.com/WingsMaker/qr_reader
+Github,Resume Ranking,https://github.com/WingsMaker/ResumeRanking
+Github,Telepot for telegram,https://github.com/WingsMaker/telepot
+Github,Text Encryptor,https://github.com/WingsMaker/text_encryptor

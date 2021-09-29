@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<Title>Backlogs Editor</Title>
+ <style>
+#hdr{
+	margin: 15px auto;
+	background:white;
+	text-align: center;
+	width: 750px;
+}  
+#data-table, #data-table th, #data-table td { border: 1px solid black }
+th {
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid black;
+}
+td {
+  width: 150px;
+  white-space: nowrap;
+  text-align: left;
+  vertical-align: top;
+  padding: 10px;
+  border: 1px solid black;
+}
+</style>
+<title>Menu Editor</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+</head>
+<body> 
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>Menu Editor</h1>
+<br/>
+<div id="hdr"></div>
+<form>
+This app let you load excel file with list defined into web page.
+<br />  
+Load your csv file:
+<input type="file" id="csvfile"><br />
+<br />
+<input type="button" onClick="resetscreen()" value="Reset"/>
+<input type="button" onClick="addrow()" value="Add"/>
+<input type="button" onClick="export_csv()" value="Export"/>
+<br />
+</form>
+<br />
+<div id="aoa_table"></div>
+<br />
+<br />
+</body>
+
+<script>
+let editingTd;
+var tdtag = "";
+var outputf = "agilesheet.xlsx";
+var fpath = "";
+var aoa = [];
+var msg = "";
+
+document.getElementById("hdr").style.fontSize = "x-large";
+let table = document.getElementById('aoa_table');
+
+table.onclick = function(event) {
+  let target = event.target.closest('.edit-cancel,.edit-ok,td');
+}
+
+document.querySelector("#csvfile").addEventListener('change', function() { 
+		var fr=new FileReader(); 
+		var pathf = window.location.pathname; 
+		lines = pathf.split('/');
+		lines.splice(-1,1);
+		fpath = lines.join('/');		
+        fr.onload=function(){ 
+			lines = fr.result.split("\n");
+			cnt = lines.length;
+			table_html = "<table><caption>Agile BackLog File</caption><tr>";
+			aoa = [];
+			headers = lines[0].split(",");
+			nn = headers.length;
+			for( jj=0; jj < nn; jj++ ) {				
+				txt = headers[jj];
+				txt = replace_all(txt,'"');
+				headers[jj] = txt;
+				table_html = table_html + '<th scope="col">' + txt + '</th>';				
+			}
+			aoa = [ headers ];
+			table_html = table_html + "</tr>";			
+			for( ii=1; ii < cnt; ii++ ) {
+				linedata = lines[ii].split(",");
+				kk = linedata.length;
+				table_html = table_html + "<tr>";
+				rec = [];
+				mm = 0;
+				for( jj=0; jj < kk; jj++ ) {					
+					txt = linedata[jj];
+					if (txt[0]=='"') {
+						if (txt.slice(-1) != '"' ) {
+							jj = jj + 1;
+							for(; linedata[jj].slice(-1) != '"' ; jj++ ) {
+								txt = txt + "," + linedata[jj];
+							}
+							txt = txt + "," + linedata[jj];
+						}
+						txt = replace_all(txt,'"');
+					}
+					table_html = table_html + '<td contenteditable="true">' + txt + '</td>';
+					rec.push( txt );
+					mm = mm + 1;
+				}
+				kk = rec.length;
+				for (;mm < nn ; mm++ ) {
+					table_html = table_html + '<td contenteditable="true"></td>';
+					rec.push( "" );
+				}
+				table_html = table_html + "</tr>";
+				aoa.push( rec );
+			}
+			table_html = table_html + "</table>";
+			document.getElementById("aoa_table").innerHTML = table_html;
+		}               
+		fr.readAsText(this.files[0]); 
+		outputf = this.files[0].name;		
+}) 
+
+function replace_all(txt, sep) {
+	return txt.split(sep).join('');
+}
+
+function resetscreen() {
+	aoa = [];
+	document.getElementById("aoa_table").innerHTML = "";
+	alert("worksheet has been reset, please load new copy of excel file.");	
+}
+
+function addrow() {
+	table_html = document.getElementById("aoa_table").innerHTML;
+	arr_tbl = table_html.split("</tr>");
+	nn = arr_tbl.length;
+	if (nn==0) {
+		return;
+	}
+	txt = "<tr>";
+	rec = []
+	for (tt in aoa[0]) {
+		txt = txt + '<td contenteditable="true"></td>';		
+		rec.push("");
+	}
+	txt = txt + arr_tbl[nn-1];
+	arr_tbl[nn-1] = txt;
+	table_html = arr_tbl.join("</tr>");
+	document.getElementById("aoa_table").innerHTML = table_html;
+	aoa.push(rec);
+}
+
+function update_table() {
+	header = aoa[0];
+	nn = header.length;
+	header[nn-1] = replace_all(header[nn-1],"\n");
+	header[nn-1] = replace_all(header[nn-1],"\r");
+	table_html = document.getElementById("aoa_table").innerHTML;
+	tbl_array = table_html.split("<tr>");
+	tbl_array.splice(0,2);
+	aoa = [ header ]
+	for ( ii in tbl_array ) {
+		txt = replace_all(tbl_array[ii],'<td contenteditable="true">')
+		txt = replace_all(txt,'</tr>')
+		txt = replace_all(txt,'</tbody>')
+		txt = replace_all(txt,'</table>')
+		tbl_items = txt.split('</td>');
+		rec = [];
+		for ( jj in tbl_items) {
+			rec.push(tbl_items[jj]);
+		}
+		if (rec[0] != "") {
+			aoa.push( rec );
+		}
+	}
+}
+
+function tableToCSV() {
+	var csv_data = [];
+	cnt=aoa.length;
+	nn = aoa[0].length;
+	for(ii=0;ii<cnt;ii++) {
+		tt = aoa[ii][nn-1];
+		tt = replace_all(tt,"\n");
+		aoa[ii][nn-1] = replace_all(tt,"\r");
+		rec = '"' + aoa[ii][0] + '"';
+		for(jj=1;jj<nn;jj++) {
+			rec = rec + ',"' + aoa[ii][jj] + '"'
+		}		
+		csv_data.push(rec);
+	}
+	csv_data = csv_data.join('\n');
+	downloadCSVFile(csv_data);
+}
+
+function downloadCSVFile(csv_data) {
+ 	CSVFile = new Blob([csv_data], {
+        	type: "text/csv"
+	}); 
+	var temp_link = document.createElement('a');
+    temp_link.download = outputf
+    var url = window.URL.createObjectURL(CSVFile);
+    temp_link.href = url; 
+    temp_link.style.display = "none";
+	temp_link.innerHTML = "Click here to download"
+    document.body.appendChild(temp_link);
+    temp_link.click();
+    
+	document.body.removeChild(temp_link);
+}
+
+function export_csv() {
+	update_table();
+	tableToCSV();
+	msg = "worksheet has been exported as " + outputf;
+	alert(msg);
+}
+
+</script>
+</html>
