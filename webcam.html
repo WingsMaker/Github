@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<Title>webcam test</Title>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<base target="_top">
+<style type="text/css">
+body { font-family: Arial, Helvetica, sans-serif; height:auto; min-width:250px; width:640px; margin: 10; padding:10; background-color: black; color: white; }
+  .left-side {     border:5px;  }
+  .center {   border:5px;   }
+  .right-side {   border:5px;   }
+.button-group, .play-area {
+  border: 1px solid grey;
+  padding: 1em 1%;
+  margin-bottom: 1em;
+}
+.button {
+  padding: 0.5em;
+  margin-right: 1em;
+}
+a { color: white; } 
+</style>
+</head>
+
+<body>
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>Meeting in progress</h1>
+<br>
+<div>
+<br>
+<video id="webcam" autoplay playsinline width="640" height="480"></video>
+<canvas id="canvas" class="d-none"></canvas>
+<br />
+<script type="text/javascript">
+const w = document.getElementById('webcam');
+const canvasElement = document.getElementById('canvas');
+navigator.mediaDevices.getUserMedia({ video : true, audio: true } ).then(t => { w.srcObject = t, w.play()});
+</script>
+</body>
+<footer class="text-center fixed-bottom">
+</footer>
+</html>
