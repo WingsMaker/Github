@@ -89,9 +89,12 @@ function caminfo() {
 	w.style.visibility = v;
 }
 function imageinfo() {	
-	var v = document.getElementById('img').style.visibility;
-	v = (v == "hidden") ? "visible" : "hidden";
-	document.getElementById('img').style.visibility = v;
+	var txt = prompt("URL of the picture :", document.getElementById('img').src);
+	if (txt == null || txt == "") {
+	  txt = "";
+	} else {
+	  document.getElementById('img').src = txt;
+	}	
 }
 </script>
 </body>
