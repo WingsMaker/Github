@@ -44,16 +44,16 @@
 <div id="videoContainer"></div>
 <h6><span id="modelStatus">Loading base model...</span> | <span id="videoStatus">Loading video...</span></h6>
 <p>
-<button id="ButtonA">Add A Images</button>
+<button id="ButtonA" style="height:40px;width:120px">Add A Images</button>
 <p><span id="amountOfAImages">0</span> A Images</p>
-<br><button id="ButtonB">Add B Image</button>
+<br><button id="ButtonB" style="height:40px;width:120px">Add B Image</button>
 <p><span id="amountOfBImages">0</span> B Images</p>
 </p>
 <br/>
-<p><button id="train">Train</button><span id="loss"></span></p>
+<p><button id="train" style="height:40px;width:80px">Train</button><span id="loss"></span></p>
 <br/>
 <p>
-<button id="buttonPredict">Start guessing!</button><br>
+<button id="buttonPredict" style="height:40px;width:120px">Start guessing!</button><br>
 Your custom model labeled this as: <span id="result">...</span>
 </p>
 <br>
@@ -72,19 +72,18 @@ let nClassBinARow = 0;
 
 function setup() {
   createCanvas(640, 480);
-  // Create a video element
   video = createCapture(VIDEO);
   video.size(640, 480);
   video.hide();
-  // Append it to the videoContainer DOM element
-  //video.parent('videoContainer');
-  // Extract the already learned features from MobileNet
   featureExtractor = ml5.featureExtractor('MobileNet', modelReady);
-  // Create a new classifier using those features and give the video we want to use
   classifier = featureExtractor.classification(video, videoReady);
-  // Set up the UI buttons
+  // script src="lkh.js"
+  //const myimg = new Image();
+  //myimg.src = myimguri;
+  //classifier.addImage(myimg,"A");
   setupButtons();
 }
+
 
 function draw() {
   background(122);
@@ -107,12 +106,7 @@ function draw() {
   } else {
     fill(255, 0, 0);
     text("Not sure...", 100, 100);
-  }
-  
-  console.log("A: " + nClassAinARow);
-  console.log("B: " + nClassBinARow);
-  
-  
+  }  
   lastClassificationResult = classificationResult;
 }
 
@@ -127,7 +121,6 @@ function videoReady() {
   select('#videoStatus').html('Click the train button once you have added images');
 }
 
-
 // Classify the current frame.
 function classify() {
   classifier.classify(gotResults);
@@ -135,16 +128,12 @@ function classify() {
 
 // A util function to create UI buttons
 function setupButtons() {
-  // When the A button is pressed, add the current frame
-  // from the video with a label of "A" to the classifier
   buttonA = select('#ButtonA');
   buttonA.mousePressed(function() {
     classifier.addImage('A');
     select('#amountOfAImages').html(imagesOfA++);
   });
 
-  // When the B button is pressed, add the current frame
-  // from the video with a label of "B" to the classifier
   buttonB = select('#ButtonB');
   buttonB.mousePressed(function() {
     classifier.addImage('B');
@@ -171,13 +160,12 @@ function setupButtons() {
 
 // Show the results
 function gotResults(err, result) {
-  // Display any error
   if (err) {
     console.error(err);
   }
   select('#result').html(result);
   classificationResult = result;
-  classify();
+  //classify();
 }
 </script>
 </body>
