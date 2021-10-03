@@ -1,7 +1,8 @@
 Apps,Ascii Webcam,https://wingsmaker.github.io/ascii_cam/
 Apps,CryptoSheet,https://wingsmaker.github.io/Github/cryptosheet.html
 Apps,Face Mask,https://wingsmaker.github.io/Github/FaceMask.html
-Apps,Image Classifier,https://wingsmaker.github.io/Github/ImageClassAB.html
+Apps,Image Classifier(NeuralNetwork),https://wingsmaker.github.io/Github/ImageClassAB.html
+Apps,Image Classifier(KNN),https://wingsmaker.github.io/Github/ImageClassKNN.html
 Apps,Menu Editor,https://wingsmaker.github.io/Github/menu_editor.html
 Apps,MySearch,https://wingsmaker.github.io/Github/mysearch.html
 Apps,Q and A demo,https://wingsmaker.github.io/Github/qna_demo.html
