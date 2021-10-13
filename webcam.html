@@ -25,33 +25,12 @@ a { color: white; }
 </style>
 </head>
 
-<script>
-(function(r, d, s) {
-	r.loadSkypeWebSdkAsync = r.loadSkypeWebSdkAsync || function(p) {
-		var js, sjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(p.id)) { return; }
-		js = d.createElement(s);
-		js.id = p.id;
-		js.src = p.scriptToLoad;
-		js.onload = p.callback
-		sjs.parentNode.insertBefore(js, sjs);
-	};
-	var p = {
-		scriptToLoad: 'https://swx.cdn.skype.com/shared/v/latest/skypewebsdk.js',
-		id: 'skype_web_sdk'
-	};
-	r.loadSkypeWebSdkAsync(p);
-})(window, document, 'script');
-</script>
-
 <body>
 <h3><a id="a-title" onclick="change_h3()">&nbsp&nbsp&nbspSkype Meeting</a></h3>
 <h1><a id="a-progress" onclick="change_h1()">Meeting in progress</a></h1>
 <div id="img_host" onclick="caminfo()"><p>Host</p>
-<video id="webcam" autoplay playsinline width="240" height="180"></video>
+<video id="webcam" autoplay playsinline width="480" height="640"></video>
 <canvas id="canvas" class="d-none"></canvas></div>
-<br>
-<div role='link' aria-labelledby='shareButtonLabel' tabindex='0' onKeydown='skypeShareKeyDownHandler(event)' class='skype-share' data-href='online skype' data-lang='' data-text='' data-style='large' ></div>
 <br>
 
 <script type="text/javascript">
