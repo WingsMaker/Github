@@ -64,6 +64,7 @@ body { font-family: Arial, Helvetica, sans-serif; background-color: white; margi
 </head>
 
 <body>
+
 <div class="container">
 <h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
 <h1>My life long learning journey in coding.</h1>
@@ -81,12 +82,31 @@ body { font-family: Arial, Helvetica, sans-serif; background-color: white; margi
 	</form>
 </div>
 <hr>
-
-
 </body>
+<script>
+(function(r, d, s) {
+	r.loadSkypeWebSdkAsync = r.loadSkypeWebSdkAsync || function(p) {
+		var js, sjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(p.id)) { return; }
+		js = d.createElement(s);
+		js.id = p.id;
+		js.src = p.scriptToLoad;
+		js.onload = p.callback
+		sjs.parentNode.insertBefore(js, sjs);
+	};
+	var p = {
+		scriptToLoad: 'https://swx.cdn.skype.com/shared/v/latest/skypewebsdk.js',
+		id: 'skype_web_sdk'
+	};
+	r.loadSkypeWebSdkAsync(p);
+})(window, document, 'script');
+</script>
+
+
 <script>
 	menu_type = 1; // 0 for horizontal , 1 for vertical
 	fetch("https://wingsmaker.github.io/Github/menu.csv").then( r => r.text() ).then( t => processData(t) );
+	
 	function processData(csv) {
 		var menu_txt = '<div class="navbar" id="myNavbar">';
 		var menu_grp = '';
@@ -128,7 +148,7 @@ body { font-family: Arial, Helvetica, sans-serif; background-color: white; margi
 		if (menu_item == 0) {
 			menu_txt += '</div></div>';
 		}
-		menu_txt += '</div>';
+		menu_txt += "<a onclick='skypeShareKeyDownHandler(event)' class='skype-share'>Skype</a></div>";
 		document.getElementById("menu").innerHTML = menu_txt;
 	}
 	
