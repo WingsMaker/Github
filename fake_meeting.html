@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<Title>webcam test</Title>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<base target="_top">
+<style type="text/css">
+body { font-family: Arial, Helvetica, sans-serif; height:auto; min-width:250px; width:640px; margin: 10; padding:10; background-color: black; color: white; }
+  .left-side {     border:5px;  }
+  .center {   border:5px;   }
+  .right-side {   border:5px;   }
+.button-group, .play-area {
+  border: 1px solid grey;
+  padding: 1em 1%;
+  margin-bottom: 1em;
+}
+.button {
+  padding: 0.5em;
+  margin-right: 1em;
+}
+a { color: white; } 
+</style>
+</head>
+
+<body>
+<h3><a id="a-title" onclick="change_h3()">Fake Meeting</a></h3>
+<h1><a id="a-progress" onclick="change_h1()">Meeting in progress</a></h1>
+<div id="img_host" onclick="caminfo()"><p>Host</p>
+<video id="webcam" autoplay playsinline width="240" height="180"></video>
+<canvas id="canvas" class="d-none"></canvas></div>
+<br>
+<div id="img_grp" onclick="imageinfo()"><p>Attendees</p>
+<img width="800" height="480" src="webcam.jpg"/></div>
+<br>
+
+<script type="text/javascript">
+const w = document.getElementById('webcam');
+const canvasElement = document.getElementById('canvas');
+navigator.mediaDevices.getUserMedia({ video : true, audio: true } ).then(t => { w.srcObject = t, w.play()});
+
+function change_h1() {
+	var txt = prompt("Change below as :", document.getElementById('a-progress').innerHTML);
+	if (txt == null || txt == "") {
+	  txt = "";
+	} else {
+	  document.getElementById('a-progress').innerHTML = txt;
+	}	
+}
+function change_h3() {
+	var txt = prompt("Change below as :", document.getElementById('a-title').innerHTML);
+	if (txt == null || txt == "") {
+	  txt = "";
+	} else {
+	  document.getElementById('a-title').innerHTML = txt;
+	}	
+}
+function changeInfo() {
+	document.getElementById('a-title').innerHTML = document.getElementById('stitle').value;	
+	document.getElementById('a-progress').innerHTML = document.getElementById('sprogress').value;	
+	document.getElementById('meeting_info').style.visibility = "hidden";
+}
+function caminfo() {	
+	var v = w.style.visibility;
+	v = (v == "hidden") ? "visible" : "hidden";
+	w.style.visibility = v;
+}
+function imageinfo() {	
+	var txt = prompt("URL of the picture :", "");
+	if (txt == null || txt == "") {
+	  txt = "";
+	} else {
+		var ext = txt.substr(txt.length - 3).toLowerCase();
+		document.getElementById('img_grp').innerHTML = '<p>Attendees</p>';
+		if ((ext == "jpg" || ext == "png")) {
+			document.getElementById('img_grp').innerHTML += '<img width="800" height="480" src="' + txt + '"/>';
+		} if (ext == "mp4") {
+			document.getElementById('img_grp').innerHTML += '<iframe width="800" height="480" src="' + txt + '" frameborder="0">/</iframe>';
+		}		
+	}	
+}
+
+</script>
+</body>
+<footer class="text-center fixed-bottom">
+</footer>
+</html>
