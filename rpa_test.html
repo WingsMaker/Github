@@ -1,0 +1,156 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<title>RPA Test</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+<title>RPA Test Page</title>
+ <style>
+#hdr{
+	margin: 15px auto;
+	background:white;
+	text-align: center;
+	width: 750px;
+}
+#data-table, #data-table th, #data-table td { border: 1px solid black }
+th {
+  text-align: center;
+  font-weight: bold;
+}
+td {
+  width: 150px;
+  white-space: nowrap;
+  text-align: left;
+  vertical-align: top;
+  padding: 10px;
+}
+</style>
+<script type="text/javascript" src='https://wingsmaker.github.io/Github/xlsx.full.min.js'></script>
+</head>
+<body>
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>RPA Test page</h1>
+<br>
+<div id="hdr"></div>
+<form>
+<div class="container"</div>
+	<div>
+		<p id="second-paragraph">Enter the first field</p>
+		<p><label>Text box 1:</label> <input id="tb1" type=text></p>
+	</div>
+	<div>
+		<p id="first-paragraph">Enter the second field</p>
+		<p><label>Text box 2:</label> <input id="tb2" type=text></p>
+	</div>
+	<div>
+		<p id="third-paragraph">Enter the third field</p>
+		<p><label>Text box 3:</label> <input id="tb3" type=text></p>
+	</div>
+	<div>
+		<input type="button" onClick="resetscreen()" value="Reset"/>
+		<input type="button" onClick="newrecord()" value="Add"/>
+		<input type="button" onClick="deleterecord()" value="Delete"/>
+	</div>
+<br />
+</form>
+<br />
+<div>
+<div id="aoa_table"></div>
+<br />
+</body>
+
+<script>
+let editingTd;
+var tdtag = "";
+var aoa = [['#key','#content']];
+var codedString = "";
+var msg = "";
+document.getElementById("hdr").style.fontSize = "x-large";
+let table = document.getElementById('aoa_table');
+
+table.onclick = function(event) {
+  let target = event.target.closest('.edit-cancel,.edit-ok,td');
+  if (!table.contains(target)) return;
+  if (target.nodeName == 'TD') {
+    if (editingTd) return;
+    makeTdEditable(target);
+  }
+}
+
+function replace_all(txt, sep) {
+	return txt.split(sep).join('');
+}
+
+function makeTdEditable(td) {
+	tdtag = td.id;
+	pos = parseInt(tdtag.substr(12,15));
+	var txt = "";
+	if ( tdtag.substr(0,12)=="data-table-A") {
+		txt = document.getElementById(tdtag).innerHTML;
+		txt = prompt("Change key as ",txt);
+		if (txt == null) {
+			return;
+		}
+		document.getElementById(tdtag).innerHTML = txt;
+		aoa[pos][0] = txt;
+		return;
+	}
+}
+
+function deleterecord() {
+	if (tdtag == "") {
+		return;
+	}
+	pos = parseInt(tdtag.substr(12,15));
+	if ( aoa.length < 2 ) {
+		aoa.splice(pos,1);
+		document.getElementById("aoa_table").innerHTML = "";
+	} else {
+		aoa.splice(pos,1);
+		showrecords();
+	}
+}
+
+function showrecords() {
+	arr_dict = aoa.slice(1);
+	cnt = arr_dict.length;
+	var ws = XLSX.utils.aoa_to_sheet(arr_dict);
+	var html_string = XLSX.utils.sheet_to_html(ws, { id: "data-table", editable: false }); // true false
+	document.getElementById("aoa_table").innerHTML = html_string;
+}
+
+function newrecord() {
+	nn = aoa.length;
+	if (nn == 1) {
+		kk = document.getElementById("tb2").value;
+		vv = document.getElementById("tb3").value;
+		aoa.push([kk,vv]);
+		showrecords();
+	} else {
+		var table = document.getElementById("data-table");
+		var row = table.insertRow(-1);
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		kk = document.getElementById("tb2").value;
+		vv = document.getElementById("tb3").value;
+		cell1.innerHTML = kk;
+		cell2.innerHTML = vv;
+		cell1.id = "data-table-A" + nn.toString();
+		cell2.id = "data-table-B" + nn.toString();
+		aoa.push([kk,vv]);
+	}
+}
+
+function resetscreen() {
+	aoa = [['#key','#content']];
+	document.getElementById("aoa_table").innerHTML = "";
+	document.getElementById("tb1").value = "";
+	document.getElementById("tb2").value = "";
+	document.getElementById("tb3").value = "";
+}
+
+</script>
+</html>
