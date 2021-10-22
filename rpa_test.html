@@ -65,7 +65,7 @@ td {
 <script>
 let editingTd;
 var tdtag = "";
-var aoa = [['#key','#content']];
+var aoa = [['#key','#content','#desc']];
 var codedString = "";
 var msg = "";
 document.getElementById("hdr").style.fontSize = "x-large";
@@ -124,28 +124,33 @@ function showrecords() {
 
 function newrecord() {
 	nn = aoa.length;
+	kk = document.getElementById("tb1").value;
+	vv = document.getElementById("tb2").value;
+	dd = document.getElementById("tb3").value;
 	if (nn == 1) {
-		kk = document.getElementById("tb2").value;
-		vv = document.getElementById("tb3").value;
-		aoa.push([kk,vv]);
+		aoa.push([kk,vv,dd]);
 		showrecords();
 	} else {
 		var table = document.getElementById("data-table");
 		var row = table.insertRow(-1);
 		var cell1 = row.insertCell(0);
 		var cell2 = row.insertCell(1);
-		kk = document.getElementById("tb2").value;
-		vv = document.getElementById("tb3").value;
+		var cell3 = row.insertCell(2);
 		cell1.innerHTML = kk;
 		cell2.innerHTML = vv;
+		cell3.innerHTML = dd;
 		cell1.id = "data-table-A" + nn.toString();
 		cell2.id = "data-table-B" + nn.toString();
-		aoa.push([kk,vv]);
+		cell3.id = "data-table-C" + nn.toString();
+		aoa.push([kk,vv,dd]);
 	}
+	document.getElementById("tb1").value = "";
+	document.getElementById("tb2").value = "";
+	document.getElementById("tb3").value = "";
 }
 
 function resetscreen() {
-	aoa = [['#key','#content']];
+	aoa = [['#key','#content','#desc']];
 	document.getElementById("aoa_table").innerHTML = "";
 	document.getElementById("tb1").value = "";
 	document.getElementById("tb2").value = "";
