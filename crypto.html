@@ -42,8 +42,10 @@ function definekey() {
 		keypass = keypass.replace("</b>","<b>").split("<b>")[1];
 	}
 	var txt = prompt("Enter key pass code:",keypass);
-		keypass = "<b>" + txt + "</b>"
-		document.getElementById("result").innerHTML = keypass;
+	if (txt != "") {
+		keypass = txt;
+		document.getElementById("result").innerHTML = "<b>" + txt + "</b>";
+	}
 }
 
 function encryption() {
