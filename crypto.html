@@ -31,7 +31,7 @@
 <script type="text/javascript">	
 var codedString = "";
 var msg = "";
-var keypass = "passwordkey";
+var keypass = "WingsMaker";
 document.getElementById("result").innerHTML = keypass ;
 
 function reset() {
@@ -47,7 +47,11 @@ function definekey() {
 		keypass = keypass.replace("</b>","<b>").split("<b>")[1];
 	}
 	var txt = prompt("Enter key pass code:",keypass);
-	if (txt != "") {
+	if (txt == null) txt = "";
+	if (txt == "") {
+		keypass = "WingsMaker";
+		document.getElementById("result").innerHTML = "<b>WingsMaker</b>";
+	} else {
 		keypass = txt;
 		document.getElementById("result").innerHTML = "<b>" + txt + "</b>";
 	}
@@ -56,20 +60,20 @@ function definekey() {
 function encryption() {
 	msg = document.getElementById('msg').value;
 	if (msg=="") {
-		alert("There is nothing to encrypt.");
-		return;
-	}
-	if (typeof keypass == 'undefined') {
-		keypass = "";
-	}
-	if (keypass=="") {
-		keypass = document.getElementById("result").innerHTML;
-		keypass = keypass.replace("</b>","<b>").split("<b>")[1];
-	}
-	if (keypass=="") {
-		alert("Please load the passphrase file!");
-		return;
-	}
+	alert("There is nothing to encrypt.");
+return;
+}
+if (typeof keypass == 'undefined') {
+	keypass = "";
+}
+if (keypass=="") {
+	keypass = document.getElementById("result").innerHTML;
+	keypass = keypass.replace("</b>","<b>").split("<b>")[1];
+}
+if (keypass=="") {
+	alert("Please load the passphrase file!");
+return;
+}
 	codedString =  CryptoJS.Rabbit.encrypt(msg, keypass);
 	document.getElementById("msg").value = codedString;
 }
