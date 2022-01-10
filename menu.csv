@@ -15,8 +15,7 @@ Apps,Fake Meeting,https://wingsmaker.github.io/Github/fake_meeting.html
 Apps,Webcam,https://wingsmaker.github.io/Github/webcam.html
 Apps,Skype Chat,https://wingsmaker.github.io/Github/skype.html
 RPA,UiPath,https://github.com/WingsMaker/UiPath
-RPA,rparun,https://github.com/WingsMaker/rparun
-RPA,winkey,https://github.com/WingsMaker/WinKey
+RPA,WinKeys,https://github.com/WingsMaker/WinKeys
 Documentations,FHIR HAPI,https://github.com/WingsMaker/hapi-fhir
 Documentations,HAPI Endpoint API,http://hapi.fhir.org/baseR4/swagger-ui/
 Documentations,Infobase,https://wingsmaker.github.io/Infobase/index.html
