@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style>
+#hdr{
+	margin: 15px auto;
+	background:white;
+	text-align: center;
+	width: 750px;
+}  
+#data-table, #data-table th, #data-table td { border: 1px solid black }
+th {
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid black;
+}
+td {
+  width: 150px;
+  white-space: nowrap;
+  text-align: left;
+  vertical-align: top;
+  padding: 10px;
+  border: 1px solid black;
+}
+</style>
+<title>CSV Viewer</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+</head>
+<body> 
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>CSV Viewer</h1>
+<br/>
+<div id="hdr"></div>
+<br />
+<div id="aoa_table"></div>
+<br />
+<br />
+</body>
+
+<script>
+var msg = "";
+var lines = "";
+var headers = "";
+var nn = 0;
+var jj = 0;
+var table_html = "<table><tr>";
+var aoa = [];
+let table = document.getElementById('aoa_table');
+
+fetch("https://wingsmaker.github.io/Github/menu.csv")
+.then( r => r.text() ).then( t => processData(t) );
+
+
+function processData(csv) {
+	var msg = "";
+	var aoa = [];
+	let table = document.getElementById('aoa_table');
+	var lines = csv.split("\n");
+	var cnt = lines.length;
+	var headers = lines[0].split(",");
+	var nn = headers.length;
+	var jj = 0;
+	var txt = "";
+	var table_html = "<table class='table'><tr><th scope='col'>top menu</th><th scope='col'>vertical menu</th><th scope='col'>menu item</th></tr>";	
+	for( ii=0; ii < cnt; ii++ ) {
+		linedata = lines[ii].split(",");
+		kk = linedata.length;
+		if ( linedata.includes("Github") ) {
+			table_html = table_html + "<tr class='warning'>";
+		} else if ( linedata.includes("RPA") ) {
+			table_html = table_html + "<tr class='danger'>";
+		} else if ( linedata.includes("Documentations") ) {
+			table_html = table_html + "<tr class='success'>";
+		} else {
+			table_html = table_html + "<tr class='info'>";
+		}
+		rec = [];
+		mm = 0;
+		for( jj=0; jj < kk; jj++ ) {					
+			txt = linedata[jj];
+			if (txt[0]=='"') {
+				if (txt.slice(-1) != '"' ) {
+					jj = jj + 1;
+					for(; linedata[jj].slice(-1) != '"' ; jj++ ) {
+						txt = txt + "," + linedata[jj];
+					}
+					txt = txt + "," + linedata[jj];
+				}
+				txt = replace_all(txt,'"');
+			}
+			table_html = table_html + '<td>' + txt + '</td>';
+			rec.push( txt );
+			mm = mm + 1;
+		}
+		kk = rec.length;
+		table_html = table_html + "</tr>";
+		aoa.push( rec );
+	}
+	table_html = table_html + "</table>";
+	document.getElementById("aoa_table").innerHTML = table_html;
+}
+
+
+function replace_all(txt, sep) {
+	return txt.split(sep).join('');
+}
+</script>
+
+</html>
