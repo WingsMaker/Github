@@ -17,7 +17,6 @@ Apps,CSV Viewer,https://wingsmaker.github.io/Github/csv_viewer.html
 Apps,Skype Chat,https://wingsmaker.github.io/Github/skype.html
 RPA,UiPath,https://github.com/WingsMaker/UiPath
 RPA,WinKeys,https://github.com/WingsMaker/WinKeys
-RPA,Macro Recorder,https://github.com/WingsMaker/MacroRecorder
 Documentations,FHIR HAPI,https://github.com/WingsMaker/hapi-fhir
 Documentations,HAPI Endpoint API,http://hapi.fhir.org/baseR4/swagger-ui/
 Documentations,Infobase,https://wingsmaker.github.io/Infobase/index.html
@@ -31,3 +30,4 @@ Github,Resume Ranking,https://github.com/WingsMaker/ResumeRanking
 Github,Telepot for telegram,https://github.com/WingsMaker/telepot
 Github,Text Encryptor,https://github.com/WingsMaker/text_encryptor
 Github,HDB Sales,https://wingsmaker.github.io/Github/srx_info.html
+Github,Macro Recorder,https://github.com/WingsMaker/MacroRecorder
