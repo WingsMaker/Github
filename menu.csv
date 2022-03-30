@@ -1,8 +1,3 @@
-Apps,Ascii Webcam,https://wingsmaker.github.io/ascii_cam/
-Apps,Face Mask,https://wingsmaker.github.io/Github/FaceMask.html
-Apps,Image Classifier(NeuralNetwork),https://wingsmaker.github.io/Github/ImageClassAB.html
-Apps,Image Classifier(KNN),https://wingsmaker.github.io/Github/ImageClassKNN.html
-Apps,Q and A demo,https://wingsmaker.github.io/Github/qna_demo.html
 Apps,QR Code Generator,https://wingsmaker.github.io/Github/qrgen.html
 Apps,QR Code Import,https://wingsmaker.github.io/Github/qr_import.html
 Apps,QR Code Scan,https://wingsmaker.github.io/Github/qrscan.html
@@ -10,6 +5,12 @@ Apps,Screen Recording,https://wingsmaker.github.io/Github/screen_record.html
 Apps,Text Encryption,https://wingsmaker.github.io/Github/crypto.html
 Apps,Menu Editor,https://wingsmaker.github.io/Github/menu_editor.html
 Apps,CSV Viewer,https://wingsmaker.github.io/Github/csv_viewer.html
+Apps,Menu Generator,https://wingsmaker.github.io/Github/menu_generator.html
+Apps,Q and A demo,https://wingsmaker.github.io/Github/qna_demo.html
+Image,Ascii Webcam,https://wingsmaker.github.io/ascii_cam/
+Image,Face Mask,https://wingsmaker.github.io/Github/FaceMask.html
+Image,Image Classifier(NeuralNetwork),https://wingsmaker.github.io/Github/ImageClassAB.html
+Image,Image Classifier(KNN),https://wingsmaker.github.io/Github/ImageClassKNN.html
 RPA,UiPath,https://github.com/WingsMaker/UiPath
 RPA,WinKeys,https://github.com/WingsMaker/WinKeys
 Documentations,FHIR HAPI,https://github.com/WingsMaker/hapi-fhir
