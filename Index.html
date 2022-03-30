@@ -34,5 +34,7 @@
 </div>
 <hr>
 </body>
-
+<script>
+fetch("https://wingsmaker.github.io/Github/menu.csv").then( r => r.text() ).then( t => processData(t) );
+</script>
 </html>

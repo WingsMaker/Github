@@ -1,6 +1,5 @@
 menu_type = 1; // 0 for horizontal , 1 for vertical
-fetch("https://wingsmaker.github.io/Github/menu.csv").then( r => r.text() ).then( t => processData(t) );
-
+//fetch("https://wingsmaker.github.io/Github/menu.csv").then( r => r.text() ).then( t => processData(t) );
 function processData(csv) {
 	var menu_txt = '<div class="navbar" id="myNavbar">';
 	var menu_grp = '';
