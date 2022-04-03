@@ -33,8 +33,20 @@
 	</form>
 </div>
 <hr>
+<input type="button" onClick="skype_menu()" value="add skype menu"/>
 </body>
+
 <script>
 fetch("https://wingsmaker.github.io/Github/menu.csv").then( r => r.text() ).then( t => processData(t) );
+
+function skype_menu() {
+	var skype_menu = '<a onclick="skypeShareKeyDownHandler(event)" class="skype-share">Skype</a></div>';
+	var menu_txt = '';
+	menu_text = document.getElementById("menu").innerHTML;
+	menu_text = menu_text.substring(0, menu_text.length-6);
+	menu_text = menu_text + skype_menu;
+	document.getElementById("menu").innerHTML = menu_text;	
+}
+
 </script>
 </html>
