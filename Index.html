@@ -1,52 +1,37 @@
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-<title>Welcome to WingsMaker Github</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta charset="utf-8" />
-<meta name="mobile-web-app-capable" content="yes">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<link rel="stylesheet" href="https://wingsmaker.github.io/Github/menu_style.css">
-<link rel="stylesheet" href="https://wingsmaker.github.io/Github/search_button.css">
-<script type="text/javascript" src="https://wingsmaker.github.io/Github/menu.js"></script>
-<script type="text/javascript" src="https://wingsmaker.github.io/Github/skype.js"></script>
-
-<base target="_top" />
-</head>
-
-<body>
-
-<div class="container">
-<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
-<h1>My life long learning journey in coding.</h1>
-</div>
-<div id="menu"></div>  
-<hr>
-</header>
-
-<div class="mainlogo">
-	<form class="form">
-	<input type="text" id="searchbar" placeholder="Text Search or Type URL" onkeypress='do_searchbar(event)'>
-	<input type="button" value="Google" id="google_button" onclick="do_search('g')">
-	<input type="button" value="Bing" id="bing_button" onclick="do_search('b')">
-	<input type="button" value="HealthHub" id="healthhub_button" onclick="do_search('h')">
-	</form>
-</div>
-<hr>
-<input type="button" onClick="skype_menu()" value="add skype menu"/>
-</body>
-
-<script>
-fetch("https://wingsmaker.github.io/Github/menu.csv").then( r => r.text() ).then( t => processData(t) );
-
-function skype_menu() {
-	var skype_menu = '<a onclick="skypeShareKeyDownHandler(event)" class="skype-share">Skype</a></div>';
-	var menu_txt = '';
-	menu_text = document.getElementById("menu").innerHTML;
-	menu_text = menu_text.substring(0, menu_text.length-6);
-	menu_text = menu_text + skype_menu;
-	document.getElementById("menu").innerHTML = menu_text;	
-}
-
-</script>
-</html>
+<html><head><title>WingsMaker Github Menu</title><link rel="stylesheet" href="https://wingsmaker.github.io/Github/menu_style.css"></head><body><div>
+<img src="https://www.gstatic.com/script/apps_script_1x_24dp.png"/><div id="title"><h3>WingsMaker Github Menu</h3></div><br><div id="menu"><div class="navbar" id="myNavbar">
+<div class="dropdown"><button class="dropbtn">Apps<i class="fa fa-caret-down"></i></button><div class="dropdown-content">
+<a href="https://wingsmaker.github.io/Github/qrgen.html">QR Code Generator</a>
+<a href="https://wingsmaker.github.io/Github/qr_import.html">QR Code Import</a>
+<a href="https://wingsmaker.github.io/Github/qrscan.html">QR Code Scan</a>
+<a href="https://wingsmaker.github.io/Github/screen_record.html">Screen Recording</a>
+<a href="https://wingsmaker.github.io/Github/crypto.html">Text Encryption</a>
+<a href="https://wingsmaker.github.io/Github/menu_editor.html">Menu Editor</a>
+<a href="https://wingsmaker.github.io/Github/csv_viewer.html">CSV Viewer</a>
+<a href="https://wingsmaker.github.io/Github/menu_generator.html">Menu Generator</a>
+<a href="https://wingsmaker.github.io/Github/qna_demo.html">Q and A demo</a></div></div>
+<div class="dropdown"><button class="dropbtn">Image<i class="fa fa-caret-down"></i></button><div class="dropdown-content">
+<a href="https://wingsmaker.github.io/ascii_cam/">Ascii Webcam</a>
+<a href="https://wingsmaker.github.io/Github/FaceMask.html">Face Mask</a>
+<a href="https://wingsmaker.github.io/Github/ImageClassAB.html">Image Classifier(NeuralNetwork)</a>
+<a href="https://wingsmaker.github.io/Github/ImageClassKNN.html">Image Classifier(KNN)</a></div></div>
+<div class="dropdown"><button class="dropbtn">RPA<i class="fa fa-caret-down"></i></button><div class="dropdown-content">
+<a href="https://github.com/WingsMaker/UiPath">UiPath</a>
+<a href="https://github.com/WingsMaker/WinKeys">WinKeys</a></div></div>
+<div class="dropdown"><button class="dropbtn">Documentation<i class="fa fa-caret-down"></i></button><div class="dropdown-content">
+<a href="https://github.com/WingsMaker/hapi-fhir">FHIR HAPI</a>
+<a href="http://hapi.fhir.org/baseR4/swagger-ui/">HAPI Endpoint API</a>
+<a href="https://wingsmaker.github.io/Infobase/index.html">Infobase</a>
+<a href="https://telepot.readthedocs.io/en/latest/">Telepot - The Telegram API</a>
+<a href="https://j2team.github.io/awesome-AutoIt">Awesome AutoIt</a></div></div>
+<div class="dropdown"><button class="dropbtn">Github<i class="fa fa-caret-down"></i></button><div class="dropdown-content">
+<a href="https://github.com/WingsMaker/ascii_cam">Ascii Camera</a>
+<a href="https://github.com/WingsMaker/crypto">Cryptosheet</a>
+<a href="https://github.com/WingsMaker/qr_gen">QR Code Generator</a>
+<a href="https://github.com/WingsMaker/qr_reader">QR Reader</a>
+<a href="https://github.com/WingsMaker/ResumeRanking">Resume Ranking</a>
+<a href="https://github.com/WingsMaker/telepot">Telepot for telegram</a>
+<a href="https://github.com/WingsMaker/text_encryptor">Text Encryptor</a>
+<a href="https://wingsmaker.github.io/Github/srx_info.html">HDB Sales</a>
+<a href="https://github.com/WingsMaker/MacroRecorder">Macro Recorder</a></div></div>
+</div></div><img src="https://cdn.wallpapersafari.com/80/74/o9i8FL.jpg"><br></body></html>
