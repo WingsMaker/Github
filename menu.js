@@ -41,7 +41,8 @@ function processData(csv) {
 	if (menu_item == 0) {
 		menu_txt += '</div></div>';
 	}
-	menu_txt += "<a onclick='skypeShareKeyDownHandler(event)' class='skype-share'>Skype</a></div>";
+	// menu_txt += "<a onclick='skypeShareKeyDownHandler(event)' class='skype-share'>Skype</a></div>";
+	menu_txt += "</div>";
 	document.getElementById("menu").innerHTML = menu_txt;
 }
 
