@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="web-app-capable" content="yes">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://wingsmaker.github.io/Github/menu_style.css">
+<script type="text/javascript" src="https://wingsmaker.github.io/Github/menu.js"></script>
+<base href="." target="_top">
+<title>Menu Generator</title>
+</head>
+<body>
+<img id="logo" src=""/>
+<div id="title"><h3>Menu Editor by KH</h3></div>
+<hr>
+<p>Please upload the menu.csv :</p>
+<a href="https://wingsmaker.github.io/Github/sample_menu.csv">Sample menu.csv</a>
+<input type="file" id="csvfile"><br>
+<br>
+<input type="button" onclick="edit_title()" value="Edit Title">
+<input type="button" onclick="edit_wallpaper()" value="Edit Wallpaper">
+<input type="button" onclick="edit_logo()" value="Edit Logo">
+<input type="button" onclick="export_html()" value="Export HTML">
+<br>
+<div id="menu"></div>
+<br>
+</div>
+<img id="wallpaper" src="">
+<hr>
+
+<script>
+var	logo = "https://wingsmaker.github.io/Github/limkopi.jpg";
+var css = "https://wingsmaker.github.io/Github/menu_style.css";
+var homepage = "https://wingsmaker.github.io/Github/wallpaper.jpg";
+document.getElementById("logo").src = logo;
+document.getElementById("wallpaper").src = homepage;
+
+document.querySelector("#csvfile").addEventListener('change', function() { 
+      var fr=new FileReader();
+      fr.onload=function(){
+         processData(fr.result);
+      }               
+      fr.readAsText(this.files[0]);
+}) 
+
+function edit_title() {
+	var txt = document.getElementById("title").innerHTML;
+	txt = txt.replace('<h3>','').replace('</h3>','')
+	txt = prompt("Enter title name:",txt);
+	if (txt != "") {
+		keypass = txt;
+		document.getElementById("title").innerHTML = "<h3>" + txt + "</h3>";
+	}
+}
+
+function edit_wallpaper() {
+	var txt = prompt("Enter URL of the wallpaper:",homepage);
+	document.getElementById("wallpaper").src = txt;
+}
+
+function edit_logo() {
+	var txt = prompt("Enter URL of the logo:",logo);
+	document.getElementById("logo").src = txt;
+	logo = txt;
+}
+
+function export_html() {
+	var txt = document.getElementById("title").innerHTML;
+	var csv_data = "";
+	var body = "";
+	body = '<div><img src="' + logo + '"/><div id="title"><h3>';
+	txt = txt.replace('<h3>','').replace('</h3>','');
+	body = body + txt + '</h3></div><br><div id="menu">';
+	body = body + document.getElementById("menu").innerHTML;
+	csv_data = '<html><head><title>' + txt + '</title><link rel="stylesheet" href="' + css + '"></head><body>';
+	csv_data = csv_data + body + '</div><img src="' + homepage + '"><br></body></html>';
+	var outputf = "exported_menu.html"
+ 	CSVFile = new Blob([csv_data], {
+        	type: "text/csv"
+	}); 
+	var temp_link = document.createElement('a');
+    temp_link.download = outputf;
+    var url = window.URL.createObjectURL(CSVFile);
+    temp_link.href = url; 
+    temp_link.style.display = "none";
+	temp_link.innerHTML = "Click here to download"
+    document.body.appendChild(temp_link);
+    temp_link.click();    
+	document.body.removeChild(temp_link);
+	txt = "this page has been exported as " + outputf;
+	alert(txt);
+}
+</script>
+</body></html>
