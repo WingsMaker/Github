@@ -9,6 +9,7 @@
 <title>Menu Generator</title>
 </head>
 <body>
+<img id="logo" src="https://www.gstatic.com/script/apps_script_1x_24dp.png"/>
 <div id="title"><h3>Menu Editor by KH</h3></div>
 <hr>
 <p>Please upload the menu.csv :</p>
@@ -16,15 +17,21 @@
 <input type="file" id="csvfile"><br>
 <br>
 <input type="button" onclick="edit_title()" value="Edit Title">
+<input type="button" onclick="edit_wallpaper()" value="Edit Wallpaper">
+<input type="button" onclick="edit_logo()" value="Edit Logo">
 <input type="button" onclick="export_html()" value="Export HTML">
 <br>
 <div id="menu"></div>
 <br>
 </div>
-<img src="https://wingsmaker.github.io/Github/menu_generator.jpg">
+<img id="wallpaper" src="https://wingsmaker.github.io/Github/menu_generator.jpg">
 <hr>
 
 <script>
+var	logo = "https://wingsmaker.github.io/Github/limkopi.jpg";
+var css = "https://wingsmaker.github.io/Github/menu_style.css";
+var homepage = "https://wingsmaker.github.io/Github/wallpaper.jpg";
+
 document.querySelector("#csvfile").addEventListener('change', function() { 
       var fr=new FileReader();
       fr.onload=function(){
@@ -43,11 +50,19 @@ function edit_title() {
 	}
 }
 
+function edit_wallpaper() {
+	var txt = prompt("Enter URL of the wallpaper:",homepage);
+	document.getElementById("wallpaper").src = txt;
+}
+
+function edit_logo() {
+	var txt = prompt("Enter URL of the logo:",logo);
+	document.getElementById("logo").src = txt;
+	logo = txt;
+}
+
 function export_html() {
 	var txt = document.getElementById("title").innerHTML;
-	var	logo = "https://www.gstatic.com/script/apps_script_1x_24dp.png";
-	var css = "https://wingsmaker.github.io/Github/menu_style.css";
-	var homepage = "https://cdn.wallpapersafari.com/80/74/o9i8FL.jpg";
 	var csv_data = "";
 	var body = "";
 	body = '<div><img src="' + logo + '"/><div id="title"><h3>';
