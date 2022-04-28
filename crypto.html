@@ -7,7 +7,7 @@
 <Title> Text Encryption App</Title>
 <head>
 <style type="text/css">#qr-canvas{ display:none; }</style>
-<script src="https://wingsmaker.github.io/Github/crypto.js"></script>
+<script src="https://wingsmaker.github.io/Github/aes.js"></script> 
 </head>
 <body>
 <div id="html">
@@ -33,6 +33,7 @@
 var codedString = "";
 var msg = "";
 var keypass = "WingsMaker";
+
 console.clear();
 document.getElementById("result").innerHTML = keypass ;
 const queryString = window.location.search;
@@ -93,7 +94,8 @@ function encryption() {
 		alert("Please load the passphrase file!");
 		return;
 	}
-	codedString =  CryptoJS.Rabbit.encrypt(msg, keypass);
+	var encrypted = CryptoJS.AES.encrypt(msg, keypass);
+	codedString = encrypted.toString();
 	document.getElementById("msg").value = codedString;
 }
 
@@ -114,7 +116,7 @@ function decryption() {
 		alert("Please load the passphrase file!");
 	return;
 	}
-	codedString =  CryptoJS.Rabbit.decrypt(msg, keypass).toString(CryptoJS.enc.Utf8);
+	codedString =  CryptoJS.AES.decrypt(msg, keypass).toString(CryptoJS.enc.Utf8);
 	document.getElementById("msg").value = codedString;
 }
 </script>
