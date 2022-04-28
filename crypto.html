@@ -46,11 +46,12 @@ if (keystring != null) {
 	document.getElementById("result").innerHTML = keystring;
 }
 if (dectxt != null) {
-	msg =  CryptoJS.Rabbit.decrypt(dectxt, keypass).toString(CryptoJS.enc.Utf8);
+	msg =  CryptoJS.AES.decrypt(dectxt, keypass).toString(CryptoJS.enc.Utf8);
 	document.getElementById("html").innerHTML = msg;
 }
 if (enctxt != null) {
-	msg =  CryptoJS.Rabbit.encrypt(enctxt, keypass);
+	var encrypted = CryptoJS.AES.encrypt(enctxt, keypass);
+	msg = encrypted.toString();
 	document.getElementById("html").innerHTML = msg;
 }
 
