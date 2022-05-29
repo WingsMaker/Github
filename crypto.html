@@ -24,7 +24,7 @@
 <input type="button" onClick="encryption()" value="Encrypt"/>
 <input type="button" onClick="decryption()" value="Decrypt"/>
 <input type="button" onClick="definekey()" value="Keypass"/>
-<input type="button" onClick="url_encode()" value="Encode URL"/>
+<input type="button" onClick="url_encode()" value="EncodeURI"/>
 <br />
 </form>
 <div>
@@ -140,12 +140,13 @@ function url_encode() {
 		alert("Please define the passphrase key");
 		return;
 	}
-	if ( msg.substring(0,3) != "U2F" ) {
-		document.write("text must be encryted!");
-		return;
-	}
-	msg = window.location.href + "?key=" + keypass + "&dec=" + encodeURIComponent(msg);
-	document.write( msg );
+	//if ( msg.substring(0,3) != "U2F" ) {
+		//document.write("text must be encryted!");
+		//return;
+	//}
+	//msg = window.location.href + "?key=" + keypass + "&dec=" + encodeURIComponent(msg);
+	//document.write( msg );
+	document.getElementById('msg').value = encodeURIComponent(msg);
 }
 </script>
 
