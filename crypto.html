@@ -24,6 +24,7 @@
 <input type="button" onClick="encryption()" value="Encrypt"/>
 <input type="button" onClick="decryption()" value="Decrypt"/>
 <input type="button" onClick="definekey()" value="Keypass"/>
+<input type="button" onClick="url_encode()" value="Encode URL"/>
 <br />
 </form>
 <div>
@@ -120,6 +121,31 @@ function decryption() {
 	}
 	codedString =  CryptoJS.AES.decrypt(msg, keypass).toString(CryptoJS.enc.Utf8);
 	document.getElementById("msg").value = codedString;
+}
+
+function url_encode() {
+	msg = document.getElementById('msg').value;
+	if (msg=="") {
+		document.write("There is nothing to decrypt.");
+		return;
+	}		  
+	if (typeof keypass == 'undefined') {
+		keypass = "";
+	}
+	if (keypass=="") {
+		keypass = document.getElementById("result").innerHTML;
+		keypass = keypass.replace("</b>","<b>").split("<b>")[1];
+	}
+	if (keypass==null) {
+		alert("Please define the passphrase key");
+		return;
+	}
+	if ( msg.substring(0,3) != "U2F" ) {
+		document.write("text must be encryted!");
+		return;
+	}
+	msg = window.location.href + "?key=" + keypass + "&dec=" + encodeURIComponent(msg);
+	document.write( msg );
 }
 </script>
 
