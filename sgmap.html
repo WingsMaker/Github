@@ -1,4 +1,4 @@
-<html><head><title>WingsMaker SG Map</title><link rel="stylesheet" href="https://wingsmaker.github.io/Github/menu_style.css"></head>
+⁷<html><head><title>WingsMaker SG Map</title><link rel="stylesheet" href="https://wingsmaker.github.io/Github/menu_style.css"></head>
 <script type="text/javascript" src="https://wingsmaker.github.io/Github/sgmap.js"></script> 
 <script type="text/javascript">
     // https://www.streetdirectory.com/api/developer/docs/
@@ -7,7 +7,7 @@
 	var latitude  = 103.941612;
 	var longitude = 1.321264;
 	// file:///C:/Users/LKH/Documents/Github/sgmap.html?lat=102.92&long=1.12
-	// var latlng = new GeoPoint(103.941612, 1.321264); // https://www.gps-coordinates.net/	
+	var latlng = new GeoPoint(103.941612, 1.321264); // https://www.gps-coordinates.net/	
 	//const lat = urlParams.get('lat');
 	//const lngt = urlParams.get('long');
 	//if (lat != null) {
@@ -15,16 +15,17 @@
 	//}
 	//if (long != null) {
 	//	longitude = lngt;
-	//}	
-	var latlng = new GeoPoint(latitude,longitude);
-	
+	//}
+	// 
+
     function initialize() {	
-		getLocation();		
         var myOptions = {
             zoom: 12,
             center: latlng,
             showCopyright: false
         };
+        getLocation();
+        // latlng = new GeoPoint(latitude,longitude);
         var map = new SD.genmap.Map(document.getElementById("map_canvas"), myOptions);
     }
 	
