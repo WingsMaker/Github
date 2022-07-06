@@ -1,42 +1,51 @@
-<html>
-<head>
+<html><head><title>WingsMaker SG Map</title><link rel="stylesheet" href="https://wingsmaker.github.io/Github/menu_style.css"></head>
 <script type="text/javascript" src="https://wingsmaker.github.io/Github/sgmap.js"></script> 
 <script type="text/javascript">
     // https://www.streetdirectory.com/api/developer/docs/
+	// https://www.streetdirectory.com/api/widgets/
 	// http://www.streetdirectory.com/js/map_api/m.php
-	var latitude  = 0;
-	var longitude = 0;
-	var latlng = new GeoPoint(103.941612, 1.321264); // https://www.gps-coordinates.net/	
+	var latitude  = 103.941612;
+	var longitude = 1.321264;
+	// file:///C:/Users/LKH/Documents/Github/sgmap.html?lat=102.92&long=1.12
+	//var latlng = new GeoPoint(103.941612, 1.321264); // https://www.gps-coordinates.net/	
+	//const lat = urlParams.get('lat');
+	//const lngt = urlParams.get('long');
+	//if (lat != null) {
+	//	latitude = lat;
+	//}
+	//if (long != null) {
+	//	longitude = lngt;
+	//}	
+	var latlng = new GeoPoint(latitude,longitude);
 	
-    function initialize() {
-		getLocation()
+    function initialize() {	
+		getLocation();		
         var myOptions = {
             zoom: 13,
             center: latlng,
             showCopyright: false
         };
-        var map = new SD.genmap.Map(
-            document.getElementById("map_canvas"), 
-            myOptions
-        );
+        var map = new SD.genmap.Map(document.getElementById("map_canvas"), myOptions);
     }
 	
 	function getLocation() {
 	  if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(showPosition);
-	  } else {
-		x.innerHTML = "Geolocation is not supported by this browser.";
 	  }
 	}
 
 	function showPosition(position) {
-	  latlng = new GeoPoint(position.coords.latitude, position.coords.longitude);
+	  latitude = position.coords.latitude;
+	  longitude = position.coords.longitude;
+	  latlng = new GeoPoint(latitude,longitude);
 	}
 	
 </script>
 </head>
 
 <body onload="initialize()">
+<div>
+<img src="https://www.gstatic.com/script/apps_script_1x_24dp.png"/><div id="title"><h3>WingsMaker SG Map</h3></div><br>
 <div id="map_canvas" style="width:100%; height:100%"></div>
 </body>
 </html>
