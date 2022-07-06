@@ -4,8 +4,12 @@
 <script type="text/javascript">
     // https://www.streetdirectory.com/api/developer/docs/
 	// http://www.streetdirectory.com/js/map_api/m.php
+	var latitude  = 0;
+	var longitude = 0;
+	var latlng = new GeoPoint(103.941612, 1.321264); // https://www.gps-coordinates.net/	
+	
     function initialize() {
-        var latlng = new GeoPoint(103.941612, 1.321264); // https://www.gps-coordinates.net/
+		getLocation()
         var myOptions = {
             zoom: 13,
             center: latlng,
@@ -16,6 +20,19 @@
             myOptions
         );
     }
+	
+	function getLocation() {
+	  if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(showPosition);
+	  } else {
+		x.innerHTML = "Geolocation is not supported by this browser.";
+	  }
+	}
+
+	function showPosition(position) {
+	  latlng = new GeoPoint(position.coords.latitude, position.coords.longitude);
+	}
+	
 </script>
 </head>
 
