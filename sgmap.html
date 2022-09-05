@@ -1,16 +1,37 @@
 <html><head><title>WingsMaker SG Map</title><link rel="stylesheet" href="https://wingsmaker.github.io/Github/menu_style.css"></head>
 <script type="text/javascript" src="https://wingsmaker.github.io/Github/sgmap.js"></script> 
 </head>
-<body onload="initialize()">
+<body>
 <div>
 <img src="https://www.gstatic.com/script/apps_script_1x_24dp.png"/>
 <div id="title"><h3>WingsMaker SG Map</h3></div><br>
+<form>
+<input type="text" id="latitude" value = "1.321264">
+<input type="text" id="longitude" value = "103.941612">
+<input type="button" onClick="GeoPos()" value="Current Location"/>
+<input type="button" onClick="showmap()" value="Display Map"/>
+</form>
 <div id="map_canvas" style="width:100%; height:100%"></div>
 </body>
-<script type="text/javascript">
-    function initialize() {	
-		var latitude  = 1.321264;
-		var longitude = 103.941612;
+<script>
+	function GeoPos() {
+		if (navigator.geolocation) {
+			navigator.geolocation.watchPosition(showPosition);
+		} else { 
+			var x  = "Geolocation is not supported by this browser.";
+			alert(x);
+		}
+	}
+
+	function showPosition(position) {
+		var x ="Latitude: " + position.coords.latitude + 	"<br>Longitude: " + position.coords.longitude;
+		document.getElementById("latitude").value = position.coords.latitude;
+		document.getElementById("longitude").value = position.coords.longitude;
+	}
+
+	function showmap() {
+		var latitude = parseFloat(document.getElementById("latitude").value);
+		var longitude = parseFloat(document.getElementById("longitude").value);
 		var latlng = new GeoPoint(longitude,latitude);
         var myOptions = {
             zoom: 12,
@@ -18,6 +39,6 @@
             showCopyright: false
         };
         var map = new SD.genmap.Map(document.getElementById("map_canvas"), myOptions);
-    }
+	}
 </script>
 </html>
