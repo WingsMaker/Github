@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<script src="https://wingsmaker.github.io/Github/charts.js"></script>
+<body>
+
+<table>
+<tr><td><canvas id="chart1" style="width:600px"></canvas></td>
+<td><canvas id="chart2" style="width:600px"></canvas></td></tr>
+
+<tr><td><canvas id="chart3" style="width:600px"></canvas></td>
+<td><canvas id="chart4" style="width:600px"></canvas></td></tr>
+
+<tr><td><canvas id="chart5" style="width:600px"></canvas></td>
+<td><canvas id="chart6" style="width:600px"></canvas></td></tr>
+
+</table>
+
+<script>
+var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+var yValues = [55, 49, 44, 24, 15];
+var zValues = ["2000", "2005", "2010", "2015", "2020"];
+var y1Values = [64, 52, 34, 44, 25];
+var barColors = [
+  "#b91d47",
+  "#00aba9",
+  "#2b5797",
+  "#e8c3b9",
+  "#1e7145"
+];
+var x2Values = [50,60,70,80,90,100,110,120,130,140,150];
+var y2Values = [7,8,8,9,9,9,10,11,14,14,15];
+
+new Chart("chart1", {
+  type: "doughnut",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "Donut Chart"
+    }
+  }
+});
+
+new Chart("chart2", {
+  type: "horizontalBar",
+  data: {
+  labels: xValues,
+  datasets: [{
+    backgroundColor: barColors,
+    data: yValues
+  }]
+},
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Horizontal Bar Chart"
+    },
+    scales: {
+      xAxes: [{ticks: {min: 0, max:60}}]
+    }
+  }
+});
+
+new Chart("chart3", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "Pie Chart"
+    }
+  }
+});
+
+new Chart("chart4", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Vertical Bar Chart"
+    },
+    scales: {
+      yAxes: [{ticks: {min: 0, max:60}}]
+    }	
+  }
+});
+
+new Chart("chart5", {
+  type: "line",
+  data: {
+    labels: x2Values,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: y2Values
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Line Graph"
+    },
+    scales: {
+      yAxes: [{ticks: {min: 6, max:16}}],
+    }
+  }
+});
+
+new Chart("chart6", {
+    type: 'bar',
+    data: {
+      labels: zValues,
+      datasets: [
+        {
+          label: "Team A",
+          backgroundColor: "#3e95cd",
+          data: yValues
+        }, {
+          label: "Team B",
+          backgroundColor: "orange",
+          data: y1Values
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Population growth (millions)'
+      },
+	  scales: {
+		yAxes: [{ticks: {min: 0, max:60}}]
+	  }		  
+    }
+});
+</script>
+
+</body>
+</html>
