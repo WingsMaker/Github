@@ -12,8 +12,11 @@
 <body>
 <div id="html">
 <h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
-<h1>Text Encryption</h1>
+<h1>AES-256-CBC online encryption tool</h1>
 <br>
+<a href="https://encode-decode.com">More tools</a>
+<br>
+<input type="file" id="fileinput" />
 <div id="header"></div>	
 <form>
 <textarea id='msg' name="Message" rows="12" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
@@ -34,6 +37,7 @@
 var codedString = "";
 var msg = "";
 var keypass = "WingsMaker";
+//var fname = "project_data.csv";
 
 console.clear();
 document.getElementById("result").innerHTML = keypass ;
@@ -55,6 +59,7 @@ if (enctxt != null) {
 	msg = encrypted.toString();
 	document.getElementById("html").innerHTML = msg;
 }
+document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
 
 function reset() {
 	document.getElementById("msg").innerHTML = "";
@@ -129,6 +134,21 @@ function url_encode() {
 		document.getElementById('msg').value = encodeURIComponent(msg);
 	}
 }
+
+function readSingleFile(evt) {
+	var f = evt.target.files[0]; 
+	if (f) {
+		var r = new FileReader();
+		r.onload = function(e) { 
+			document.getElementById('msg').value = e.target.result
+	  }
+		r.readAsText(f);
+	} else { 
+		alert("Failed to load file");
+	}
+}
+
+
 </script>
 
 </html>

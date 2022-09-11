@@ -1,7 +1,7 @@
-NHG,Completed,1
-NHG,Cancelled,2
-TTSH,In-Progress,3
-TTSH,Cancelled,1
-IMH,In-Progress,1
-KTPH,In-Progress,1
-KTPH,Pending,1
+SGP_01,Completed,1
+SGP_01,Cancelled,2
+SGP_03,In-Progress,3
+SGP_03,Cancelled,1
+SGP_02,In-Progress,1
+SGP_04,In-Progress,1
+SGP_04,Pending,1
