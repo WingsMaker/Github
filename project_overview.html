@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="https://wingsmaker.github.io/Github/charts.js"></script>
+
+<style>
+#data-table, #data-table th, #data-table td { border: 1px solid black }
+th {
+  width: 50px;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid black;
+  background-color: rgba(150, 212, 212, 0.8);
+}
+td {
+  width: 50px;
+  white-space: nowrap;
+  text-align: left;
+  vertical-align: top;
+  padding: 10px;
+  border: 1px solid black;
+}
+tr:nth-child(even) {
+  background-color: rgba(150, 212, 212, 0.2);
+}
+</style>
+<title>Project Summary</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+</head>
+<body> 
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>Project Summary View</h1>
+<br/>
+<hr>
+<input type="file" id="fileinput" />
+<br>
+<table><tr><td><canvas id="chart1" style="width:600px"></canvas></td></tr></table>
+<hr>
+<div id="hdr"></div>
+<br />
+<div id="aoa_table"></div>
+<br />
+<br />
+</body>
+
+<script>
+var msg = "";
+var lines = "";
+var headers = "";
+var nn = 0;
+var jj = 0;
+var table_html = "<table><tr>";
+var aoa = [];
+var institutions = ["IMH", "KTPH", "NHG", "NHGP", "TTSH"];
+var institution_id = 0;
+var status_list = ['Completed','In-Progress','Pending','Cancelled'];
+var status_id = 0;
+var item_counts = new Array(institutions.length).fill(0).map(() => new Array(status_list.length).fill(0));
+var barColors = [
+  "#b91d47",
+  "#00aba9",
+  "#2b5797",
+  "#e8c3b9",
+  "#1e7145"
+];
+var csv = "";
+let table = document.getElementById('aoa_table');
+
+document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+
+fetch("https://wingsmaker.github.io/Github/project_data.csv")
+.then( r => r.text() ).then( t => processData(t) );
+
+function readSingleFile(evt) {
+	var f = evt.target.files[0]; 
+	if (f) {
+		var r = new FileReader();
+		r.onload = function(e) { 
+			csv = e.target.result;
+			processData(csv);
+	  }
+		r.readAsText(f);
+	} else { 
+		alert("Failed to load file");
+	}
+}
+
+function processData(csv) {
+	var msg = "";
+	var aoa = [];
+	let table = document.getElementById('aoa_table');
+	var lines = csv.split("\n");
+	var cnt = lines.length;
+	var headers = lines[0].split(",");
+	var nn = headers.length;
+	var jj = 0;
+	var txt = "";	
+	var table_html = "<table class='table' style='width:40%'><tr><th scope='col' style='width:20%'>Institution</th><th scope='col' style='width:10%'>Progress</th><th scope='col' style='width:10%'>Count</th></tr>";	
+
+	for( ii=0; ii < cnt; ii++ ) {
+		linedata = lines[ii].split(",");
+		kk = linedata.length;
+		if ( linedata.includes("Cancelled") ) {
+			table_html = table_html + "<tr class='warning'>";
+		} else if ( linedata.includes("Failed") ) {
+			table_html = table_html + "<tr class='danger'>";
+		} else if ( linedata.includes("Completed") ) {
+			table_html = table_html + "<tr class='success'>";
+		} else {
+			table_html = table_html + "<tr class='info'>";
+		}
+		rec = [];
+		mm = 0;
+		for( jj=0; jj < kk; jj++ ) {					
+			txt = linedata[jj];
+			if( jj == 0 ) {
+				if( institutions.includes(txt) ) {
+					institution_id = institutions.indexOf(txt);					
+				} else {
+					institution_id = -1;
+				}
+			}
+			if( jj == 1 ) {				
+				if( status_list.includes(txt) ) {
+					status_id = status_list.indexOf(txt);					
+				} else {
+					status_id = -1;
+				}
+			}
+			if( jj == 2 ) {
+				if( (institution_id >= 0) && (status_id >= 0)) {
+					item_counts[institution_id][status_id] = parseInt(txt);
+				}
+			}
+			if (txt.length > 0) {
+				table_html = table_html + '<td>' + txt + '</td>';
+				rec.push( txt );
+				mm = mm + 1;
+			}
+			mm = mm + 1;
+		}
+		kk = rec.length;
+		table_html = table_html + "</tr>";
+		aoa.push( rec );
+	}
+	table_html = table_html + "</table>";
+	document.getElementById("aoa_table").innerHTML = table_html;
+	
+	var inst_list = [];
+	for (jj = 0; jj < institutions.length; jj++) {
+		var item_list = [];
+		for (nn = 0; nn < status_list.length; nn++) {
+			item_list.push( item_counts[jj][nn] )
+		}
+		inst_list.push( item_list );
+	}
+	var inst_datasets = [];
+	for (jj = 0; jj < institutions.length; jj++) {
+		inst_datasets.push( { label: institutions[jj],backgroundColor: barColors[jj],data: inst_list[jj] } );
+	};
+	
+	new Chart("chart1", {
+		type: 'bar',
+		data: {
+		  labels: status_list,
+		  datasets: inst_datasets
+		},
+		options: {
+		  title: {
+			display: true,
+			text: 'Summary by project progress'
+		  },
+		  scales: {
+			yAxes: [{ticks: {min: 0, max:5}}]
+		  }		  
+		}
+	});
+}
+
+
+</script>
+
+</html>
