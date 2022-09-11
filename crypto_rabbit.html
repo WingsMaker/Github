@@ -7,15 +7,14 @@
 <Title> Text Encryption App</Title>
 <head>
 <style type="text/css">#qr-canvas{ display:none; }</style>
-<script src="https://wingsmaker.github.io/Github/aes.js"></script> 
+<script src="https://wingsmaker.github.io/Github/crypto.js"></script> 
 </head>
 <body>
 <div id="html">
 <h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
-<h1>AES-256-CBC online encryption tool</h1>
+<h1>Text Encryption Crypto-Rabbit</h1>
 <br>
 <a href="https://encode-decode.com">More tools</a>
-<br>
 <input type="file" id="fileinput" />
 <div id="header"></div>	
 <form>
@@ -27,7 +26,6 @@
 <input type="button" onClick="encryption()" value="Encrypt"/>
 <input type="button" onClick="decryption()" value="Decrypt"/>
 <input type="button" onClick="definekey()" value="Keypass"/>
-<input type="button" onClick="url_encode()" value="EncodeURI"/>
 <br />
 </form>
 <div>
@@ -50,12 +48,11 @@ if (keystring != null) {
 	document.getElementById("result").innerHTML = keystring;
 }
 if (dectxt != null) {
-	msg =  CryptoJS.AES.decrypt(dectxt, keypass).toString(CryptoJS.enc.Utf8);
+	msg =  CryptoJS.Rabbit.decrypt(dectxt, keypass).toString(CryptoJS.enc.Utf8);
 	document.getElementById("html").innerHTML = msg;
 }
 if (enctxt != null) {
-	var encrypted = CryptoJS.AES.encrypt(enctxt, keypass);
-	msg = encrypted.toString();
+	msg =  CryptoJS.Rabbit.encrypt(msg, keypass);
 	document.getElementById("html").innerHTML = msg;
 }
 document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
@@ -101,8 +98,7 @@ function encryption() {
 		alert("Please define the passphrase key");
 		return;
 	}
-	var encrypted = CryptoJS.AES.encrypt(msg, keypass);
-	codedString = encrypted.toString();
+	codedString =  CryptoJS.Rabbit.encrypt(msg, keypass);
 	document.getElementById("msg").value = codedString;
 }
 
@@ -123,17 +119,9 @@ function decryption() {
 		alert("Please define the passphrase key");
 		return;
 	}
-	codedString =  CryptoJS.AES.decrypt(msg, keypass).toString(CryptoJS.enc.Utf8);
+	codedString =  CryptoJS.Rabbit.decrypt(msg, keypass).toString(CryptoJS.enc.Utf8);
 	document.getElementById("msg").value = codedString;
 }
-
-function url_encode() {
-	msg = document.getElementById('msg').value;
-	if (msg != "") {
-		document.getElementById('msg').value = encodeURIComponent(msg);
-	}
-}
-
 function readSingleFile(evt) {
 	var f = evt.target.files[0]; 
 	if (f) {
