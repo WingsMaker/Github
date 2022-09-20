@@ -11,7 +11,7 @@ function stringtonumber(txt) {
 	return nn;
 }
 
-function processData( csv, grouphead, grouping, status_list, aoa, canvas_id, chart_title ) {
+function group_barchart( csv, grouphead, grouping, status_list, aoa, canvas_id, chart_title ) {
 	var lines = csv.split(";");
 	var cnt = lines.length;
 	var hh = 0;
