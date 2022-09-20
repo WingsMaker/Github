@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html><html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
-<title>Demo - RPA Projects</title>
+<title>Simple Vertical Bar Chart</title>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta charset='utf-8' />
 <meta name='web-app-capable' content='yes'><meta http-equiv='X-UA-Compatible' content='ie=edge'>
 <link rel='stylesheet' href='https://wingsmaker.github.io/Github/menu_style.css'>
@@ -12,6 +12,7 @@ th {
   text-align: left;
   font-weight: bold;
   border: 1px solid black;
+  background-color: rgba(150, 212, 212, 0.8);
 }
 td {
   width: 100px;
@@ -21,11 +22,14 @@ td {
   padding: 10px;
   border: 1px solid black;
 }
-
+tr:nth-child(even) {
+  background-color: rgba(150, 212, 212, 0.2);
+}
 </style>
 </head>
 <body><div><img src='https://www.gstatic.com/script/apps_script_1x_24dp.png'/>
-<div id='title'><h3>Dashboard Demo - RPA Projects</h3></div><hr>
+<div id='title'><h3>Simple Vertical Bar Chart</h3></div><hr>
+<input type="file" id="fileinput" />
 <br>
 <hr>
 <br>
@@ -44,10 +48,54 @@ td {
 </body>
 
 <script>
-var grouping1 = ["AMK", "BEDOK", "CHANGI", "MARINA", "BUGIS"];
-var csv1 = "​CHANGI,​0,​0,​0,​0,​17,17,4;BUGIS,​1,​4,​0,​0,​0,5,3;BEDOK,​0,​1,​0,​1,​3,5,1;​AMK,​0,​1,​0,​0,​1,2,2;​MARINA,​1,​0,​0,​0,​2,3,1";
-var status_list1 = ['Live','In-Progress','In-Queue','​In-Assessment', 'In-​Pipeline', "Total", "Saving"];
+document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
 
-group_barchart(csv1, "Location", grouping1, status_list1, "aoa_table1", "chart1", "Location View");
+var grouping = ["Venus", "Mars", "Uranus", "Jupiter", "Mercury"];
+var csv = "​Uranus,​0,​0,​0,​0,​17,17,4;Mercury,​1,​4,​0,​0,​0,5,3;Venus,​0,​1,​0,​1,​3,5,1;​Mars,​0,​1,​0,​0,​1,2,2;​Jupiter,​1,​0,​0,​0,​2,3,1";
+var status_list = ['Live','In-Progress','In-Queue','​In-Assessment', 'In-​Pipeline', "Total", "Saving"];
+group_barchart(csv, "Project Group", grouping, status_list, "aoa_table1", "chart1", "Simple Bar Charts");
+
+function readSingleFile(evt) {
+	var f = evt.target.files[0]; 
+	if (f) {
+		var r = new FileReader();
+		r.onload = function(e) { 
+			csv = e.target.result;
+			processData(csv);
+		}
+		r.readAsText(f);
+	}
+}
+
+function processData(csv) {	
+	var csv_data = "";
+	var grouping = [];
+	var status_list = [];
+	var category = "";
+	var title;
+	var lines = csv.split("\n");
+	var cnt = lines.length;
+	var headers = lines[0].split(",");
+	var ii = 0;
+	var nn = headers.length;
+	category = headers[0];
+	title = category + " view";
+	for( ii=1; ii < nn; ii++ ) {
+		status_list.push( headers[ii] );
+	}
+	for( ii=1; ii < cnt; ii++ ) {
+		var linedata = lines[ii];
+		nn = linedata.length;
+		if ( nn > 0 ) {
+			linedata = linedata.replace( "\r", "" );
+			csv_data = csv_data + ";" + linedata ;
+			var words = linedata.split(",");
+			grouping.push( words[0] );
+		}
+	}	
+	nn = csv_data.length;
+	csv_data = csv_data.substr( 1, nn - 1);	
+	group_barchart(csv_data, category, grouping, status_list, "aoa_table1", "chart1", title);
+}
 </script>
 </html>
