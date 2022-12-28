@@ -14,7 +14,7 @@
 <body>
 <div>
 <h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
-<h1>Question and Answer based on content</h1>
+<h1>Question and Answer using Tensorflow</h1>
 <br/>
 <h3>Context (you can paste your own content in the text area)</h3>
 <textarea id='context' rows="30" cols="120">
@@ -30,6 +30,15 @@ together with FAs to ensure proper normalization.</textarea>
   <h3>Answers</h3>
   <div id='answer'></div>
 </div>
+<hr>
+Reference:
+<br>
+<a href="https://www.tensorflow.org/lite/examples/bert_qa/overview">BERT Question and Answer</a>
+<br>
+<a href="https://github.com/tensorflow/tfjs-models/tree/master/qna">Question and Answer pre-trained model<a>
+<br>
+</body>
+
 <script>
 let qna_model = qna.load();
 function replyme() {
@@ -46,5 +55,4 @@ function replyme() {
 }
   
 </script>
-</body>
 </html>
