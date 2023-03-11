@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<Title>Telegram Bot Sender</Title>
+<head>
+<style type="text/css">#qr-canvas{ display:none; }</style>
+</head>
+<body>
+<div id="html">
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>Telegram Text Sender</h1>
+<br>
+<p>usage:<br>telegram.html?key=[bot_token]&chat_id=[telegram_chatid]</p>
+<div id="header"></div>	
+<div id="outdiv">Enter your message:
+<form>
+<input type="text" id="bot_token" input size="50"  value = ""><br>
+<input type="text" id="chat_id"  input size="10"  value = ""><br>
+<textarea id='msg' name="Message" rows="12" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
+<br />
+<div id="result"></div>
+<input type="button" onClick="reset()" value="Clear"/>
+<input type="button" onClick="telegram()" value="Telegram Msg"/>
+<br />
+</form>
+<div>
+</body>
+
+<script>
+var msg = "";
+var token = "";
+var chat_id = "";
+
+console.clear();
+document.getElementById("result").innerHTML = "" ;
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const keystring = urlParams.get('key')
+const telegramid = urlParams.get('chat_id')
+if (keystring != null) {
+	token = keystring;
+	document.getElementById("bot_token").value = keystring;
+}
+if (telegramid != null) {
+	chat_id = telegramid;
+	document.getElementById("chat_id").value = telegramid;
+}
+keystring = document.getElementById("bot_token").value;
+telegramid = document.getElementById("chat_id").value;
+
+function reset() {
+	document.getElementById("msg").innerHTML = "";
+}
+
+function telegram() {
+	// https://api.telegram.org/bot__/sendMessage?chat_id=123&text=msg&reply_markup={%22inline_keyboard%22:%20[[{%22text%22:%20%22hi%22,%20%22callback_data%22:%20%22hi%22}]]}
+	// https://api.telegram.org/bot__/getUpdates
+	if (token=="") {
+		alert("Please specific your bot token");
+	}
+	if (chat_id=="") {
+		alert("Please specific chat_id of the recipient");
+	}
+	msg = document.getElementById('msg').value;
+	if (msg=="") {
+		alert("Please enter your message");
+	}
+	var sendmsg_api = "https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&text={msg}";
+	var getUpdates_api = "https://api.telegram.org/bot{token}/getUpdates";
+	//var button_list = '&reply_markup={"inline_keyboard": [[{"text": "hi", "callback_data": "hi"}]]}';
+	var button_list = '&reply_markup={"inline_keyboard": [[{"text": "Approve", "callback_data": "Yes"},{"text": "Reject", "callback_data": "No"}]]}';
+	var url = sendmsg_api.replace("{token}",token).replace("{chat_id}",chat_id).replace("{msg}",msg);
+	//url = url + button_list;
+	var xhr = new XMLHttpRequest();
+	xhr.responseType = 'json';
+	xhr.open('get', url, true);
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+	xhr.send();		
+	//xhr.onload = function() {
+	  //if (xhr.status != 200) { // analyze HTTP status of the response
+		//alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
+	  //} else { // show the result
+		//alert(`Done, got ${xhr.response.length} bytes`); // response is the server response
+		//document.getElementById('msg').value = xhr.response.toString();
+	  //}
+	//};
+
+	//xhr.onprogress = function(event) {
+	  //if (event.lengthComputable) {		
+		//alert(`Received ${event.loaded} of ${event.total} bytes`);
+	  //} else {
+		//alert(`Received ${event.loaded} bytes`); // no Content-Length
+	  //}	  
+	//};
+
+	//xhr.onerror = function() {
+	  //alert("Request failed");
+	//};
+	
+	//
+}
+
+</script>
+</html>
