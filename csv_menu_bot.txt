@@ -20,10 +20,10 @@ function doPost(e) {
     var text = contents.message.text;    
     if( text.includes("/start") ) {
       txt = "Welcome back , " + contents.message.from.first_name;
-      sendMessage( id, txt );
+      sendText( id, txt , {});
       Utilities.sleep(200);
       text = "Your chat_id is " + id.toString();
-      sendMessage( id, text);
+      sendText( id, text, {});
       Utilities.sleep(200);
       show_menu( id );
       return;
@@ -31,16 +31,6 @@ function doPost(e) {
     if(menu_list.search(text.replace("/","") + ",") >= 0) {
       get_details( id, text[1])
       return;
-    }
-    var cid = id + ",";
-    if ( id_list.includes(cid) ) {
-      if( text.startsWith("/") == false ) {
-        txt = bot_response(text);
-      }
-    }
-    if (txt.length > 0) {
-      Utilities.sleep(200);
-      return sendMessage(id, txt);
     }
   }
 }
@@ -73,7 +63,7 @@ function show_details(id, code) {
   var msg = "Results :";
   var txt = csv.filter(function(x){ return x[0][0].toLowerCase() == code; }).map(x => x[1] );
   msg = msg + "\n" + txt.join("\n");
-  sendMessage(id, msg);
+  sendText(id, msg, {});
 }
 
 function sendText(chatId, text, keyBoard) {
@@ -88,24 +78,4 @@ function sendText(chatId, text, keyBoard) {
     }
   };
   UrlFetchApp.fetch( telegramUrl + '/', data);
-}
-
-function sendMessage(id, msg) {
-  var data = {
-    method: "post",
-    payload: {
-      method: "sendMessage",
-      chat_id: String(id),
-      text: msg,
-      parse_mode: "HTML",
-
-    }
-  };
-  try {
-    var response = UrlFetchApp.fetch( telegramUrl + "/", data);
-    var resp = response.getContentText().toString();
-  } 
-  catch ( e ) {
-    return "Unable to send message";
-  }
 }

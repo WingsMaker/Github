@@ -1,0 +1,34 @@
+var telegramUrl = https://api.telegram.org/bot____;
+
+function doPost(e) {
+  var contents = JSON.parse(e.postData.contents);
+  var txt = "";  
+  var menu_list = menu_code_list();
+  if (contents.message) {
+    var id = contents.message.from.id;
+    var text = contents.message.text;    
+    if( text.includes("/start") ) {
+      txt = "Welcome back , " + contents.message.from.first_name;
+      sendMessage( id, txt );
+      Utilities.sleep(200);
+      txt = "Your chat_id is " + id.toString();
+      sendText( id, txt, {});
+      return;
+    }
+    sendText( id, text, {});
+  }
+}
+
+function sendText(chatId, text, keyBoard) {
+  var data = {
+    method: "post",
+    payload: {
+      method: "sendMessage",
+      chat_id: String(chatId),
+      text: text,
+      parse_mode: "HTML",
+      reply_markup: JSON.stringify(keyBoard)
+    }
+  };
+  UrlFetchApp.fetch( telegramUrl + '/', data);
+}
