@@ -1,0 +1,117 @@
+var telegramUrl = https://api.telegram.org/bot____;
+var menu_csv = https://raw.githubusercontent.com/WingsMaker/Github/main/menu.csv;
+
+const unique = (value,index,self) => {return self.indexOf(value) === index;}
+
+function doPost(e) {
+  var contents = JSON.parse(e.postData.contents);
+  var txt = "";  
+  var menu_list = menu_code_list();
+  if (contents.callback_query) {
+    var id_callback = contents.callback_query.from.id;
+    var data = contents.callback_query.data;
+    if (( menu_list.includes(data[1]) ) && ( data[0] == "/")) {
+      show_details( id_callback, data[1]); 
+    }
+    return;
+  }
+  if (contents.message) {
+    var id = contents.message.from.id;
+    var text = contents.message.text;    
+    if( text.includes("/start") ) {
+      txt = "Welcome back , " + contents.message.from.first_name;
+      sendMessage( id, txt );
+      Utilities.sleep(200);
+      text = "Your chat_id is " + id.toString();
+      sendMessage( id, text);
+      Utilities.sleep(200);
+      show_menu( id );
+      return;
+    }
+    if(menu_list.search(text.replace("/","") + ",") >= 0) {
+      get_details( id, text[1])
+      return;
+    }
+    var cid = id + ",";
+    if ( id_list.includes(cid) ) {
+      if( text.startsWith("/") == false ) {
+        txt = bot_response(text);
+      }
+    }
+    if (txt.length > 0) {
+      Utilities.sleep(200);
+      return sendMessage(id, txt);
+    }
+  }
+}
+
+function menu_code_list() {
+  var res = UrlFetchApp.fetch(menu_csv);
+  var csvraw = res.getContentText();
+  var csv = Utilities.parseCsv(csvraw);
+  var category_list =  csv.map( x => x[0] );
+  var category_unique = category_list.filter(unique);
+  var category_codes = category_unique.map(x =>(x[0]).toLowerCase() );  
+  return category_codes;
+}
+
+function show_menu(id){
+  var res = UrlFetchApp.fetch(menu_csv);
+  var csvraw = res.getContentText();
+  var csv = Utilities.parseCsv(csvraw);
+  var category_list =  csv.map( x => x[0] );
+  var category_unique = category_list.filter(unique);
+  var btn_list = category_unique.map(x =>[{"text":x,"callback_data":"/"+(x[0]).toLowerCase() }]);
+  var keyboard = { "inline_keyboard" : btn_list };
+  var txt = "Please select one :";
+  sendText(id, txt, keyboard );
+}
+
+function show_details(id, code) {
+  var res = UrlFetchApp.fetch(menu_csv);
+  var csvraw = res.getContentText();
+  var csv = Utilities.parseCsv(csvraw);
+  var msg = "Please select one :";
+  var txt = csv.filter(function(x){ return x[0][0].toLowerCase() == code; }).map(x => url_text(x[1],x[2]) );
+  msg = msg + "\n" + txt.join("\n");
+  sendMessage(id, msg);
+}
+
+function url_text( msg , url ) {
+  var txt = '<a href="' + url + '">' + msg + '</a>';  
+  return txt;
+}
+
+function sendText(chatId, text, keyBoard) {
+  var data = {
+    method: "post",
+    payload: {
+      method: "sendMessage",
+      chat_id: String(chatId),
+      text: text,
+      parse_mode: "HTML",
+      reply_markup: JSON.stringify(keyBoard)
+    }
+  };
+  UrlFetchApp.fetch( telegramUrl + '/', data);
+}
+
+function sendMessage(id, msg) {
+  var data = {
+    method: "post",
+    payload: {
+      method: "sendMessage",
+      chat_id: String(id),
+      text: msg,
+      parse_mode: "HTML",
+
+    }
+  };
+  try {
+    var response = UrlFetchApp.fetch( telegramUrl + "/", data);
+    var resp = response.getContentText().toString();
+  } 
+  catch ( e ) {
+    return "Unable to send message";
+  }
+}
