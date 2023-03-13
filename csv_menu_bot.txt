@@ -1,5 +1,5 @@
 var telegramUrl = https://api.telegram.org/bot____;
-var menu_csv = "https://raw.githubusercontent.com/WingsMaker/Github/main/menu.csv";
+var menu_csv = "https://cdn.wsform.com/wp-content/uploads/2020/06/county_uk.csv";
 
 const unique = (value,index,self) => {return self.indexOf(value) === index;}
 
@@ -59,9 +59,8 @@ function show_menu(id){
   var res = UrlFetchApp.fetch(menu_csv);
   var csvraw = res.getContentText();
   var csv = Utilities.parseCsv(csvraw);
-  var category_list =  csv.map( x => x[0] );
-  var category_unique = category_list.filter(unique);
-  var btn_list = category_unique.map(x =>[{"text":x,"callback_data":"/"+(x[0]).toLowerCase() }]);
+  var category_list =  csv.map( x => x[0] ).filter( function(x){ return x != "Country";} ).filter(unique);
+  var btn_list = category_list.map(x =>[{"text":x,"callback_data":"/"+(x[0]).toLowerCase() }]);
   var keyboard = { "inline_keyboard" : btn_list };
   var txt = "Please select one :";
   sendText(id, txt, keyboard );
@@ -71,15 +70,10 @@ function show_details(id, code) {
   var res = UrlFetchApp.fetch(menu_csv);
   var csvraw = res.getContentText();
   var csv = Utilities.parseCsv(csvraw);
-  var msg = "Please select one :";
-  var txt = csv.filter(function(x){ return x[0][0].toLowerCase() == code; }).map(x => url_text(x[1],x[2]) );
+  var msg = "Results :";
+  var txt = csv.filter(function(x){ return x[0][0].toLowerCase() == code; }).map(x => x[1] );
   msg = msg + "\n" + txt.join("\n");
   sendMessage(id, msg);
-}
-
-function url_text( msg , url ) {
-  var txt = '<a href="' + url + '">' + msg + '</a>';  
-  return txt;
 }
 
 function sendText(chatId, text, keyBoard) {
