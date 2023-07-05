@@ -51,6 +51,7 @@ if (keystring != null) {
 }
 if (dectxt != null) {
 	msg =  CryptoJS.AES.decrypt(dectxt, keypass).toString(CryptoJS.enc.Utf8);
+	msg = msg.replace(/\n/g, '<br>');
 	document.getElementById("html").innerHTML = msg;
 }
 if (enctxt != null) {
