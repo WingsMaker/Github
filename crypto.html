@@ -61,6 +61,21 @@ if (enctxt != null) {
 }
 document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
 
+function readSingleFile(evt) {
+	var f = evt.target.files[0]; 
+	if (f) {
+		var r = new FileReader();
+		r.onload = function(e) { 
+			document.getElementById('msg').value = e.target.result
+	  }
+		r.readAsText(f);
+	} else { 
+		alert("Failed to load file");
+	}
+}
+</script>
+</html>
+	
 function reset() {
 	document.getElementById("msg").innerHTML = "";
 }
@@ -121,7 +136,7 @@ function decryption() {
 		keypass = keypass.replace("</b>","<b>").split("<b>")[1];
 	}
 	if (keypass==null) {
-		alert("Please define the passphrase key");
+		document.write("Please define the passphrase key");
 		return;
 	}
 	codedString =  CryptoJS.AES.decrypt(msg, keypass).toString(CryptoJS.enc.Utf8);
@@ -131,21 +146,28 @@ function decryption() {
 function url_encode() {
 	msg = document.getElementById('msg').value;
 	if (msg != "") {
-		document.getElementById('msg').value = encodeURIComponent(msg);
+		document.write("Please enter text and click the [Encrypt] button");
+		return;
 	}
+	if (msg.substring(0,3) != "U2F") {
+		document.write("Please encrypt the text first");
+		return;
+	}
+	if (typeof keypass == 'undefined') {
+		keypass = "";
+	}
+	if (keypass=="") {
+		keypass = document.getElementById("result").innerHTML;
+		keypass = keypass.replace("</b>","<b>").split("<b>")[1];
+	}
+	codedString =  windows.location.ref + "?";
+	if (keypass=="WingsMaker") {
+		codedString = codedString + "dec=";
+	} else {
+		codedString = codedString + "key=" + keypass + "&dec=";
+	}
+	codedString =  codedString + encodeURIComponent(msg);
+	codedString = "This is the result : <a href='" + codedString + "'>generated url</a>"
+	document.write(codedString);
 }
 
-function readSingleFile(evt) {
-	var f = evt.target.files[0]; 
-	if (f) {
-		var r = new FileReader();
-		r.onload = function(e) { 
-			document.getElementById('msg').value = e.target.result
-	  }
-		r.readAsText(f);
-	} else { 
-		alert("Failed to load file");
-	}
-}
-</script>
-</html>
