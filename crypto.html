@@ -160,7 +160,7 @@ function url_encode() {
 		keypass = document.getElementById("result").innerHTML;
 		keypass = keypass.replace("</b>","<b>").split("<b>")[1];
 	}
-	codedString =  windows.location.ref + "?";
+	codedString =  windows.location.href + "?";
 	if (keypass=="WingsMaker") {
 		codedString = codedString + "dec=";
 	} else {
