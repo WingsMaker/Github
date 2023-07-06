@@ -24,9 +24,9 @@
 <div id="outdiv">passphrase:
 <div id="result"></div>
 <input type="button" onClick="reset()" value="Clear"/>
+<input type="button" onClick="definekey()" value="Keypass"/>
 <input type="button" onClick="encryption()" value="Encrypt"/>
 <input type="button" onClick="decryption()" value="Decrypt"/>
-<input type="button" onClick="definekey()" value="Keypass"/>
 <input type="button" onClick="url_encode()" value="EncodeURI"/>
 <br />
 </form>
@@ -51,8 +51,8 @@ if (keystring != null) {
 }
 if (dectxt != null) {
 	msg =  CryptoJS.AES.decrypt(dectxt, keypass).toString(CryptoJS.enc.Utf8);
-	msg = msg.replace(/\n/g, '<br>');
-	document.getElementById("html").innerHTML = msg;
+	//msg = msg.replace(/\n/g, '<br>');
+	document.getElementById("msg").innerHTML = msg;
 }
 if (enctxt != null) {
 	var encrypted = CryptoJS.AES.encrypt(enctxt, keypass);
@@ -73,8 +73,6 @@ function readSingleFile(evt) {
 		alert("Failed to load file");
 	}
 }
-</script>
-</html>
 	
 function reset() {
 	document.getElementById("msg").innerHTML = "";
@@ -145,7 +143,7 @@ function decryption() {
 
 function url_encode() {
 	msg = document.getElementById('msg').value;
-	if (msg != "") {
+	if (msg == "") {
 		document.write("Please enter text and click the [Encrypt] button");
 		return;
 	}
@@ -160,7 +158,7 @@ function url_encode() {
 		keypass = document.getElementById("result").innerHTML;
 		keypass = keypass.replace("</b>","<b>").split("<b>")[1];
 	}
-	codedString =  windows.location.href + "?";
+	codedString =  window.location.href + "?";
 	if (keypass=="WingsMaker") {
 		codedString = codedString + "dec=";
 	} else {
@@ -171,3 +169,5 @@ function url_encode() {
 	document.write(codedString);
 }
 
+</script>
+</html>
