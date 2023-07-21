@@ -27,7 +27,7 @@
 <input type="button" onClick="definekey()" value="Keypass"/>
 <input type="button" onClick="encryption()" value="Encrypt"/>
 <input type="button" onClick="decryption()" value="Decrypt"/>
-<input type="button" onClick="url_encode()" value="EncodeURI"/>
+<input type="button" onClick="url_encode()" value="Share"/>
 <br />
 </form>
 <div>
@@ -148,8 +148,10 @@ function url_encode() {
 		return;
 	}
 	if (msg.substring(0,3) != "U2F") {
-		document.write("Please encrypt the text first");
-		return;
+		//document.write("Please encrypt the text first");
+		//return;
+		var encrypted = CryptoJS.AES.encrypt(msg, keypass);
+		msg = encrypted.toString();
 	}
 	if (typeof keypass == 'undefined') {
 		keypass = "";
