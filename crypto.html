@@ -164,14 +164,17 @@ function url_encode() {
 		keypass = document.getElementById("result").innerHTML;
 		keypass = keypass.replace("</b>","<b>").split("<b>")[1];
 	}
-	codedString =  window.location.href + "?";
+	var base_url = window.location.href.split("?")[0] + "?";
+	//codedString =  window.location.href + "?";
 	if (keypass=="WingsMaker") {
-		codedString = codedString + "dec=";
+		codedString = base_url + "dec=";
 	} else {
-		codedString = codedString + "key=" + keypass + "&dec=";
+		codedString = base_url + "key=" + keypass + "&dec=";
 	}
-	codedString =  codedString + encodeURIComponent(msg);
-	codedString = "This is the result : <a href='" + codedString + "'>generated url</a>"
+	var encoded_uri = encodeURIComponent(msg);
+	codedString =  codedString + encoded_uri;
+	codedString = "<h2>Results : </h2><br>keypass included:<br><a href='" + codedString + "'>auto-decoding url</a><br><br>keypass excluded<br><a href='" + base_url;
+	codedString = codedString + "txt=" + encoded_uri + "'>manual decoding url</a>";
 	document.write(codedString);
 }
 
