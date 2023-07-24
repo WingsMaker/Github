@@ -45,6 +45,7 @@ const urlParams = new URLSearchParams(queryString);
 const keystring = urlParams.get('key')
 const dectxt = urlParams.get('dec')
 const enctxt = urlParams.get('enc')
+const inptxt = urlParams.get('txt')
 if (keystring != null) {
 	keypass = keystring;
 	document.getElementById("result").innerHTML = keystring;
@@ -58,6 +59,9 @@ if (enctxt != null) {
 	var encrypted = CryptoJS.AES.encrypt(enctxt, keypass);
 	msg = encrypted.toString();
 	document.getElementById("html").innerHTML = msg;
+}
+if (inptxt != null) {
+	document.getElementById("msg").innerHTML = inptxt;
 }
 document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
 
