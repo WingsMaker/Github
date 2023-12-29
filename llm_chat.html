@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<Title>KH LLM Chatbot</Title>
+<body>
+<div id="html">
+<h1>KH LLM Chatbot</h1>
+<br>
+<p>Chatbot using Google PaLM2</p>
+<br>
+<form>
+Prompt:<br>
+<input type="text" id="prompt"  input size="64"  value = "Write a poem about a sunflower"><br>
+Enter your message:<br>
+<textarea id='msg' name="Message" rows="20" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
+<br />
+<input type="button" onClick="resetmsg()" value="Clear"/>
+<input type="button" onClick="ask_palm()" value="Ask"/>
+<br />
+</form>
+</body>
+
+<script>
+
+console.clear();
+var api_key = prompt("Please your google PaLM2 apikey", "");
+
+function resetmsg() {
+	document.getElementById("prompt").value = "";
+	document.getElementById("msg").value = "";
+}
+
+function ask_palm() {
+	if (api_key==null) {
+		alert("Get your api key from https://makersuite.google.com/app/apikey");
+		return
+	}
+	if (api_key=="") {
+		alert("Please enter your api key before opening this page");
+		return
+	}
+	var msg = "";
+	var apiUrl = "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText";
+	var url = apiUrl + "?key=" + api_key;
+	var prompt_text = document.getElementById("prompt").value;
+	if (prompt_text=="") {
+		alert("Please specific prompt of the recipient");
+		return
+	}
+	var prompt = {
+		'text': prompt_text
+	}
+	var requestBody = {
+		"prompt": prompt
+	}
+	payload = {
+		method: 'POST',
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(requestBody)
+	}	
+	return fetch(url, payload)
+	.then(response => response.json())
+	.then(data => {
+		msg = data.candidates[0].output;
+		document.getElementById('msg').value = msg;
+		return msg;
+	})
+	.catch(error => {
+		console.error('Error calling PALM2 API:', error);
+	});
+}
+
+</script>
+</html>
