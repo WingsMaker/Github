@@ -12,9 +12,15 @@
 <p>Chatbot using Google PaLM2</p>
 <br>
 <form>
-Prompt:<br>
-<input type="text" id="prompt"  input size="64"  value = "Write a poem about a sunflower"><br>
-Enter your message:<br>
+<label for="api-key">Google Palm2 API key:</label>
+<input type="password" id="api-key" input size="25"  name="api-key">
+<br>
+<label for="prompt">Enter the prompt:</label>
+<br>
+<textarea id='prompt' name="Message" rows="5" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
+<br>
+<label for="msg">Results:</label>
+<br>
 <textarea id='msg' name="Message" rows="20" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
 <br />
 <input type="button" onClick="resetmsg()" value="Clear"/>
@@ -26,7 +32,7 @@ Enter your message:<br>
 <script>
 
 console.clear();
-var api_key = prompt("Please your google PaLM2 apikey", "");
+var api_key = document.getElementById("api-key").value
 
 function resetmsg() {
 	document.getElementById("prompt").value = "";
@@ -34,10 +40,6 @@ function resetmsg() {
 }
 
 function ask_palm() {
-	if (api_key==null) {
-		alert("Get your api key from https://makersuite.google.com/app/apikey");
-		return
-	}
 	if (api_key=="") {
 		alert("Please enter your api key before opening this page");
 		return
