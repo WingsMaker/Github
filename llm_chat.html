@@ -20,11 +20,11 @@
 <br>
 <label for="prompt">Enter the prompt:</label>
 <br>
-<textarea id='prompt' name="Message" rows="5" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
+<textarea id='prompt' name="Message" rows="5" cols="60" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
 <br>
 <label for="msg">Results:</label>
 <br>
-<textarea id='msg' name="Message" rows="20" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
+<textarea id='msg' name="Message" rows="20" cols="60" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
 <br />
 <input type="button" onClick="resetmsg()" value="Clear"/>
 <input type="button" onClick="ask_palm()" value="Ask"/>
@@ -32,7 +32,7 @@
 </form>
 </body>
 
-<script type="text/javascript" src="speech.js" ></script>
+<!- script type="text/javascript" src="speech.js" ></script ->
 
 <script>
 console.clear();
@@ -72,13 +72,13 @@ function ask_palm() {
 		},
 		body: JSON.stringify(requestBody)
 	}
-	textToSpeech(prompt_text);
+	//textToSpeech(prompt_text);
 	return fetch(url, payload)
 	.then(response => response.json())
 	.then(data => {
 		msg = data.candidates[0].output;
 		document.getElementById('msg').value = msg;
-		textToSpeech(msg);
+		//textToSpeech(msg);
 		return msg;
 	})
 	.catch(error => {
