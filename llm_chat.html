@@ -4,6 +4,9 @@
 <meta name="viewport" content="width=device-width, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="mobile-web-app-capable" content="yes">
+<head>
+<script src="aes.js"></script> 
+</head>
 <Title>KH LLM Chatbot</Title>
 <body>
 <div id="html">
@@ -12,8 +15,8 @@
 <p>Chatbot using Google PaLM2</p>
 <br>
 <form>
-<label for="api-key">Google Palm2 API key:</label>
-<input type="password" id="api-key" input size="25"  name="api-key">
+<label for="passcode">Enter pass code:</label>
+<input type="password" id="passcode" input size="10" name="passcode">
 <br>
 <label for="prompt">Enter the prompt:</label>
 <br>
@@ -32,7 +35,9 @@
 <script>
 
 console.clear();
-var api_key = document.getElementById("api-key").value
+var api_key = "";
+var token = "GMUflCE1UcfoTzeo5kDcRm5Gh91EOtvlsfE1Jztcgvh4aQ7erBsA==";
+token = "U2FsdGVkX18y7k6b3SpDbEjN38evmcHmi+" + token;
 
 function resetmsg() {
 	document.getElementById("prompt").value = "";
@@ -40,16 +45,18 @@ function resetmsg() {
 }
 
 function ask_palm() {
-	if (api_key=="") {
-		alert("Please enter your api key before opening this page");
+	var passcode = document.getElementById("passcode").value;
+	if (passcode=="") {
+		alert("Please enter your pass code");
 		return
 	}
+	api_key =  CryptoJS.AES.decrypt(token, passcode).toString(CryptoJS.enc.Utf8);
 	var msg = "";
 	var apiUrl = "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText";
 	var url = apiUrl + "?key=" + api_key;
 	var prompt_text = document.getElementById("prompt").value;
 	if (prompt_text=="") {
-		alert("Please specific prompt of the recipient");
+		alert("Please enter the prompt for the chat");
 		return
 	}
 	var prompt = {
