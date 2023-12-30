@@ -35,9 +35,6 @@
 <script>
 
 console.clear();
-var api_key = "";
-var token = "GMUflCE1UcfoTzeo5kDcRm5Gh91EOtvlsfE1Jztcgvh4aQ7erBsA==";
-token = "U2FsdGVkX18y7k6b3SpDbEjN38evmcHmi+" + token;
 
 function resetmsg() {
 	document.getElementById("prompt").value = "";
@@ -45,11 +42,13 @@ function resetmsg() {
 }
 
 function ask_palm() {
+	var token = "U2FsdGVkX1+CoRmwXsTwakPtLKM1WeNuba7F20/AMDY9ERSHfp7j6yvfFRhrGAdqFBKFbqiNIVUbnbOibIIG8A==";
 	var passcode = document.getElementById("passcode").value;
 	if (passcode=="") {
 		alert("Please enter your pass code");
 		return
 	}
+	var api_key = "";
 	api_key =  CryptoJS.AES.decrypt(token, passcode).toString(CryptoJS.enc.Utf8);
 	var msg = "";
 	var apiUrl = "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText";
