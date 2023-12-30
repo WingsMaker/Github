@@ -5,7 +5,6 @@
 	<title>Chatbot</title>
 	<link rel="icon" href="bot.png" />
 	<link rel="stylesheet" href="llm_chat.css" />
-	<script src="https://wingsmaker.github.io/Github/aes.js" ></script>
 </head>
 
 <body>
@@ -13,8 +12,11 @@
 		<div id="chat" class="chat">
 			<div id="messages" class="messages"></div>
 			<input id="input" type="text" cols="50" placeholder="Type something..." autocomplete="off" autofocus="true" />
+			<input type="button" onClick="sendqn()" value="Send"/>
+			<br>
 		</div>
-		<img src="bear_robot.png" alt="Robot cartoon" height="500vh">			
+		<img src="bear_robot.png" alt="Robot cartoon" height="500vh">
+<br>
 	</div>
 	<div>Powered by WingsMaker</div>
 </body>
@@ -22,5 +24,13 @@
 <script type="text/javascript" src="constants.js" ></script>
 <script type="text/javascript" src="speech.js" ></script>
 <script type="text/javascript" src="ask-palm.js" ></script>
-
+<script>
+function sendqn() {
+	var qn = document.getElementById("input").value;
+		if (qn =="") {
+			return
+		}
+		output(qn);
+}
+</script>
 </html>
