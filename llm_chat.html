@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="mobile-web-app-capable" content="yes">
 <head>
-<script src="aes.js"></script> 
+<script src="https://wingsmaker.github.io/Github/aes.js"></script>
 </head>
 <Title>KH LLM Chatbot</Title>
 <body>
@@ -32,8 +32,9 @@
 </form>
 </body>
 
-<script>
+<script type="text/javascript" src="speech.js" ></script>
 
+<script>
 console.clear();
 
 function resetmsg() {
@@ -70,12 +71,14 @@ function ask_palm() {
 		  'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(requestBody)
-	}	
+	}
+	textToSpeech(prompt_text);
 	return fetch(url, payload)
 	.then(response => response.json())
 	.then(data => {
 		msg = data.candidates[0].output;
 		document.getElementById('msg').value = msg;
+		textToSpeech(msg);
 		return msg;
 	})
 	.catch(error => {
