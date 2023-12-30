@@ -1,90 +1,26 @@
 <!DOCTYPE html>
 <html>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, user-scalable=no">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<meta name="mobile-web-app-capable" content="yes">
+
 <head>
-<script src="https://wingsmaker.github.io/Github/aes.js"></script>
+	<title>Chatbot</title>
+	<link rel="icon" href="bot.png" />
+	<link rel="stylesheet" href="llm_chat.css" />
+	<script src="https://wingsmaker.github.io/Github/aes.js" ></script>
 </head>
-<Title>KH LLM Chatbot</Title>
+
 <body>
-<div id="html">
-<h1>KH LLM Chatbot</h1>
-<br>
-<p>Chatbot using Google PaLM2</p>
-<br>
-<form>
-<label for="passcode">Enter pass code:</label>
-<input type="password" id="passcode" input size="10" name="passcode">
-<br>
-<label for="prompt">Enter the prompt:</label>
-<br>
-<textarea id='prompt' name="Message" rows="5" cols="60" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
-<br>
-<label for="msg">Results:</label>
-<br>
-<textarea id='msg' name="Message" rows="20" cols="60" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
-<br />
-<input type="button" onClick="resetmsg()" value="Clear"/>
-<input type="button" onClick="ask_palm()" value="Ask"/>
-<br />
-</form>
+	<div id="container" class="container">
+		<div id="chat" class="chat">
+			<div id="messages" class="messages"></div>
+			<input id="input" type="text" cols="50" placeholder="Type something..." autocomplete="off" autofocus="true" />
+		</div>
+		<img src="bear_robot.png" alt="Robot cartoon" height="500vh">			
+	</div>
+	<div>Powered by WingsMaker</div>
 </body>
+<script type="text/javascript" src="llm_chat.js" ></script>
+<script type="text/javascript" src="constants.js" ></script>
+<script type="text/javascript" src="speech.js" ></script>
+<script type="text/javascript" src="ask-palm.js" ></script>
 
-<!- script type="text/javascript" src="speech.js" ></script ->
-
-<script>
-console.clear();
-
-function resetmsg() {
-	document.getElementById("prompt").value = "";
-	document.getElementById("msg").value = "";
-}
-
-function ask_palm() {
-	var token = "U2FsdGVkX1+CoRmwXsTwakPtLKM1WeNuba7F20/AMDY9ERSHfp7j6yvfFRhrGAdqFBKFbqiNIVUbnbOibIIG8A==";
-	var passcode = document.getElementById("passcode").value;
-	if (passcode=="") {
-		alert("Please enter your pass code");
-		return
-	}
-	var api_key = "";
-	api_key =  CryptoJS.AES.decrypt(token, passcode).toString(CryptoJS.enc.Utf8);
-	var msg = "";
-	var apiUrl = "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText";
-	var url = apiUrl + "?key=" + api_key;
-	var prompt_text = document.getElementById("prompt").value;
-	if (prompt_text=="") {
-		alert("Please enter the prompt for the chat");
-		return
-	}
-	var prompt = {
-		'text': prompt_text
-	}
-	var requestBody = {
-		"prompt": prompt
-	}
-	payload = {
-		method: 'POST',
-		headers: {
-		  'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(requestBody)
-	}
-	//textToSpeech(prompt_text);
-	return fetch(url, payload)
-	.then(response => response.json())
-	.then(data => {
-		msg = data.candidates[0].output;
-		document.getElementById('msg').value = msg;
-		//textToSpeech(msg);
-		return msg;
-	})
-	.catch(error => {
-		console.error('Error calling PALM2 API:', error);
-	});
-}
-
-</script>
 </html>
