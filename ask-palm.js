@@ -28,7 +28,7 @@ function ask_palm(prompt) {
 		addChat(prompt, msg);
 	})
 	.catch(error => {
-		console.error('Error calling PALM2 API:', error);
+		msg = "Error calling api : " + error;
+		addChat(prompt, msg);
 	});
 }
-// explains chatgpt to a 10 years old boy
