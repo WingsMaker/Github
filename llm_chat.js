@@ -28,7 +28,7 @@ function sendqn() {
 
 function addChat(input, product) {
   const messagesContainer = document.getElementById("messages");
-	let tts = document.getElementById("tts").checked;
+  let tts = document.getElementById("tts").checked;
 
   let userDiv = document.createElement("div");
   userDiv.id = "user";
