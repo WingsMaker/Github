@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<head>
+<style>
+html {
+	height: 100%;
+	font-size: 25px;
+}
+
+</style>
+<script src="https://wingsmaker.github.io/Github/aes.js"></script>
+</head>
+<Title>KH LLM Chatbot</Title>
+<body>
+<div id="html">
+<h1>KH Chatbot</h1>
+<p>For prompts in chinese language,use "Google Gemini" button.</p>
+<form>
+	<label for="audio">Audio output ?</label><br>
+	<input type="radio" name="audio" id="silence">No
+	<input type="radio" name="audio" id="tts">Yes
+	<br>
+	<label for="prompt">Enter the prompt:</label>
+	<br>
+	<textarea id='prompt' name="Message" rows="10" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
+	<br>
+	<label for="msg">Results:</label>
+	<br>
+	<textarea id='msg' name="Message" rows="40" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
+	<br />
+	<input type="button" onClick="resetmsg()" style="height:50px; width:150px" value="Clear"/>
+	<input type="button" onClick="ask_palm()" style="height:50px; width:150px" value="Ask Google PaLM"/>
+	<input type="button" onClick="ask_gemini()" style="height:50px; width:150px" value="Ask Google Gemini"/>
+	<br />
+</form>
+</div>
+</body>
+
+<script type="text/javascript" src="speech.js" ></script>
+
+<script>
+console.clear();
+document.getElementById("silence").checked = true;
+document.getElementById("tts").checked = false;
+document.getElementById("prompt").value = "";
+
+function resetmsg() {
+	document.getElementById("prompt").value = "";
+	document.getElementById("msg").value = "";
+}
+
+function ask_palm() {
+	var yy = new Date().getFullYear().toString();
+	var token = "U2FsdGVkX1+Gi7exaNogbqY7UpTOtaTZ+Oa2UXpI4XKAO6t7FZPpVhPk8OUCpJImbhBZSNWW/WLaZu+8Lj08ofSp2csD4+1oR26Hs4ApggnuBjhmXimuNJcmoAQLdsV1iDQbE4zTanKjVsxpjfmXh5Kd8Y3PkQbwNHue6X2V+5qk5bU7mH4lrWmxBsAnmuAp70dJM6cYgBH5qMoOk5qnVA==";
+	var url =  CryptoJS.AES.decrypt(token, yy).toString(CryptoJS.enc.Utf8);
+	var msg = "";
+	var qn = document.getElementById("prompt").value;
+	if (qn=="") {
+		alert("Please enter the prompt for the chat");
+		return
+	}
+	var prompt = {
+		'text': qn
+	}
+	var requestBody = {
+		"prompt": prompt
+	}
+	payload = {
+		method: 'POST',
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(requestBody)
+	}
+	var regExp = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/g;
+	if ( regExp.test(qn) == true ) {
+		msg = "Sorry, only pure English text is supported. Try Google Gemini.";
+		document.getElementById('msg').value = msg;
+		return;
+	}
+	var tts = document.getElementById("tts").checked;
+	if (tts) {
+		textToSpeech(qn);
+	}
+	document.getElementById("msg").value = "please wait.....";
+	return fetch(url, payload)
+	.then(response => response.json())
+	.then(data => data.candidates[0].output)
+	.then(msg => {
+		document.getElementById('msg').value = msg;
+		if (tts) {
+			textToSpeech(msg);
+		}
+		return msg;
+	})
+	.catch(error => {
+		msg = "Error calling api : " + error;
+		document.getElementById('msg').value = msg;
+	});
+}
+
+function ask_gemini() {
+	var msg;
+	var url;
+	var prompt_text;
+	var requestBody;
+	var payload;
+	var qn = document.getElementById("prompt").value;
+	var yy = new Date().getFullYear().toString();
+	var token = "U2FsdGVkX1+1q1q3vNjaw3lwCs5k/dbn4/u2/YdlKdBRWP50dUOQoh3tOZSxtrsApgcOiTnEjA8jJEiqGdaU+PKIMm/f6eT8lKyFkT7eiO9PyjEfQYuyD7NlKuh3yqtU1ooOLmgicVAE7GoitJ+1FSVDuKaNZv1rXBRxw9PylGt15ABUvBsqazDC70Jib6F9";
+	var url =  CryptoJS.AES.decrypt(token, yy).toString(CryptoJS.enc.Utf8);
+	prompt_text = {
+		'text': encodeURIComponent(qn)
+	}
+	parts = {
+		"parts": prompt_text
+	}
+	requestBody = {
+		"contents": parts
+	}
+	payload = {
+		method: 'POST',
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(requestBody)
+	}
+	var tts = document.getElementById("tts").checked;
+	var regExp = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/g;
+	if (regExp) {
+		tts = false;
+	}
+	if (tts) {
+		textToSpeech(qn);
+	}
+	document.getElementById("msg").value = "please wait.....";
+	return fetch(url, payload)
+	.then(response => response.json())
+	.then(content => content.candidates[0].content)
+	.then(parts => parts.parts[0].text)
+	.then((msg) => {
+		msg = decodeURIComponent(msg);
+		document.getElementById('msg').value = msg;
+		if (tts) {
+			textToSpeech(msg);
+		}
+		return msg;
+	})
+	.catch(error => {
+		msg = "Error calling api : " + error;
+		document.getElementById("msg").value = msg;
+	});
+}
+
+</script>
+</html>
