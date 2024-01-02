@@ -207,7 +207,7 @@ B. Logistic regression
 C. Support vector machine (SVM) with non-linear kernel
 
 D. Single perceptron with tanh activation function","Answers : B
-",qn11.jpg
+","qn11.jpg",
 12,"The displayed graph is from a foresting model for testing a time series.
 Considering the graph only, which conclusion should a Machine Learning Specialist make about the behavior of the model?
 
@@ -218,7 +218,7 @@ B. The model predicts the trend well, but not the seasonality.
 C. The model predicts the seasonality well, but not the trend.
 
 D. The model does not predict the trend or the seasonality well.","Answers : D
-",qn12.jpg
+","qn12.jpg",
 13,"A Machine Learning Specialist observes several performance problems with the training portion of a machine learning solution on Amazon SageMaker The solution uses a large training dataset 2 TB in size and is using the SageMaker k-means algorithm The observed issues include the unacceptable length of time it takes before the training job launches and poor I/O throughput while training the model.
 What should the Specialist do to address the performance issues with the current solution?
 
@@ -434,7 +434,7 @@ C. Increasing the number of epochs
 
 D. Adding another layer with the 100 neurons
 ","Answers : D
-",qn25.jpg
+","qn25.jpg",
 26,"A bank's Machine Learning team is developing an approach for credit card fraud detection The company has a large dataset of historical data labeled as fraudulent 
 The goal is to build a model to take the information from new transactions and predict whether each transaction is fraudulent or not
 Which built-in Amazon SageMaker machine learning algorithm should be used for modeling this problem?
@@ -1044,7 +1044,7 @@ D. 10
 ","Answers : B
 
 k = 4
-https://en.wikipedia.org/wiki/Elbow_method_(clustering)",qn68.jpg
+https://en.wikipedia.org/wiki/Elbow_method_(clustering)","qn68.jpg",
 69,"A Marketing Manager at a pet insurance company plans to launch a targeted marketing campaign on social media to acquire new customers. Currently, the company has the following data in Amazon Aurora
 • Profiles for all past and existing customers
 • Profiles for all past and existing insured pets
