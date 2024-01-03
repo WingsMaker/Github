@@ -19,10 +19,10 @@
 1,1,"C is a streaming ingestion solution, but is not applicable in this scenario. "
 1,1,D transforms the data structure.
 1,1,
-2,0,A term frequency–inverse document frequency (tf–idf) matrix using both unigrams and bigrams is built from a text corpus consisting of the following two sentences:
+2,0,A term frequency-inverse document frequency (tf-idf) matrix using both unigrams and bigrams is built from a text corpus consisting of the following two sentences:
 2,0,1. Please call the number below.
 2,0,2. Please do not call us.
-2,0,What are the dimensions of the tf–idf matrix?
+2,0,What are the dimensions of the tf-idf matrix?
 2,0,
 2,0,"A) (2, 16)"
 2,0,
@@ -33,7 +33,7 @@
 2,0,"D) (8, 10)"
 2,1,Answer : A
 2,1,
-2,1,"A – There are 2 sentences, 8 unique unigrams, and 8 unique bigrams, "
+2,1,"A - There are 2 sentences, 8 unique unigrams, and 8 unique bigrams, "
 2,1,"so the result would be (2,16). "
 2,1,"The phrases are """"Please call the number below"""
 2,1,"and """"Please do not call us"""
@@ -56,7 +56,7 @@
 3,0,
 3,0,"D) Create an Amazon SageMaker Jupyter notebook instance that transforms the data. Then, create an Apache Hive metastore and a script to run transformation jobs on a schedule."
 3,1,Answer : B
-3,1,B – AWS Glue requires the least amount of setup and maintenance 
+3,1,B - AWS Glue requires the least amount of setup and maintenance 
 3,1,"since it is serverless, and it does not require management of "
 3,1,the infrastructure. Refer to this link for supporting information. 
 3,1,"A, C, and D are all solutions that can solve the problem, "
@@ -116,7 +116,7 @@
 5,0,D) Using oversampling to balance the dataset
 5,1,Answers : B
 5,1,  
-5,1,"B – Decreasing the class probability threshold makes the model more sensitive and, therefore, marks more cases as the positive class, which is fraud in this case. This will increase the likelihood of fraud detection."
+5,1,"B - Decreasing the class probability threshold makes the model more sensitive and, therefore, marks more cases as the positive class, which is fraud in this case. This will increase the likelihood of fraud detection."
 5,1,"However, it comes at the price of lowering precision. "
 5,1,Example :
 5,1,# changing threshold and predicting 
@@ -1120,7 +1120,7 @@
 73,1,Answers : B
 73,1,   
 73,1,"The goal of classification is to determine to which class or category a data point (customer in our case) belongs to. For classification problems, data scientists"
-73,1,would use historical data with predefined target variables AKA labels (churner/non-churner) – answers that need to be predicted – to train an algorithm. With
+73,1,would use historical data with predefined target variables AKA labels (churner/non-churner) - answers that need to be predicted - to train an algorithm. With
 73,1,"classification,"
 73,1,businesses can answer the following questions:
 73,1,Will this customer churn or not?
