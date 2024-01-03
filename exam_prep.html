@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="icon" type="image/x-icon" href="https://wingsmaker.github.io/Github/kh.ico">
+<title>Exam Qn Viewer</title>
+<script type="text/javascript" src="https://wingsmaker.github.io/Github/jquery.min.js"></script>
+<script type="text/javascript" src="speech.js" ></script>
+</head>
+<body> 
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>Exam Questions Viewer</h1>
+<br>
+<div id="qns"></div>
+<br>
+<div id="cht"></div>
+<br>
+<input type="range" min="1" max="300" value="1" id="qrng" width="500px">
+<br>
+<input id="viewqn" type="submit" value="Answers"/>
+<input id="prev" type="submit" value="Previous"/>
+<input id="next" type="submit" value="Next"/>
+<input id="voice" type="submit" value="Voice"/>
+</div>
+</body>
+
+<script>
+var arr_qns = [];
+var arr_qntext = [];
+var arr_qmemos = [];
+var arr_charts = [];
+let qnmode = 0;
+
+$(document).ready(function(){
+  $("#viewqn").click(function(){
+	qnmode = 1 - qnmode;
+	if( qnmode==0 ) {
+		document.getElementById("viewqn").value = "Answers";
+	} else {
+		document.getElementById("viewqn").value = "Questions";
+	}	
+	r = document.getElementById("qrng").value;
+	q = arr_qns[r-1];
+	show_content(q);
+  });
+});
+
+$(document).ready(function(){
+  $("#prev").click(function(){
+	r = document.getElementById("qrng").value;
+	i = parseInt(r);
+	if( i >  1 ) {
+		i = i - 1;
+		r = i.toString();
+	}
+	document.getElementById("qrng").value = r;
+	q = arr_qns[i-1];
+	show_content(q);
+  });
+});
+
+$(document).ready(function(){
+  $("#next").click(function(){
+	m = parseInt(document.getElementById("qrng").max);
+	r = document.getElementById("qrng").value;
+	i = parseInt(r);
+	if( i <  m ) {
+		i = i + 1;
+		r = i.toString();
+	}
+	document.getElementById("qrng").value = r;
+	q = arr_qns[i-1];
+	show_content(q);
+  });
+});
+
+$(document).ready(function(){
+  $("#voice").click(function(){
+	var msg = document.getElementById("qns").innerHTML;
+	textToSpeech(msg);
+  });
+});
+
+document.getElementById("qrng").oninput = function() {
+	r = document.getElementById("qrng").value;
+	q = arr_qns[r-1];
+	show_content(q);
+}
+
+var fn = "https://wingsmaker.github.io/Github/exam_prep.csv";
+fetch(fn).then( r => r.text() ).then( t => processData(t) );
+
+function processData(csv) {
+	var msg = "";
+	var aoa = [];
+	var boa = [];
+	var coa = [];
+	var lines = csv.split("\n");
+	var cnt = lines.length;
+	var txt = "";
+	var key = "";
+	var result = "";
+	for( ii=0; ii < cnt; ii++ ) {
+		linedata = lines[ii].split(",");
+		txt = linedata[0];
+		if( txt != key ) {
+			if (key != "") {
+				msg = aoa.join("<br>");
+				msg = msg.replaceAll('"','');
+				arr_qntext.push(msg);
+				msg = boa.join("<br>");
+				msg = msg.replaceAll('"','');
+				arr_qmemos.push(msg);
+				msg = coa.join("");
+				arr_charts.push(msg);
+				msg = "";
+			}
+			key = txt;
+			aoa = [];
+			boa = [];
+			coa = [];
+			arr_qns.push( key );
+		}		
+		if (txt == key) {
+			qtype = linedata[1];
+			rec  = linedata[2];
+			if ( qtype == "0") {
+				aoa.push( rec );
+			}
+			if ( qtype == "1") {
+				boa.push( rec );
+			}
+			if ( qtype == "2") {
+				coa.push( rec );
+			}
+		}
+	}
+	cnt = arr_qns.length;
+	document.getElementById("qrng").max = cnt - 1;
+	document.getElementById("qrng").min = "1";
+	document.getElementById("qrng").value = "1";
+	q = arr_qns[0];
+	show_content(q);
+}
+
+
+function show_content(key) {
+	var cnt = arr_qns.length;
+	var cht = "";
+	for( ii=0; ii < cnt; ii++ ) {
+		txt = arr_qns[ii];
+		if ( txt == key ) {
+			if( qnmode==0 ) {
+				result = arr_qntext[ii];
+				cht = arr_charts[ii];
+				cht = cht.replace("\r","");
+			} else {
+				result = arr_qmemos[ii];
+			}			
+			ii = cnt + 1;
+		}
+	}
+	msg = "<h3>Question #" + txt + ":</h3><p>" + result + "</p>"
+	document.getElementById("qns").innerHTML = msg;
+	if (cht == "" ) {
+		document.getElementById("cht").innerHTML = "";
+	} else {
+		msg = "<img src='" + cht + "' height='300'>"
+		document.getElementById("cht").innerHTML = msg;
+	}
+}
+
+</script>
+
+</html>
