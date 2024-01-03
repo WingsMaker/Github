@@ -208,6 +208,7 @@
 11,0,
 11,0,D. Single perceptron with tanh activation function
 11,1,Answers : B
+11,2,qn11.jpg
 12,0,The displayed graph is from a foresting model for testing a time series.
 12,0,"Considering the graph only, which conclusion should a Machine Learning Specialist make about the behavior of the model?"
 12,0,
@@ -219,6 +220,7 @@
 12,0,
 12,0,D. The model does not predict the trend or the seasonality well.
 12,1,Answers : D
+12,2,qn12.jpg
 13,0,A Machine Learning Specialist observes several performance problems with the training portion of a machine learning solution on Amazon SageMaker The solution uses a large training dataset 2 TB in size and is using the SageMaker k-means algorithm The observed issues include the unacceptable length of time it takes before the training job launches and poor I/O throughput while training the model.
 13,0,What should the Specialist do to address the performance issues with the current solution?
 13,0,
@@ -411,7 +413,7 @@
 25,0,
 25,0,D. Adding another layer with the 100 neurons
 25,1,Answers : D
-25,1,
+25,2,qn25.jpg
 26,0,A bank's Machine Learning team is developing an approach for credit card fraud detection The company has a large dataset of historical data labeled as fraudulent 
 26,0,The goal is to build a model to take the information from new transactions and predict whether each transaction is fraudulent or not
 26,0,Which built-in Amazon SageMaker machine learning algorithm should be used for modeling this problem?
@@ -1022,6 +1024,7 @@
 68,1,
 68,1,k = 4
 68,1,https://en.wikipedia.org/wiki/Elbow_method_(clustering)
+68,2,qn68.jpg
 69,0,"A Marketing Manager at a pet insurance company plans to launch a targeted marketing campaign on social media to acquire new customers. Currently, the company has the following data in Amazon Aurora"
 69,0,- Profiles for all past and existing customers
 69,0,- Profiles for all past and existing insured pets
