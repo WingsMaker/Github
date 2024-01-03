@@ -308,30 +308,6 @@
 18,0,E. Decrease the XGBoost max_depth parameter because the model is currently overfitting the data.
 18,1,"Answers : D,E"
 18,1,
-18,1,Example :
-18,1,params = {
-18,1," 'objective': 'multi:softprob',"
-18,1," 'tree_method': 'gpu_hist',"
-18,1," 'num_class': 27,"
-18,1," 'seed': 0,"
-18,1," 'max_depth': 2,"
-18,1," 'colsample_bytree': 0.36524046160303747,"
-18,1," 'colsample_bylevel': 0.7008644188368828,"
-18,1," 'grow_policy': 'lossguide',"
-18,1," 'lambda': 1-08,"
-18,1," 'alpha': 0.1,"
-18,1," 'subsample': 0.9,"
-18,1," 'eta': 0.01,"
-18,1, 'eval_metric': 'merror'}
-18,1,
-18,1,"xgb.train(params, dX_train, "
-18,1,"          num_boost_round=100, "
-18,1,"          verbose_eval=10, "
-18,1,"          early_stopping_rounds=10, "
-18,1,"          evals=[(dX_train,'train'), 
-18,1,"          (dX_valid,'valid')],"
-18,1,"          )"
-18,1,
 19,0,"When submitting Amazon SageMaker training jobs using one of the built-in algorithms, which common parameters MUST be specified? (Select THREE.)"
 19,0,
 19,0,A. The training channel identifying the location of training data on an Amazon S3 bucket.
