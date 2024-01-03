@@ -81,6 +81,7 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("#voice").click(function(){
 	var msg = document.getElementById("qns").innerHTML;
+	msg = msg.replaceAll("<br>"," ");
 	textToSpeech(msg);
   });
 });
