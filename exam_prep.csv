@@ -146,7 +146,7 @@
 7,0,
 7,0,C. Create word embedding factors that store edit distance with every other word.
 7,0,
-7,0,D. Download word embedding’s pre-trained on a large corpus.
+7,0,D. Download word embedding's pre-trained on a large corpus.
 7,1,Answers : A
 7,1,
 8,0,A Machine Learning team uses Amazon SageMaker to train an Apache MXNet handwritten digit classifier model using a research dataset. The team wants to receive a notification when the model is overfitting. Auditors want to view the Amazon SageMaker log activity report to ensure there are no unauthorized API calls. What should the Machine Learning team do to address the requirements with the least amount of code and fewest steps?
@@ -292,8 +292,8 @@
 18,0,"The Data Scientist applies the XGBoost algorithm to the data, resulting in the following confusion matrix when the trained model is applied to a previously unseen validation dataset. The accuracy of the model is 99.1%, but the Data Scientist has been asked to reduce the number of false negatives."
 18,0,
 18,0,Predicted                0       1
-18,0,"Actual         0  99,966    34"
-18,0,                      1        877  123
+18,0,Actual         0     99,966     34
+18,0,               1        877    123
 18,0,
 18,0,Which combination of steps should the Data Scientist take to reduce the number of false positive predictions by the model? (Select TWO.)
 18,0,
@@ -328,8 +328,9 @@
 18,1,"          num_boost_round=100, "
 18,1,"          verbose_eval=10, "
 18,1,"          early_stopping_rounds=10, "
-18,1,"          evals=[(dX_train, 'train') , (dX_valid, 'valid')],"
-18,1,          )
+18,1,"          evals=[(dX_train,'train'), 
+18,1,"          (dX_valid,'valid')],"
+18,1,"          )"
 18,1,
 19,0,"When submitting Amazon SageMaker training jobs using one of the built-in algorithms, which common parameters MUST be specified? (Select THREE.)"
 19,0,
@@ -1350,7 +1351,7 @@
 87,1,Specialist through the VPC and the designated notebook instance. The S3 VPC endpoint establishes a private
 87,1,"connection between the VPC and S3, eliminating the need for internet access. The custom S3 bucket policy further"
 87,1,"restricts access to the bucket, ensuring the integrity of the data."
-88,0,"You work in the security department of your company’s IT division. Your company has decided to try to use facial recognition to improve security on their campus. You have been asked to design a system that augments your company’s building access security by scanning the faces of people entering their buildings and recognizing the person as either an employee/contractor/consultant, who is in the company’s database, or  visitor, who is not in their database. Across their many campus locations worldwide your company has over 750,000 employees and over 250,000 contractors and consultants. These workers are all registered in their HR database. Each of these workers has an image of their face stored in the HR database. You have decided to use Amazon Rekognition for your facial recognition solution. On occasion, the Rekognition model fails to recognize visitors to the buildings. What could be the source of the problem?"
+88,0,"You work in the security department of your company's IT division. Your company has decided to try to use facial recognition to improve security on their campus. You have been asked to design a system that augments your company's building access security by scanning the faces of people entering their buildings and recognizing the person as either an employee/contractor/consultant, who is in the company's database, or  visitor, who is not in their database. Across their many campus locations worldwide your company has over 750,000 employees and over 250,000 contractors and consultants. These workers are all registered in their HR database. Each of these workers has an image of their face stored in the HR database. You have decided to use Amazon Rekognition for your facial recognition solution. On occasion, the Rekognition model fails to recognize visitors to the buildings. What could be the source of the problem?"
 88,0,
 88,0,A.
 88,0,Face landmarks filters set to a max sharpness
@@ -1512,7 +1513,7 @@
 95,1,"a binary column, where a value of 1 represents the presence of that category and a value of 0 represents the"
 95,1,absence. This is commonly used in machine learning algorithms to handle categorical data and allow them to be
 95,1,used in mathematical calculations.
-96,0,"A navigation and transportation company is using satellite images to model weather around the world in order to create optimal routes for its ships and planes. The company is using Amazon SageMaker training jobs to build and train its models. However, during training, it takes too long to download the company’s 100 GB data from Amazon S3 to the training instance before the training starts. What should the company do to speed up its training jobs while keeping the costs low?"
+96,0,"A navigation and transportation company is using satellite images to model weather around the world in order to create optimal routes for its ships and planes. The company is using Amazon SageMaker training jobs to build and train its models. However, during training, it takes too long to download the company's 100 GB data from Amazon S3 to the training instance before the training starts. What should the company do to speed up its training jobs while keeping the costs low?"
 96,0,
 96,0,A. Increase the instance size for training
 96,0,
@@ -1619,13 +1620,13 @@
 101,0,Your marketing department wishes to understand how their products are being represented in the various social media services in which they have active content streams. They would like insights into the reception of a current product line so they can plan for the roll out of a new product in the line in the new future. You have been tasked with creating a service that organizes the social media content by sentiment across all languages so that your marketing department can determine how best to introduce the new product. How would you quickly and most efficiently design and build a service for your marketing team that gives insight into the social media sentiment?
 101,0,
 101,0,A.
-101,0,Use the scikit-learn python library to build a sentiment analysis service to provide insight data to the marketing team’s internal application platform. Build a dashboard into the application platform using React or Angular.
+101,0,Use the scikit-learn python library to build a sentiment analysis service to provide insight data to the marketing team's internal application platform. Build a dashboard into the application platform using React or Angular.
 101,0,
 101,0,B.
-101,0,Use the DetectSentiment Amazon Comprehend API as a service to provide insight data to the marketing team’s internal application platform. Build a dashboard into the application platform using React or Angular.
+101,0,Use the DetectSentiment Amazon Comprehend API as a service to provide insight data to the marketing team's internal application platform. Build a dashboard into the application platform using React or Angular.
 101,0,
 101,0,C.
-101,0,Use the Amazon Lex API as a service to implement the to provide insight data to the marketing team’s internal application platform. Build a dashboard into the application platform using React or Angular.
+101,0,Use the Amazon Lex API as a service to implement the to provide insight data to the marketing team's internal application platform. Build a dashboard into the application platform using React or Angular.
 101,0,
 101,0,D.
 101,0,"Use Amazon Translate, Amazon Comprehend, Amazon Kinesis, Amazon Athena, and Amazon QuickSight to build a natural-language-processing (NLP)-powered social media dashboard"
@@ -1670,7 +1671,7 @@
 103,1,C. Transform the dataset into the Recordio protobuf format
 103,1,Explanation
 103,1,"The Specialist should transform the dataset into the Recordio protobuf format. This format is optimized for highperformance, efficient data storage and retrieval, which can improve the speed of training on SageMaker."
-104,0,A social networking organization wants to analyze all the comments and likes from its users to flag offensive language on the site. The organization’s data science team wants to use a Long Short-term Memory (LSTM) architecture to classify the raw sentences from the comments into one of two categories: offensive and
+104,0,A social networking organization wants to analyze all the comments and likes from its users to flag offensive language on the site. The organization's data science team wants to use a Long Short-term Memory (LSTM) architecture to classify the raw sentences from the comments into one of two categories: offensive and
 104,0,nonoffensive. What should the team do to prepare the data for the LSTM?
 104,0,
 104,0,A.
@@ -1707,7 +1708,7 @@
 105,1,"The likelihood of flipping a coin """"heads"""" can be described by the Binomial Distribution. This distribution is used when there are two possible outcomes (in this case, heads or tails) and each flip is independent. The Binomial Distribution calculates the probability of a certain number of successes (in this case, heads) in a fixed number of trials (the number of times the coin is flipped)."
 105,1,
 106,0,You work for a real estate company where you are building a machine learning model to predict the prices of houses.
-106,0,You are using a regression decision tree. As you train your model you see that it is overfitted to your training data and that it doesn’t generalize well to unseen data. How can you improve your situation and get better training results in the most efficient way?
+106,0,You are using a regression decision tree. As you train your model you see that it is overfitted to your training data and that it doesn't generalize well to unseen data. How can you improve your situation and get better training results in the most efficient way?
 106,0,
 106,0,A.
 106,0,Use a random forest by building multiple randomized decision trees and averaging their outputs to get the predictions of the housing prices.
@@ -1810,7 +1811,7 @@
 110,1,"D. For each feature, approximate the missing values using supervised learning based on other features."
 110,1,Explanation
 110,1,"Use supervised learning to predict missing values based on the values of other features. Different supervised learning approaches might have different performances, but any properly implemented supervised learning approach should provide the same or better approximation than mean or median approximation, as proposed in responses A and C. Supervised learning applied to the imputation of missing values is an active field of research."
-111,0,"You are a data scientist working for a cancer screening center. The center has gathered data on many patients that have been screened over the years. The data is obviously skewed toward true negative results, as most screened patients don’t have cancer. You are evaluating several machine learning models to decide which model best predicts true positives when using your cancer screening data. You have split your data into a 70/30 ratio of training set to test set. You now need to decide which metric to use to evaluate your models. Which metric will most accurately determine the model best suited to solve your classification problem?"
+111,0,"You are a data scientist working for a cancer screening center. The center has gathered data on many patients that have been screened over the years. The data is obviously skewed toward true negative results, as most screened patients don't have cancer. You are evaluating several machine learning models to decide which model best predicts true positives when using your cancer screening data. You have split your data into a 70/30 ratio of training set to test set. You now need to decide which metric to use to evaluate your models. Which metric will most accurately determine the model best suited to solve your classification problem?"
 111,0,
 111,0,A.
 111,0,ROC Curve
@@ -1827,7 +1828,7 @@
 111,1,D. PR Curve
 111,1,Explanation
 111,1,"The PR Curve is the most suitable metric to determine the model best suited for the classification problem in this scenario. Since the data is skewed towards true negative results, precision and recall are more appropriate metrics than the ROC curve. Precision measures the proportion of true positive predictions out of all positive predictions, while recall measures the proportion of true positive predictions out of all actual positive cases. The PR Curve combines both precision and recall, providing a more accurate evaluation of the model's performance in identifying true positives."
-112,0,A Data Scientist wants to tune the hyperparameters of a machine learning model to improve the model’s F1score. 
+112,0,A Data Scientist wants to tune the hyperparameters of a machine learning model to improve the model's F1score. 
 112,0,What technique can be used to achieve this desired outcome on Amazon SageMaker? (Select TWO)
 112,0,
 112,0,A.
@@ -2024,7 +2025,7 @@
 122,1,Explanation
 122,1,"Kinesis Firehose is the correct answer for this question. Kinesis Firehose is a fully managed service that automatically scales to handle the transfer of data, such as Apache web logs, syslogs, text, and videos, from various sources to Amazon S3. It requires minimum transformation, making it suitable for the given scenario where the analytics company wants to transfer their web logs, syslogs, text, and videos to Amazon S3 without extensive data manipulation."
 123,0,A video streaming company is looking to create a personalized experience for its customers on its platform. The company wants to provide recommended videos to stream based on what other similar users watched previously. 
-123,0,"To this end, it is collecting its platform’s clickstream data using an ETL pipeline and storing the logs and syslogs in Amazon S3. What kind of algorithm should the company use to create the simplest solution in this situation?"
+123,0,"To this end, it is collecting its platform's clickstream data using an ETL pipeline and storing the logs and syslogs in Amazon S3. What kind of algorithm should the company use to create the simplest solution in this situation?"
 123,0,
 123,0,A.
 123,0,Regression
@@ -2104,7 +2105,7 @@
 126,1,Explanation
 126,1,"The solution that takes the least effort to implement is to ingest CSV data from Amazon Kinesis Data Streams and use Amazon Kinesis Data Firehose to convert the data into Parquet format. This solution eliminates the need for managing and configuring additional services like Apache Kafka Streams, Apache Spark, or Amazon Glue. Amazon Kinesis Data Firehose simplifies the process by automatically converting the CSV data into Parquet format and storing it on Amazon S3."
 126,1,
-127,0,"A manufacturing company wants to increase the longevity of its factory machines by predicting when a machine part is about to stop working, jeopardizing the health of the machine. The company’s team of Data Scientists will build an ML model to accomplish this goal. The model will be trained on data made up of consumption metrics from similar factory machines, and will span a time frame from one hour before a machine part broke down to five minutes after the part degraded. What kind of machine learning algorithm should the company use to build this model?"
+127,0,"A manufacturing company wants to increase the longevity of its factory machines by predicting when a machine part is about to stop working, jeopardizing the health of the machine. The company's team of Data Scientists will build an ML model to accomplish this goal. The model will be trained on data made up of consumption metrics from similar factory machines, and will span a time frame from one hour before a machine part broke down to five minutes after the part degraded. What kind of machine learning algorithm should the company use to build this model?"
 127,0,
 127,0,A.
 127,0,Amazon SageMaker DeepAR
@@ -2126,7 +2127,7 @@
 128,0,Define security group(s) to allow all HTTP inbound/outbound traffic and assign those security group(s) to the Amazon SageMaker notebook instance.
 128,0,
 128,0,B.
-128,0,?onfigure the Amazon SageMaker notebook instance to have access to the VPC. Grant permission in the KMS key policy to the notebook’s KMS role.
+128,0,?onfigure the Amazon SageMaker notebook instance to have access to the VPC. Grant permission in the KMS key policy to the notebook's KMS role.
 128,0,
 128,0,C.
 128,0,Assign an IAM role to the Amazon SageMaker notebook with S3 read access to the dataset. Grant permission in the KMS key policy to that role.
