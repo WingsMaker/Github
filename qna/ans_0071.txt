@@ -1,0 +1,4 @@
+Answers : D
+
+Dropout layers helps to prevent overfitting
+ReLU is an activation function
