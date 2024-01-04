@@ -25,15 +25,20 @@
 <input id="prev" type="submit" value="Previous"/>
 <input id="next" type="submit" value="Next"/>
 <input id="voice" type="submit" value="Voice"/>
+
+<input id="testing" type="submit" value="Test"/>
+
 </div>
 </body>
 
 <script>
-var arr_qns = [];
-var arr_qntext = [];
-var arr_qmemos = [];
-var arr_charts = [];
+var arr_charts = [11,12,25,68];
 let qnmode = 0;
+let max_qns = 133;
+document.getElementById("qrng").max = max_qns - 1;
+document.getElementById("qrng").min = "1";
+document.getElementById("qrng").value = "1";
+display_content(1);
 
 $(document).ready(function(){
   $("#viewqn").click(function(){
@@ -44,8 +49,8 @@ $(document).ready(function(){
 		document.getElementById("viewqn").value = "Questions";
 	}	
 	r = document.getElementById("qrng").value;
-	q = arr_qns[r-1];
-	show_content(q);
+	ii = parseInt(r);
+	display_content(ii);
   });
 });
 
@@ -58,8 +63,7 @@ $(document).ready(function(){
 		r = i.toString();
 	}
 	document.getElementById("qrng").value = r;
-	q = arr_qns[i-1];
-	show_content(q);
+	display_content(i);
   });
 });
 
@@ -73,8 +77,7 @@ $(document).ready(function(){
 		r = i.toString();
 	}
 	document.getElementById("qrng").value = r;
-	q = arr_qns[i-1];
-	show_content(q);
+	display_content(i);
   });
 });
 
@@ -89,93 +92,46 @@ $(document).ready(function(){
   });
 });
 
+$(document).ready(function(){
+  $("#testing").click(function(){
+	load_files();
+  });
+});
+
 document.getElementById("qrng").oninput = function() {
 	r = document.getElementById("qrng").value;
-	q = arr_qns[r-1];
-	show_content(q);
+	ii = parseInt(r);
+	display_content(ii);
 }
 
-var fn = "https://wingsmaker.github.io/Github/exam_prep.csv";
-fetch(fn).then( r => r.text() ).then( t => processData(t) );
-
-function processData(csv) {
-	var msg = "";
-	var aoa = [];
-	var boa = [];
-	var coa = [];
-	var lines = csv.split("\n");
-	var cnt = lines.length;
-	var txt = "";
-	var key = "";
-	var result = "";
-	for( ii=0; ii < cnt; ii++ ) {
-		linedata = lines[ii].split(",");
-		txt = linedata[0];
-		if( txt != key ) {
-			if (key != "") {
-				msg = aoa.join("<br>");
-				msg = msg.replaceAll('"','');
-				arr_qntext.push(msg);
-				msg = boa.join("<br>");
-				msg = msg.replaceAll('"','');
-				arr_qmemos.push(msg);
-				msg = coa.join("");
-				arr_charts.push(msg);
-				msg = "";
-			}
-			key = txt;
-			aoa = [];
-			boa = [];
-			coa = [];
-			arr_qns.push( key );
-		}		
-		if (txt == key) {
-			qtype = linedata[1];
-			rec  = linedata[2];
-			if ( qtype == "0") {
-				aoa.push( rec );
-			}
-			if ( qtype == "1") {
-				boa.push( rec );
-			}
-			if ( qtype == "2") {
-				coa.push( rec );
-			}
-		}
-	}
-	cnt = arr_qns.length;
-	document.getElementById("qrng").max = cnt - 1;
-	document.getElementById("qrng").min = "1";
-	document.getElementById("qrng").value = "1";
-	q = arr_qns[0];
-	show_content(q);
-}
-
-
-function show_content(key) {
-	var cnt = arr_qns.length;
-	var cht = "";
-	for( ii=0; ii < cnt; ii++ ) {
-		txt = arr_qns[ii];
-		if ( txt == key ) {
-			if( qnmode==0 ) {
-				result = arr_qntext[ii];
-				cht = arr_charts[ii];
-				cht = cht.replace("\r","");
-			} else {
-				result = arr_qmemos[ii];
-			}			
-			ii = cnt + 1;
-		}
-	}
-	msg = "<h3>Question #" + txt + ":</h3><p>" + result + "</p>"
-	document.getElementById("qns").innerHTML = msg;
-	if (cht == "" ) {
-		document.getElementById("cht").innerHTML = "";
+function display_content(ii) {
+	var fn,cht,prefix;
+	if( qnmode==0 ) {
+		prefix = "qns_";
 	} else {
-		msg = "<img src='" + cht + "' height='300'>"
-		document.getElementById("cht").innerHTML = msg;
+		prefix = "ans_";
 	}
+	fn = "000" + ii.toString();
+	fn = fn.substr( fn.length - 4);
+	fn = "https://wingsmaker.github.io/Github/qna/" + prefix + fn + ".txt";
+	fetch(fn).then( r => r.text() ).then( t => {
+		var result = t.replaceAll("\n","<br>");
+		var msg = "<h3>Question #" + ii.toString() + ":</h3><p>" + result + "</p>";
+		document.getElementById("qns").innerHTML = msg;
+		if( qnmode==0 ) {
+			cht = "000" + ii.toString();
+			cht = cht.substr( cht.length - 4);
+			cht = "https://wingsmaker.github.io/Github/qna/img_" + cht + ".jpg";		
+			if ( arr_charts.includes(ii) ) {
+				msg = "<img src='" + cht + "' height='300'>";	
+				document.getElementById("cht").innerHTML = msg;	
+			} else {
+				document.getElementById("cht").innerHTML = "";
+			}
+		} else {
+			document.getElementById("cht").innerHTML = "";
+		}
+	});
 }
 
 </script>
