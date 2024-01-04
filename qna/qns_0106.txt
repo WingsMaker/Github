@@ -8,7 +8,7 @@ B.
 Gather additional training data that gives a more diverse representation of the housing price data.
 
 C.
-Use the “dropout” technique to penalize large weights and prevent overfitting.
+Use the 'dropout' technique to penalize large weights and prevent overfitting.
 
 D.
 Use feature selection to eliminate irrelevant features and iteratively train your model until you eliminate the overfitting.
