@@ -25,9 +25,6 @@
 <input id="prev" type="submit" value="Previous"/>
 <input id="next" type="submit" value="Next"/>
 <input id="voice" type="submit" value="Voice"/>
-
-<input id="testing" type="submit" value="Test"/>
-
 </div>
 </body>
 
@@ -89,12 +86,6 @@ $(document).ready(function(){
 	msg = msg.replaceAll("<p>"," ");
 	msg = msg.replaceAll("<br>"," ");
 	textToSpeech(msg);
-  });
-});
-
-$(document).ready(function(){
-  $("#testing").click(function(){
-	load_files();
   });
 });
 
