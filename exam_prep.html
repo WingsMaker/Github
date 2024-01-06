@@ -20,21 +20,27 @@
 <input type="range" min="1" max="300" value="1" id="qrng" style="width: 100%">
 <br>
 <input id="viewqn" type="submit" value="Answers" style="height: 50px"/>
-<input id="prev" type="submit" value="<" style="height: 50px"/>
-<input id="next" type="submit" value=">" style="height: 50px"/>
+<input id="prev" type="submit" value="Prev" style="height: 50px"/>
+<input id="next" type="submit" value="Next" style="height: 50px"/>
 <input id="voice" type="submit" value="Voice" style="height: 50px"/>
+<label for="rate">Speed:</label>
+<input type="range" min="0.5" max="2" value="1" step="0.1" id="rate" />
+<label for="rate">Volume:</label>
+<input type="range" min="0.1" max="1" value="0.5" step="0.1" id="volume" />
+<label for="lang">Voice Type:</label>
+<input type="range" min="0" max="4" value="2" step="1" id="lang" />
 </div>
 </body>
 
 <script>
 const synth = window.speechSynthesis;
 var arr_charts = [11,12,25,68];
-let qnmode = 0;
+let qnmode = 0; 
 let max_qns = 133;
 let voice = new SpeechSynthesisUtterance();
 voice.rate = 1;
 voice.pitch = 1; 
-voice.lang = "en-US-JennyNeural"; // female voice
+voice.lang = "en-SG"; // female -> en-US-JennyNeural male -> en-US, Singapore en-SG
 document.getElementById("qrng").max = max_qns;
 document.getElementById("qrng").min = "1";
 document.getElementById("qrng").value = "1";
@@ -96,6 +102,23 @@ document.getElementById("qrng").oninput = function() {
 	r = document.getElementById("qrng").value;
 	ii = parseInt(r);
 	display_content(ii);
+}
+
+document.getElementById("rate").oninput = function() {
+	r = document.getElementById("rate").value;
+	voice.rate = r;
+}
+
+document.getElementById("volume").oninput = function() {
+	r = document.getElementById("volume").value;
+	voice.volume = r;
+}
+
+document.getElementById("lang").oninput = function() {
+	r = document.getElementById("lang").value;
+	var voice_type = ["en-US", "en-US-JennyNeural", "en-SG", "zh-TW", "zh-CN"];
+	var lang = voice_type[r]
+	voice.lang = lang;
 }
 
 function display_content(ii) {
