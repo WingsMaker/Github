@@ -5,11 +5,9 @@
 <meta name="viewport" content="width=device-width, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="icon" type="image/x-icon" href="https://wingsmaker.github.io/Github/kh.ico">
 <title>Exam Qn Viewer</title>
 <script type="text/javascript" src="https://wingsmaker.github.io/Github/jquery.min.js"></script>
-<script type="text/javascript" src="speech.js" ></script>
 </head>
 <body> 
 <h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
@@ -22,17 +20,22 @@
 <input type="range" min="1" max="300" value="1" id="qrng" width="500px">
 <br>
 <input id="viewqn" type="submit" value="Answers"/>
-<input id="prev" type="submit" value="Previous"/>
-<input id="next" type="submit" value="Next"/>
+<input id="prev" type="submit" value="<"/>
+<input id="next" type="submit" value=">"/>
 <input id="voice" type="submit" value="Voice"/>
 </div>
 </body>
 
 <script>
+const synth = window.speechSynthesis;
 var arr_charts = [11,12,25,68];
 let qnmode = 0;
 let max_qns = 133;
-document.getElementById("qrng").max = max_qns - 1;
+let voice = new SpeechSynthesisUtterance();
+voice.rate = 1;
+voice.pitch = 1; 
+voice.lang = "en-US-JennyNeural"; // female voice
+document.getElementById("qrng").max = max_qns;
 document.getElementById("qrng").min = "1";
 document.getElementById("qrng").value = "1";
 display_content(1);
@@ -84,7 +87,7 @@ $(document).ready(function(){
 	msg = msg.replaceAll("</","<");
 	msg = msg.replaceAll("<h3>"," ");
 	msg = msg.replaceAll("<p>"," ");
-	msg = msg.replaceAll("<br>"," ");
+	msg = msg.replaceAll("<br>",".");
 	textToSpeech(msg);
   });
 });
@@ -123,6 +126,11 @@ function display_content(ii) {
 			document.getElementById("cht").innerHTML = "";
 		}
 	});
+}
+
+function textToSpeech(msg) {
+	voice.text = msg;
+	synth.speak(voice);
 }
 
 </script>
