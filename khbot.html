@@ -16,15 +16,12 @@ html {
 <link rel="icon" type="image/x-icon" href="kh.ico">
 </head>
 <Title>KH Chatbot</Title>
-<body>
+<body style="background-color:black;color:orange"> 
+
 <div id="html">
 <h1>KH Chatbot</h1>
 <p>Desktop user ? <a href='https://wingsmaker.github.io/Github/llm_chat.html'>Use this</a></p><hr>
 <form>
-	<label for="audio">Audio output ?</label><br>
-	<input type="radio" name="audio" id="silence">No
-	<input type="radio" name="audio" id="tts">Yes
-	<br>
 	<label for="prompt">Enter the prompt:</label>
 	<br>
 	<textarea id='prompt' name="Message" rows="5" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
@@ -36,18 +33,56 @@ html {
 	<input type="button" onClick="resetmsg()" style="height:50px; width:150px" value="Clear"/>
 	<input type="button" onClick="ask_palm()" style="height:50px; width:150px" value="Ask Google PaLM"/>
 	<input type="button" onClick="ask_gemini()" style="height:50px; width:150px" value="Ask Google Gemini"/>
-	<br />
+	<input type="button" onClick="readmsg()" style="height:50px; width:150px" value="Voice"/>
+	<br>
+	<label for="rate">Speed:</label>
+	<input type="range" min="0.5" max="2" value="1" step="0.1" id="rate" />
+	<label for="rate">Volume:</label>
+	<input type="range" min="0" max="1" value="1" step="0.1" id="volume" />
+	<br>
+	<label id="langcode" for="lang">Voice:</label>
+	<input type="range" min="0" max="4" value="2" step="1" id="lang" />	
 </form>
 </div>
 </body>
 
-<script type="text/javascript" src="speech.js" ></script>
-
 <script>
 console.clear();
-document.getElementById("silence").checked = true;
-document.getElementById("tts").checked = false;
+const synth = window.speechSynthesis;
+let voice = new SpeechSynthesisUtterance();
+var lang_type = ["US Male", "US Female", "SG", "TW", "CN"];
+var voice_type = ["en-US", "en-US-JennyNeural", "en-SG", "zh-TW", "zh-CN"];
+var voice_opt = 2;
+voice.rate = 1;
+voice.pitch = 1; 
+voice.volume = 1;
+voice.lang = voice_type[voice_opt];
 document.getElementById("prompt").value = "";
+document.getElementById("langcode").innerText = "Voice Type : " + lang_type[voice_opt];
+
+document.getElementById("rate").oninput = function() {
+	r = document.getElementById("rate").value;
+	voice.rate = r;
+}
+
+document.getElementById("volume").oninput = function() {
+	r = document.getElementById("volume").value;
+	voice.volume = r;
+}
+
+document.getElementById("lang").oninput = function() {
+	r = document.getElementById("lang").value;
+	var lang = voice_type[r]
+	voice.lang = lang;
+	document.getElementById("langcode").innerText = "Voice Type : " + lang_type[r];
+}
+
+function readmsg() {
+	var qn = document.getElementById("prompt").value;
+	var msg = document.getElementById("msg").value;
+	var txt = qn + "\n" + msg;
+	textToSpeech(txt);
+}
 
 function resetmsg() {
 	document.getElementById("prompt").value = "";
@@ -83,19 +118,12 @@ function ask_palm() {
 		document.getElementById('msg').value = msg;
 		return;
 	}
-	var tts = document.getElementById("tts").checked;
-	if (tts) {
-		textToSpeech(qn);
-	}
 	document.getElementById("msg").value = "please wait.....";
 	return fetch(url, payload)
 	.then(response => response.json())
 	.then(data => data.candidates[0].output)
 	.then(msg => {
 		document.getElementById('msg').value = msg;
-		if (tts) {
-			textToSpeech(msg);
-		}
 		return msg;
 	})
 	.catch(error => {
@@ -130,14 +158,6 @@ function ask_gemini() {
 		},
 		body: JSON.stringify(requestBody)
 	}
-	var tts = document.getElementById("tts").checked;
-	var regExp = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/g;
-	if (regExp) {
-		tts = false;
-	}
-	if (tts) {
-		textToSpeech(qn);
-	}
 	document.getElementById("msg").value = "please wait.....";
 	return fetch(url, payload)
 	.then(response => response.json())
@@ -146,15 +166,17 @@ function ask_gemini() {
 	.then((msg) => {
 		msg = decodeURIComponent(msg);
 		document.getElementById('msg').value = msg;
-		if (tts) {
-			textToSpeech(msg);
-		}
 		return msg;
 	})
 	.catch(error => {
 		msg = "Error calling api : " + error;
 		document.getElementById("msg").value = msg;
 	});
+}
+
+function textToSpeech(msg) {
+	voice.text = msg;
+	synth.speak(voice);
 }
 
 </script>
