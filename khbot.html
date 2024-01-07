@@ -16,11 +16,12 @@ html {
 <link rel="icon" type="image/x-icon" href="kh.ico">
 </head>
 <Title>KH Chatbot</Title>
-<body style="background-color:black;color:orange"> 
-
+<body style="background-color:black;color:rgb(150, 200, 255)"> 
 <div id="html">
 <h1>KH Chatbot</h1>
-<p>Desktop user ? <a href='https://wingsmaker.github.io/Github/llm_chat.html'>Use this</a></p><hr>
+<a href="https://wingsmaker.github.io/Github/llm_chat.html"
+style="font-size:12px;color:white">Desktop version</a>
+<hr>
 <form>
 	<label for="prompt">Enter the prompt:</label>
 	<br>
@@ -30,18 +31,17 @@ html {
 	<br>
 	<textarea id='msg' name="Message" rows="35" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
 	<br />
-	<input type="button" onClick="resetmsg()" style="height:50px; width:150px" value="Clear"/>
 	<input type="button" onClick="ask_palm()" style="height:50px; width:150px" value="Ask Google PaLM"/>
 	<input type="button" onClick="ask_gemini()" style="height:50px; width:150px" value="Ask Google Gemini"/>
-	<input type="button" onClick="readmsg()" style="height:50px; width:150px" value="Voice"/>
-	<br>
-	<label for="rate">Speed:</label>
+	<label for="rate" style="font-size:12px;">Speed:</label>
 	<input type="range" min="0.5" max="2" value="1" step="0.1" id="rate" />
-	<label for="rate">Volume:</label>
-	<input type="range" min="0" max="1" value="1" step="0.1" id="volume" />
 	<br>
-	<label id="langcode" for="lang">Voice:</label>
-	<input type="range" min="0" max="4" value="2" step="1" id="lang" />	
+	<input type="button" onClick="resetmsg()" style="height:50px; width:150px" value="Clear"/>
+	<input type="button" onClick="readmsg()" style="height:50px; width:150px" value="Voice"/>
+	<label id="langcode" for="lang" style="font-size:12px;">Voice:</label>
+	<input type="range" min="0" max="4" value="2" step="1" id="lang" />
+	<br>
+	
 </form>
 </div>
 </body>
@@ -63,11 +63,6 @@ document.getElementById("langcode").innerText = "Voice Type : " + lang_type[voic
 document.getElementById("rate").oninput = function() {
 	r = document.getElementById("rate").value;
 	voice.rate = r;
-}
-
-document.getElementById("volume").oninput = function() {
-	r = document.getElementById("volume").value;
-	voice.volume = r;
 }
 
 document.getElementById("lang").oninput = function() {
