@@ -9,7 +9,7 @@
 </head>
 
 <body>
-	<h1 align="center">FAQ Bot Demo</h1><br>
+	<h1 align="center">FAQ on Strokes</h1><br>
 	<a href="https://wingsmaker.github.io/Github/Stroke_faq.txt" style="font-size:12px;color:white">Strokes FAQ</a>
 	<hr>
 	<div id="container" class="container">
@@ -138,6 +138,9 @@ function addChat(input, product) {
 
 function askbot_question() {
 	var inp = document.getElementById("input").value;
+	if ( inp.length == 0 ) {
+		return;
+	}
 	var score_list = [];
 	var max_score = 0;
 	var inp_score = 0;
