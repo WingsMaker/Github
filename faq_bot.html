@@ -9,7 +9,9 @@
 </head>
 
 <body>
-	<h1 align="center">FAQ on Strokes</h1><br>
+	<h2 align="center">FAQ on Strokes</h2><br>
+	<p>This is demo using cosine similarity to answer questions based on strokes related FAQ.<br>
+	It recommends the next related question. It does not answer question beyond the given list of questions.</p>
 	<a href="https://wingsmaker.github.io/Github/Stroke_faq.txt" style="font-size:12px;color:white">Strokes FAQ</a>
 	<hr>
 	<div id="container" class="container">
@@ -164,7 +166,12 @@ function askbot_question() {
 	answer = "Do you mean :" + "\n" + qns + "\n\n" + answer;
 	document.getElementById("messages").innerHTML = "";
 	addChat( inp, answer );
-	document.getElementById("input").value = "";
+	var newlist = score_list.slice();
+	newlist[n] = 0;
+	max_score = Math.max.apply(null, newlist);
+	n = newlist.indexOf(max_score);
+	qns = keys_list[n];
+	document.getElementById("input").value = qns;
 }
 
 function checkSimilarity(text1, text2){
