@@ -4,41 +4,32 @@
 <head>
 	<title>FAQ Bot</title>
 	<link rel="icon" type="image/x-icon" href="https://wingsmaker.github.io/Github/kh.ico">
-	<link rel="stylesheet" href="https://wingsmaker.github.io/Github/llm_chat.css" />
+	<link rel="stylesheet" href="faq_bot.css" />
 	<script type="text/javascript" src="https://wingsmaker.github.io/Github/jquery.min.js"></script>	
 </head>
 
 <body>
 	<h2 align="center">FAQ on Strokes</h2><br>
-	<pre>
-	This is demo using cosine similarity to answer questions based on strokes related FAQ.
-	It answers the user's question matching to a list of questions from the FAQ list.
-	It recommends the next related question matching user's question to a list of pre-defined answers.
-	It does not answer question beyond the given list of questions.
-	</pre>
-	<a href="https://wingsmaker.github.io/Github/Stroke_faq.txt" style="font-size:12px;color:white">Strokes FAQ</a>
-	<hr>
 	<div id="container" class="container">
 		<div id="chat" class="chat" >
+			<form>
 			<div id="messages" class="messages"></div>
 			<input id="input" class="input" type="text" cols="50" placeholder="Type something..." autocomplete="off" autofocus="true" />
-			<br>
-			<form>
 			<input type="button" onClick="clearscreen()" value="Clear"/>
 			<input type="button" onClick="show_qns()" value="Qn List"/>
 			<input type="button" onClick="askbot_question()" value="Ask"/>
 			<input type="button" onClick="speakout()" value="Voice"/>
+			<input type="button" onClick="about_this()" value="Info"/>
+			<input type="button" onclick="location.href='https://wingsmaker.github.io/Github/Stroke_faq.txt'" value="FAQ"/>
 			</form>
-			<br>
+			<div id="msg"></div>
 		</div>
 	</div>
-	<br>
-	<div id="msg"></div>
-	<hr>
 	<p>Powered by WingsMaker</p>
 </body>
 
 <script>
+
 console.clear();
 const synth = window.speechSynthesis;
 let voice = new SpeechSynthesisUtterance();
@@ -68,20 +59,6 @@ var stopwords_list = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours',
  "leh", "lah", "lor", "liao", "meh"];
 
 load_dict();
-
-function remove_stopwords(txt) {
-	var txt_list = txt.split(" ");
-	var newlist = [];
-	txt_list.forEach((w)=>{
-		w = w.replace("?", "");
-		w = w.replace(".", "");
-		w = w.replace(",", "");
-		if ( stopwords_list.indexOf(w) == -1) {
-			newlist.push(w);
-		}
-	});
-	return newlist.join(" ");
-}
 
 function load_dict() {
 	var fn = "https://wingsmaker.github.io/Github/Stroke_faq.txt";
@@ -130,12 +107,23 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function clearscreen() {
-	document.getElementById("messages").innerHTML = "";
+	document.getElementById("messages").innerHTML = "<br>".repeat(20);
 	document.getElementById("input").value = "";
+}
+
+function about_this() {
+	var msg = ""
+	msg = "This is demo answering questions based on strokes related FAQ.<br>"
+	msg = msg + "It answers the user's question matching to a list of questions from the FAQ list.<br>"
+	msg = msg + "It recommends the next related question matching user's question to a list of pre-defined answers.<br>"
+	msg = msg + "It does not answer question beyond the given list of questions."	
+	msg = msg + "<br>".repeat(10);
+	document.getElementById("messages").innerHTML = msg;
 }
 
 function show_qns() {
 	var msg = keys_list.join("<br>");
+	msg = msg + "<br>".repeat(10);
 	document.getElementById("messages").innerHTML = msg;
 }
 
@@ -180,6 +168,20 @@ function addChat(input, product) {
     botText.innerText = `${product}`;
   }, 2000
   )
+}
+
+function remove_stopwords(txt) {
+	var txt_list = txt.split(" ");
+	var newlist = [];
+	txt_list.forEach((w)=>{
+		w = w.replace("?", "");
+		w = w.replace(".", "");
+		w = w.replace(",", "");
+		if ( stopwords_list.indexOf(w) == -1) {
+			newlist.push(w);
+		}
+	});
+	return newlist.join(" ");
 }
 
 function askbot_question() {
