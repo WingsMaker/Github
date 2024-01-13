@@ -20,14 +20,16 @@
 			<form>
 			<input type="button" onClick="clearscreen()" value="Clear"/>
 			<input type="button" onClick="show_qns()" value="Qn List"/>
-			<input type="button" onClick="show_ans()" value="QnA List"/>
 			<input type="button" onClick="askbot_question()" value="Ask"/>
+			<input type="button" onClick="speakout()" value="Voice"/>
 			</form>
 			<br>
 		</div>
 	</div>
 	<br>
 	<div id="msg"></div>
+	<hr>
+	<p>Powered by WingsMaker</p>
 </body>
 
 <script>
@@ -43,6 +45,23 @@ var faq_dict = {};
 var keys_list = [];
 
 load_dict();
+
+
+function speakout() {
+	var bot = document.getElementById("bot");
+	var msg = "";
+	if (bot) {
+		msg = document.getElementById("bot").textContent;
+	} else {
+		msg = document.getElementById("messages").textContent;
+	}
+	if ( msg.length == 0) {
+		alert("no message found");
+	} else {
+		msg = msg.replace("?", ".");
+		textToSpeech(msg);
+	}
+}
 
 function load_dict() {
 	var fn = "https://wingsmaker.github.io/Github/Stroke_faq.txt";
@@ -70,6 +89,8 @@ function load_dict() {
 		}
 		keys_list = Object.keys(faq_dict);
 		//keys_list.forEach(alert);
+		msg = keys_list.join("<br>");
+		document.getElementById("messages").innerHTML = msg ;
 	});
 }
 
@@ -78,20 +99,9 @@ function clearscreen() {
 	document.getElementById("input").value = "";
 }
 
-
 function show_qns() {
 	var msg = keys_list.join("<br>");
-	document.getElementById("messages").innerHTML = msg ;
-}
-
-function show_ans() {
-	var msg = "";
-	Object.keys(faq_dict).forEach(function(k) {
-		msg = msg + k + "<br><br>";
-		msg = msg + faq_dict[ k ] + "<br><br>";
-		
-	});
-	document.getElementById("messages").innerHTML = msg ;
+	document.getElementById("messages").innerHTML = msg;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -100,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.code === "Enter") {
 		let input = inputField.value;
 		if (input=="") {
+			alert("Please post your question");
 			return
 		}
 		askbot_question();
@@ -139,6 +150,7 @@ function addChat(input, product) {
 function askbot_question() {
 	var inp = document.getElementById("input").value;
 	if ( inp.length == 0 ) {
+		alert("Please post your question");
 		return;
 	}
 	var score_list = [];
@@ -155,7 +167,6 @@ function askbot_question() {
 	answer = qns + "\n\n" + answer;
 	addChat( inp, answer );
 	document.getElementById("input").value = "";
-	textToSpeech(answer);
 }
 
 function checkSimilarity(text1, text2){
@@ -163,7 +174,6 @@ function checkSimilarity(text1, text2){
 	similarity = Math.round(similarity * 100)
 	return similarity;
 }
-
 
 function textCosineSimilarity(txtA,txtB){
 	let words1 = txtA.split(' ');
