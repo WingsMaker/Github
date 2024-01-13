@@ -3,8 +3,8 @@
 
 <head>
 	<title>FAQ Bot</title>
-	<link rel="icon" type="image/x-icon" href="kh.ico">
-	<link rel="stylesheet" href="llm_chat.css" />
+	<link rel="icon" type="image/x-icon" href="https://wingsmaker.github.io/Github/kh.ico">
+	<link rel="stylesheet" href="https://wingsmaker.github.io/Github/llm_chat.css" />
 	<script type="text/javascript" src="https://wingsmaker.github.io/Github/jquery.min.js"></script>	
 </head>
 
@@ -46,23 +46,6 @@ var keys_list = [];
 
 load_dict();
 
-
-function speakout() {
-	var bot = document.getElementById("bot");
-	var msg = "";
-	if (bot) {
-		msg = document.getElementById("bot").textContent;
-	} else {
-		msg = document.getElementById("messages").textContent;
-	}
-	if ( msg.length == 0) {
-		alert("no message found");
-	} else {
-		msg = msg.replace("?", ".");
-		textToSpeech(msg);
-	}
-}
-
 function load_dict() {
 	var fn = "https://wingsmaker.github.io/Github/Stroke_faq.txt";
 	var msg = "";
@@ -94,16 +77,6 @@ function load_dict() {
 	});
 }
 
-function clearscreen() {
-	document.getElementById("messages").innerHTML = "";
-	document.getElementById("input").value = "";
-}
-
-function show_qns() {
-	var msg = keys_list.join("<br>");
-	document.getElementById("messages").innerHTML = msg;
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   const inputField = document.getElementById("input");  
   inputField.addEventListener("keydown", (e) => {
@@ -118,19 +91,44 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+function clearscreen() {
+	document.getElementById("messages").innerHTML = "";
+	document.getElementById("input").value = "";
+}
+
+function show_qns() {
+	var msg = keys_list.join("<br>");
+	document.getElementById("messages").innerHTML = msg;
+}
+
+function speakout() {
+	var bot = document.getElementById("bot");
+	var msg = "";
+	if (bot) {
+		msg = document.getElementById("bot").textContent;
+	} else {
+		msg = document.getElementById("messages").textContent;
+	}
+	if ( msg.length == 0) msg = document.getElementById("input").value;
+	if ( msg.length > 0) {
+		msg = msg.replace("?", ".");
+		textToSpeech(msg);
+	}
+}
+
 function addChat(input, product) {
   const messagesContainer = document.getElementById("messages");
   let userDiv = document.createElement("div");
   userDiv.id = "user";
   userDiv.className = "user response";
-  userDiv.innerHTML = `<img src="user.png" class="avatar"><span>${input}</span>`;
+  userDiv.innerHTML = `<img src="https://wingsmaker.github.io/Github/user.png" class="avatar"><span>${input}</span>`;
   messagesContainer.appendChild(userDiv);
 
   let botDiv = document.createElement("div");
   let botImg = document.createElement("img");
   let botText = document.createElement("span");
   botDiv.id = "bot";
-  botImg.src = "bot-mini.png";
+  botImg.src = "https://wingsmaker.github.io/Github/dr.jpg";
   botImg.className = "avatar";
   botDiv.className = "bot response";
   botText.innerText = "Typing...";
@@ -144,7 +142,6 @@ function addChat(input, product) {
     botText.innerText = `${product}`;
   }, 2000
   )
-  
 }
 
 function askbot_question() {
@@ -164,7 +161,8 @@ function askbot_question() {
 	var n = score_list.indexOf(max_score);
 	var qns = keys_list[n];
 	var answer = faq_dict[qns];
-	answer = qns + "\n\n" + answer;
+	answer = "Do you mean :" + "\n" + qns + "\n\n" + answer;
+	document.getElementById("messages").innerHTML = "";
 	addChat( inp, answer );
 	document.getElementById("input").value = "";
 }
