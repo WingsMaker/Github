@@ -10,8 +10,12 @@
 
 <body>
 	<h2 align="center">FAQ on Strokes</h2><br>
-	<p>This is demo using cosine similarity to answer questions based on strokes related FAQ.<br>
-	It recommends the next related question. It does not answer question beyond the given list of questions.</p>
+	<pre>
+	This is demo using cosine similarity to answer questions based on strokes related FAQ.
+	It answers the user's question matching to a list of questions from the FAQ list.
+	It recommends the next related question matching user's question to a list of pre-defined answers.
+	It does not answer question beyond the given list of questions.
+	</pre>
 	<a href="https://wingsmaker.github.io/Github/Stroke_faq.txt" style="font-size:12px;color:white">Strokes FAQ</a>
 	<hr>
 	<div id="container" class="container">
@@ -45,8 +49,39 @@ voice.lang = "en-SG";
 
 var faq_dict = {};
 var keys_list = [];
+var stopwords_list = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 
+'ourselves', 'you', "you're", "you've", "you'll", "you'd", 'your', 'yours', 'yourself', 
+'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers', 'herself', 
+'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves',
+ 'what', 'which', 'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are',
+ 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing',
+ 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 
+ 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 
+ 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 
+ 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 
+ 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 
+ 'can', 'will', 'just', 'don', "don't", 'should', "should've", 'now', 
+ 'ain', 'aren', "aren't", 'couldn', "couldn't", 'didn', "didn't", 'doesn', "doesn't", 
+ 'hadn', "hadn't", 'hasn', "hasn't", 'haven', "haven't", 'isn', "isn't", 'ma', 'mightn',
+ "mightn't", 'mustn', "mustn't", 'needn', "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 
+ 'wasn', "wasn't", 'weren', "weren't", 'won', "won't", 'wouldn', "wouldn't", '"',
+ "leh", "lah", "lor", "liao", "meh"];
 
 load_dict();
+
+function remove_stopwords(txt) {
+	var txt_list = txt.split(" ");
+	var newlist = [];
+	txt_list.forEach((w)=>{
+		w = w.replace("?", "");
+		w = w.replace(".", "");
+		w = w.replace(",", "");
+		if ( stopwords_list.indexOf(w) == -1) {
+			newlist.push(w);
+		}
+	});
+	return newlist.join(" ");
+}
 
 function load_dict() {
 	var fn = "https://wingsmaker.github.io/Github/Stroke_faq.txt";
@@ -56,8 +91,10 @@ function load_dict() {
 	fetch(fn).then( r => r.text() ).then( t => {
 		var lines = t.split("\n");
 		var cnt = lines.length;
+		var qns = "";
 		for (let x = 0; x < cnt; x++) {
 			var result = lines[x];
+			msg = result;
 			result = result.replace(String.fromCharCode(10), "");
 			result = result.replace(String.fromCharCode(13), "");
 			n = result.length;
@@ -73,7 +110,6 @@ function load_dict() {
 			}
 		}
 		keys_list = Object.keys(faq_dict);
-		//keys_list.forEach(alert);
 		msg = keys_list.join("<br>");
 		document.getElementById("messages").innerHTML = msg ;
 	});
@@ -153,29 +189,51 @@ function askbot_question() {
 		return;
 	}
 	var score_list = [];
+	var newlist = [];
 	var max_score = 0;
 	var inp_score = 0;
+	var qns = "";
+	var n = 0;
+	var txt = "";
+	var answer = "";
+	document.getElementById("messages").innerHTML = "";
 	Object.keys(faq_dict).forEach(function(k) {
 		inp_score = checkSimilarity(inp, k);
 		score_list.push( inp_score );
 	});
 	max_score = Math.max.apply(null, score_list);
-	var n = score_list.indexOf(max_score);
-	var qns = keys_list[n];
-	var answer = faq_dict[qns];
+	n = score_list.indexOf(max_score);
+	qns = keys_list[n];
+	answer = faq_dict[qns];
 	answer = "Do you mean :" + "\n" + qns + "\n\n" + answer;
-	document.getElementById("messages").innerHTML = "";
 	addChat( inp, answer );
-	var newlist = score_list.slice();
-	newlist[n] = 0;
-	max_score = Math.max.apply(null, newlist);
-	n = newlist.indexOf(max_score);
+	newlist = [];
+	Object.keys(faq_dict).forEach(function(k) {
+		txt = faq_dict[ k ];
+		newlist.push( txt );
+	});
+	newlist[n] = "";
+	score_list = [];
+	newlist.forEach((w)=>{
+		if( w.length > 0 ) {
+			inp_score = checkSimilarity(inp, w);
+			score_list.push( inp_score );
+		} else {
+			score_list.push( 0 );
+		}
+	});	
+	max_score = Math.max.apply(null, score_list);
+	n = score_list.indexOf(max_score);
 	qns = keys_list[n];
 	document.getElementById("input").value = qns;
 }
 
 function checkSimilarity(text1, text2){
-	var similarity = textCosineSimilarity(text1.toLowerCase(),text2.toLowerCase());
+	var txtA = text1.toLowerCase();
+	var txtB = text2.toLowerCase();
+	txtA = remove_stopwords(txtA);
+	txtB = remove_stopwords(txtB);
+	var similarity = textCosineSimilarity(txtA, txtB);
 	similarity = Math.round(similarity * 100)
 	return similarity;
 }
