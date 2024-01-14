@@ -10,17 +10,17 @@
 
 <body>
 	<h2 align="center">FAQ on Strokes</h2><br>
-	<div id="container" class="container">
+	<div id="container" class="container" style="font-size: 20px;">
 		<div id="chat" class="chat" >
 			<form>
 			<div id="messages" class="messages"></div>
-			<input id="input" class="input" type="text" cols="50" placeholder="Type something..." autocomplete="off" autofocus="true" />
-			<input type="button" onClick="clearscreen()" value="Clear"/>
-			<input type="button" onClick="show_qns()" value="Qn List"/>
-			<input type="button" onClick="askbot_question()" value="Ask"/>
-			<input type="button" onClick="speakout()" value="Voice"/>
-			<input type="button" onClick="about_this()" value="Info"/>
-			<input type="button" onclick="location.href='https://wingsmaker.github.io/Github/Stroke_faq.txt'" value="FAQ"/>
+			<input id="input" class="input" type="text" cols="50" placeholder="Type something..." autocomplete="off" autofocus="true"  style="height: 100px;"/>
+			<input type="button" onClick="clearscreen()" value="Clear" style="height: 100px;width: 100px"/>
+			<input type="button" onClick="show_qns()" value="Qn List" style="height: 100px;width: 100px"/>
+			<input type="button" onClick="askbot_question()" value="Ask" style="height: 100px;width: 100px"/>
+			<input type="button" onClick="speakout()" value="Voice" style="height: 100px;width: 100px"/>
+			<input type="button" onClick="about_this()" value="Info" style="height: 100px;width: 100px"/>
+			<input type="button" onclick="location.href='https://wingsmaker.github.io/Github/Stroke_faq.txt'" value="FAQ"  style="height: 100px;width: 100px"/>
 			</form>
 			<div id="msg"></div>
 		</div>
@@ -28,7 +28,6 @@
 </body>
 
 <script>
-
 console.clear();
 const synth = window.speechSynthesis;
 let voice = new SpeechSynthesisUtterance();
@@ -57,6 +56,10 @@ var stopwords_list = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours',
  'wasn', "wasn't", 'weren', "weren't", 'won', "won't", 'wouldn', "wouldn't", '"',
  "leh", "lah", "lor", "liao", "meh"];
 
+if ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 600 ) ) {
+	document.getElementById("container").style.fontSize = "30px";
+}
+  
 load_dict();
 
 function load_dict() {
@@ -297,8 +300,6 @@ function textToSpeech(msg) {
 	voice.text = msg;
 	synth.speak(voice);
 }
-
-
 </script>
 
 </html>
