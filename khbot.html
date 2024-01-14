@@ -17,8 +17,8 @@ html {
 </head>
 <Title>KH Chatbot</Title>
 <body style="background-color:black;color:rgb(150, 200, 255)"> 
-<div id="html">
 <h1>KH Chatbot</h1>
+<div id="html" style="font-size: 20px;">
 <a href="https://wingsmaker.github.io/Github/llm_chat.html"
 style="font-size:12px;color:white">Desktop version</a>
 <hr>
@@ -31,17 +31,16 @@ style="font-size:12px;color:white">Desktop version</a>
 	<br>
 	<textarea id='msg' name="Message" rows="35" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
 	<br />
-	<input type="button" onClick="ask_palm()" style="height:50px; width:150px" value="Ask Google PaLM"/>
-	<input type="button" onClick="ask_gemini()" style="height:50px; width:150px" value="Ask Google Gemini"/>
+	<input type="button" onClick="ask_palm()" style="height:100px; width:150px" value="Ask Google PaLM"/>
+	<input type="button" onClick="ask_gemini()" style="height:100px; width:150px" value="Ask Google Gemini"/>
 	<label for="rate" style="font-size:12px;">Speed:</label>
-	<input type="range" min="0.5" max="2" value="1" step="0.1" id="rate" />
+	<input type="range" min="0.5" max="2" value="1" step="0.1" id="rate"  />
 	<br>
-	<input type="button" onClick="resetmsg()" style="height:50px; width:150px" value="Clear"/>
-	<input type="button" onClick="readmsg()" style="height:50px; width:150px" value="Voice"/>
+	<input type="button" onClick="resetmsg()" style="height:100px; width:150px" value="Clear"/>
+	<input type="button" onClick="readmsg()" style="height:100px; width:150px" value="Voice"/>
 	<label id="langcode" for="lang" style="font-size:12px;">Voice:</label>
 	<input type="range" min="0" max="4" value="2" step="1" id="lang" />
 	<br>
-	
 </form>
 </div>
 </body>
@@ -60,6 +59,10 @@ voice.lang = voice_type[voice_opt];
 document.getElementById("prompt").value = "";
 document.getElementById("langcode").innerText = "Voice Type : " + lang_type[voice_opt];
 
+if ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 600 ) ) {
+	document.getElementById("html").style.fontSize = "30px";
+}
+  
 document.getElementById("rate").oninput = function() {
 	r = document.getElementById("rate").value;
 	voice.rate = r;
