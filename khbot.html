@@ -24,14 +24,16 @@ style="font-size:12px;color:white">Desktop version</a>
 	<br>
 	<textarea id='msg' name="Message" rows="35" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
 	<br />
-	<input type="button" onClick="ask_palm()" style="height:100px; width:150px" value="Ask Google PaLM"/>
-	<input type="button" onClick="ask_gemini()" style="height:100px; width:150px" value="Ask Google Gemini"/>
-	<label for="rate" style="font-size:12px;">Speed:</label>
-	<input type="range" min="0.5" max="2" value="1" step="0.1" id="rate"  />
+	<input id="palm" type="button" onClick="ask_palm()" style="height:80px; width:180px" value="Ask Google PaLM"/>
+	<input id="gemini" type="button" onClick="ask_gemini()" style="height:80px; width:180px" value="Ask Gemini"/>
 	<br>
-	<input type="button" onClick="resetmsg()" style="height:100px; width:150px" value="Clear"/>
-	<input type="button" onClick="readmsg()" style="height:100px; width:150px" value="Voice"/>
-	<label id="langcode" for="lang" style="font-size:12px;">Voice:</label>
+	<input id="clear" type="button" onClick="resetmsg()" style="height:80px; width:120px" value="Clear"/>
+	<input id="voice" type="button" onClick="readmsg()" style="height:80px; width:120px" value="Voice"/>
+	<input id="screen" type="button" onClick="screen_update()" style="height:80px; width:120px" value="Mobile"/>
+	<br>
+	<label for="rate">Speed:</label>
+	<input type="range" min="0.5" max="2" value="1" step="0.1" id="rate"  />
+	<label id="langcode" for="lang">Voice:</label>
 	<input type="range" min="0" max="4" value="2" step="1" id="lang" />
 	<br>
 </form>
@@ -40,6 +42,7 @@ style="font-size:12px;color:white">Desktop version</a>
 
 <script>
 console.clear();
+let desktop_mode = 1;
 const synth = window.speechSynthesis;
 let voice = new SpeechSynthesisUtterance();
 var lang_type = ["US Male", "US Female", "SG", "TW", "CN"];
@@ -51,11 +54,8 @@ voice.volume = 1;
 voice.lang = voice_type[voice_opt];
 document.getElementById("prompt").value = "";
 document.getElementById("langcode").innerText = "Voice Type : " + lang_type[voice_opt];
+desktop_screen();
 
-if ( ( window.innerWidth <= 1024 ) && ( window.innerHeight <= 2048 ) ) {
-	document.getElementById("html").style.fontSize = "40px";
-}
-  
 document.getElementById("rate").oninput = function() {
 	r = document.getElementById("rate").value;
 	voice.rate = r;
@@ -168,6 +168,57 @@ function ask_gemini() {
 function textToSpeech(msg) {
 	voice.text = msg;
 	synth.speak(voice);
+}
+
+function screen_update() {
+	desktop_mode = 1 - desktop_mode;
+	if (desktop_mode == 0) {
+		mobile_screen();
+	} else {
+		desktop_screen();
+	}
+}
+ 
+function mobile_screen() {
+	document.getElementById("html").style.fontSize = "40px";
+	document.getElementById("screen").value = "Desktop";
+	document.getElementById("screen").style.fontSize = "40px";
+	document.getElementById("screen").style.width = "180px";
+	document.getElementById("screen").style.height = "200px";
+	document.getElementById("voice").style.fontSize = "40px";
+	document.getElementById("voice").style.width = "180px";
+	document.getElementById("voice").style.height = "200px";
+	document.getElementById("clear").style.fontSize = "40px";
+	document.getElementById("clear").style.width = "180px";
+	document.getElementById("clear").style.height = "200px";
+	document.getElementById("palm").style.fontSize = "30px";
+	document.getElementById("palm").style.width = "280px";
+	document.getElementById("palm").style.height = "200px";
+	document.getElementById("gemini").style.fontSize = "30px";
+	document.getElementById("gemini").style.width = "280px";
+	document.getElementById("gemini").style.height = "200px";
+	desktop_mode = 0;
+}
+
+function desktop_screen() {
+	document.getElementById("html").style.fontSize = "20px";
+	document.getElementById("screen").value = "Mobile";
+	document.getElementById("screen").style.fontSize = "20px";
+	document.getElementById("screen").style.width = "120px";
+	document.getElementById("screen").style.height = "80px";
+	document.getElementById("voice").style.fontSize = "20px";
+	document.getElementById("voice").style.width = "120px";
+	document.getElementById("voice").style.height = "80px";
+	document.getElementById("clear").style.fontSize = "20px";
+	document.getElementById("clear").style.width = "120px";
+	document.getElementById("clear").style.height = "80px";
+	document.getElementById("palm").style.fontSize = "20px";
+	document.getElementById("palm").style.width = "180px";
+	document.getElementById("palm").style.height = "80px";
+	document.getElementById("gemini").style.fontSize = "20px";
+	document.getElementById("gemini").style.width = "180px";
+	document.getElementById("gemini").style.height = "80px";
+	desktop_mode = 1;
 }
 
 </script>
