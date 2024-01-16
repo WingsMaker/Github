@@ -52,8 +52,8 @@ voice.lang = voice_type[voice_opt];
 document.getElementById("prompt").value = "";
 document.getElementById("langcode").innerText = "Voice Type : " + lang_type[voice_opt];
 
-if ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 600 ) ) {
-	document.getElementById("html").style.fontSize = "30px";
+if ( ( window.innerWidth <= 1024 ) && ( window.innerHeight <= 2048 ) ) {
+	document.getElementById("html").style.fontSize = "40px";
 }
   
 document.getElementById("rate").oninput = function() {
