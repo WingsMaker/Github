@@ -4,7 +4,6 @@
 
 html {
 	height: 100%;
-
 }
 
 body {
@@ -56,7 +55,6 @@ input {
 .messages {
 	display: flex;
 	flex-direction: column;
-	overflow: scroll;
 	height: 90%;
 	width: 100%;
 	background-color: lightblue;
