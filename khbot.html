@@ -1,90 +1,99 @@
 <!DOCTYPE html>
-<html>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, user-scalable=no">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<meta name="mobile-web-app-capable" content="yes">
+<html lang="en">
 <head>
-<script src="https://wingsmaker.github.io/Github/aes.js"></script>
-<link rel="icon" type="image/x-icon" href="kh.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/x-icon" href="https://wingsmaker.github.io/Github/kh.ico">
+    <title>KH Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+			background-color: darkcyan
+        }
+        #chat-container {
+			max-width: 80%;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #message-panel {
+            height: 300px;
+            overflow-y: scroll;
+            padding: 10px;
+            background-color: #fff;
+        }
+        #input-bar {
+            display: flex;
+            padding: 10px;
+            background-color: #eee;
+        }
+        #user-input {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        #send-button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </head>
-<Title>KH Chatbot</Title>
-<body style="background-color:black;color:rgb(150, 200, 255)"> 
-<h1>KH Chatbot</h1>
-<div id="html" style="font-size: 20px;">
-<hr>
-<form>
-	<label for="prompt">Enter the prompt:</label>
-	<br>
-	<textarea id='prompt' name="Message" rows="5" cols="120" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
-	<br>
-	<label for="msg">Results:</label>
-	<br>
-	<textarea id='msg' name="Message" rows="35" cols="120" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
-	<br />
-	<input id="palm" type="button" onClick="ask_palm()" style="height:80px; width:180px" value="Ask Google PaLM"/>
-	<input id="gemini" type="button" onClick="ask_gemini()" style="height:80px; width:180px" value="Ask Gemini"/>
-	<br>
-	<input id="clear" type="button" onClick="resetmsg()" style="height:80px; width:120px" value="Clear"/>
-	<input id="voice" type="button" onClick="readmsg()" style="height:80px; width:120px" value="Voice"/>
-	<input id="screen" type="button" onClick="screen_update()" style="height:80px; width:120px" value="Mobile"/>
-	<br>
-	<label for="rate">Speed:</label>
-	<input type="range" min="0.5" max="2" value="1" step="0.1" id="rate"  />
-	<label id="langcode" for="lang">Voice:</label>
-	<input type="range" min="0" max="4" value="2" step="1" id="lang" />
-	<br>
-</form>
-</div>
+<body>
+	<h2 align="center">KH Chatbot</h2><br>
+    <div id="chat-container">
+        <div id="message-panel"></div>
+        <div id="input-bar">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-button" onclick="askbot_question()">Send</button>
+        </div>
+    </div>
 </body>
 
 <script>
 console.clear();
-let desktop_mode = 1;
-const synth = window.speechSynthesis;
-let voice = new SpeechSynthesisUtterance();
-var lang_type = ["US Male", "US Female", "SG", "TW", "CN"];
-var voice_type = ["en-US", "en-US-JennyNeural", "en-SG", "zh-TW", "zh-CN"];
-var voice_opt = 2;
-voice.rate = 1;
-voice.pitch = 1; 
-voice.volume = 1;
-voice.lang = voice_type[voice_opt];
-document.getElementById("prompt").value = "";
-document.getElementById("langcode").innerText = "Voice Type : " + lang_type[voice_opt];
-desktop_screen();
 
-document.getElementById("rate").oninput = function() {
-	r = document.getElementById("rate").value;
-	voice.rate = r;
+function post_message(question, answer) {
+	var messagePanel = document.getElementById("message-panel");
+	if (answer.trim() == "") {
+		messagePanel.innerHTML = "";
+		return
+	} else {
+		messagePanel.innerHTML = "";
+		var botMessage = document.createElement("div");
+		var botImg = document.createElement("img");
+		botImg.src = "bot.png";
+		botImg.className = "avatar";
+		botMessage.appendChild(botImg);  		
+		var botQn = document.createElement("span");
+		botQn.innerText = question;
+		botMessage.appendChild(botQn);
+		messagePanel.appendChild(botMessage);
+		var botLn = document.createElement("span");
+		botLn.innerHTML = "<br><br>";
+		botMessage.appendChild(botLn);
+		messagePanel.appendChild(botMessage);
+		var botText = document.createElement("span");
+		botText.innerText = answer;
+		botMessage.appendChild(botText);
+		messagePanel.appendChild(botMessage);
+		messagePanel.scrollTop = messagePanel.scrollHeight;		
+	}
 }
 
-document.getElementById("lang").oninput = function() {
-	r = document.getElementById("lang").value;
-	var lang = voice_type[r]
-	voice.lang = lang;
-	document.getElementById("langcode").innerText = "Voice Type : " + lang_type[r];
-}
-
-function readmsg() {
-	var qn = document.getElementById("prompt").value;
-	var msg = document.getElementById("msg").value;
-	var txt = qn + "\n" + msg;
-	textToSpeech(txt);
-}
-
-function resetmsg() {
-	document.getElementById("prompt").value = "";
-	document.getElementById("msg").value = "";
-}
-
-function ask_palm() {
-	var yy = new Date().getFullYear().toString();
-	var token = "U2FsdGVkX1+Gi7exaNogbqY7UpTOtaTZ+Oa2UXpI4XKAO6t7FZPpVhPk8OUCpJImbhBZSNWW/WLaZu+8Lj08ofSp2csD4+1oR26Hs4ApggnuBjhmXimuNJcmoAQLdsV1iDQbE4zTanKjVsxpjfmXh5Kd8Y3PkQbwNHue6X2V+5qk5bU7mH4lrWmxBsAnmuAp70dJM6cYgBH5qMoOk5qnVA==";
-	var url =  CryptoJS.AES.decrypt(token, yy).toString(CryptoJS.enc.Utf8);
+function askbot_question() {
+	var url =  "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyCHNsZU2T8NYy_VTfOT1q9Bgow_y-Hp_ss";
 	var msg = "";
-	var qn = document.getElementById("prompt").value;
-	if (qn=="") {
+	var qn = document.getElementById("user-input").value;
+	if (qn == "") {
 		alert("Please enter the prompt for the chat");
 		return
 	}
@@ -104,120 +113,22 @@ function ask_palm() {
 	var regExp = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/g;
 	if ( regExp.test(qn) == true ) {
 		msg = "Sorry, only pure English text is supported. Try Google Gemini.";
-		document.getElementById('msg').value = msg;
-		return;
+		return "";
 	}
-	document.getElementById("msg").value = "please wait.....";
 	return fetch(url, payload)
 	.then(response => response.json())
 	.then(data => data.candidates[0].output)
 	.then(msg => {
-		document.getElementById('msg').value = msg;
+		post_message( qn, msg );
 		return msg;
 	})
 	.catch(error => {
 		msg = "Error calling api : " + error;
-		document.getElementById('msg').value = msg;
+		return "";
 	});
 }
 
-function ask_gemini() {
-	var msg;
-	var url;
-	var prompt_text;
-	var requestBody;
-	var payload;
-	var qn = document.getElementById("prompt").value;
-	var yy = new Date().getFullYear().toString();
-	var token = "U2FsdGVkX1+1q1q3vNjaw3lwCs5k/dbn4/u2/YdlKdBRWP50dUOQoh3tOZSxtrsApgcOiTnEjA8jJEiqGdaU+PKIMm/f6eT8lKyFkT7eiO9PyjEfQYuyD7NlKuh3yqtU1ooOLmgicVAE7GoitJ+1FSVDuKaNZv1rXBRxw9PylGt15ABUvBsqazDC70Jib6F9";
-	var url =  CryptoJS.AES.decrypt(token, yy).toString(CryptoJS.enc.Utf8);
-	prompt_text = {
-		'text': encodeURIComponent(qn)
-	}
-	parts = {
-		"parts": prompt_text
-	}
-	requestBody = {
-		"contents": parts
-	}
-	payload = {
-		method: 'POST',
-		headers: {
-		  'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(requestBody)
-	}
-	document.getElementById("msg").value = "please wait.....";
-	return fetch(url, payload)
-	.then(response => response.json())
-	.then(content => content.candidates[0].content)
-	.then(parts => parts.parts[0].text)
-	.then((msg) => {
-		msg = decodeURIComponent(msg);
-		document.getElementById('msg').value = msg;
-		return msg;
-	})
-	.catch(error => {
-		msg = "Error calling api : " + error;
-		document.getElementById("msg").value = msg;
-	});
-}
-
-function textToSpeech(msg) {
-	voice.text = msg;
-	synth.speak(voice);
-}
-
-function screen_update() {
-	desktop_mode = 1 - desktop_mode;
-	if (desktop_mode == 0) {
-		mobile_screen();
-	} else {
-		desktop_screen();
-	}
-}
- 
-function mobile_screen() {
-	document.getElementById("html").style.fontSize = "40px";
-	document.getElementById("screen").value = "Desktop";
-	document.getElementById("screen").style.fontSize = "40px";
-	document.getElementById("screen").style.width = "180px";
-	document.getElementById("screen").style.height = "200px";
-	document.getElementById("voice").style.fontSize = "40px";
-	document.getElementById("voice").style.width = "180px";
-	document.getElementById("voice").style.height = "200px";
-	document.getElementById("clear").style.fontSize = "40px";
-	document.getElementById("clear").style.width = "180px";
-	document.getElementById("clear").style.height = "200px";
-	document.getElementById("palm").style.fontSize = "30px";
-	document.getElementById("palm").style.width = "280px";
-	document.getElementById("palm").style.height = "200px";
-	document.getElementById("gemini").style.fontSize = "30px";
-	document.getElementById("gemini").style.width = "280px";
-	document.getElementById("gemini").style.height = "200px";
-	desktop_mode = 0;
-}
-
-function desktop_screen() {
-	document.getElementById("html").style.fontSize = "20px";
-	document.getElementById("screen").value = "Mobile";
-	document.getElementById("screen").style.fontSize = "20px";
-	document.getElementById("screen").style.width = "120px";
-	document.getElementById("screen").style.height = "80px";
-	document.getElementById("voice").style.fontSize = "20px";
-	document.getElementById("voice").style.width = "120px";
-	document.getElementById("voice").style.height = "80px";
-	document.getElementById("clear").style.fontSize = "20px";
-	document.getElementById("clear").style.width = "120px";
-	document.getElementById("clear").style.height = "80px";
-	document.getElementById("palm").style.fontSize = "20px";
-	document.getElementById("palm").style.width = "180px";
-	document.getElementById("palm").style.height = "80px";
-	document.getElementById("gemini").style.fontSize = "20px";
-	document.getElementById("gemini").style.width = "180px";
-	document.getElementById("gemini").style.height = "80px";
-	desktop_mode = 1;
-}
 
 </script>
+
 </html>
