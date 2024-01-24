@@ -11,7 +11,6 @@
 <body>
 	<h2 align="center">FAQ bot</h2><br>
 	<p>Upload a text file of FAQ and then starts asking any questions</p>
-	<a href='Stroke_faq.txt'>Example Strokes-FAQ</a>
 	<hr>
     <div id="chat-container">
         <div id="message-panel"></div>
@@ -83,6 +82,7 @@ function askbot_question() {
 	var n = 0;
 	var txt = "";
 	var answer = "";
+	var msg = "";
 	Object.keys(faq_dict).forEach(function(k) {
 		inp_score = checkSimilarity(inp, k);
 		score_list.push( inp_score );
@@ -102,7 +102,6 @@ function askbot_question() {
 				y = checkSimilarity(inp, x);
 				score_list3.push( y );
 			})
-			//inp_score = checkSimilarity(inp, w);
 			inp_score = Math.max.apply(null, score_list3);
 			score_list2.push( inp_score );
 		} else {
@@ -116,9 +115,12 @@ function askbot_question() {
 		answer = faq_dict[qns];	
 	} else {
 		n = score_list2.indexOf(score2);
+		qns = keys_list[n];
 		answer = newlist[n];
 	}
-	post_message( inp, answer );
+	msg = "Record found : " + qns + "\n\n"
+	msg = msg + answer
+	post_message( inp, msg );
 	document.getElementById("user-input").value = "";
 }
 
