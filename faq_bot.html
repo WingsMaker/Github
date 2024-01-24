@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" type="image/x-icon" href="https://wingsmaker.github.io/Github/kh.ico">
+	<link rel="icon" type="image/x-icon" href="kh.ico">
     <link rel="stylesheet" href="style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FAQ Bot</title>
@@ -11,7 +11,7 @@
 <body>
 	<h2 align="center">FAQ bot</h2><br>
 	<p>Upload a text file of FAQ and then starts asking any questions</p>
-	<a href='https://wingsmaker.github.io/Github/Stroke_faq.txt'>Example Strokes-FAQ</a>
+	<a href='Stroke_faq.txt'>Example Strokes-FAQ</a>
 	<hr>
     <div id="chat-container">
         <div id="message-panel"></div>
@@ -96,7 +96,14 @@ function askbot_question() {
 	score_list2 = [];
 	newlist.forEach((w)=>{
 		if( w.length > 0 ) {
-			inp_score = checkSimilarity(inp, w);
+			w_list = w.split("\n");
+			score_list3 = [];
+			w_list.forEach((x)=>{
+				y = checkSimilarity(inp, x);
+				score_list3.push( y );
+			})
+			//inp_score = checkSimilarity(inp, w);
+			inp_score = Math.max.apply(null, score_list3);
 			score_list2.push( inp_score );
 		} else {
 			score_list2.push( 0 );
@@ -230,8 +237,8 @@ function readSingleFile(evt) {
 				result = result.replace(String.fromCharCode(13), "");
 				n = result.length;
 				if ( n > 0 ) {
-					if ( result.endsWith("?") ) {
-						dkey = result;
+					if ( result.endsWith("\?") ) {
+						dkey = result.replace("\?", "");;
 						faq_dict[ dkey ] = "";
 					} else {
 						msg = faq_dict[ dkey ];
