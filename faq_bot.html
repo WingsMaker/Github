@@ -130,17 +130,22 @@ function askbot_question() {
 	});	
 	if ( sms == "" ) {
 		score2 = Math.max.apply(null, score_list2);
-		if ( score1 > score2 ) {
-			n = score_list.indexOf(score1);
-			qns = keys_list[n];
-			answer = faq_dict[qns];	
+		max_score = Math.max.apply(null,[score1, score2]);
+		if (max_score == 0) {
+			msg = "sorry no matching records found";
 		} else {
-			n = score_list2.indexOf(score2);
-			qns = keys_list[n];
-			answer = newlist[n];
+			if ( score1 > score2 ) {
+				n = score_list.indexOf(score1);
+				qns = keys_list[n];
+				answer = faq_dict[qns];	
+			} else {
+				n = score_list2.indexOf(score2);
+				qns = keys_list[n];
+				answer = newlist[n];
+			}
+			msg = "Result : " + qns + "\n\n";
+			msg = msg + answer;
 		}
-		msg = "Result : " + qns + "\n\n"
-		msg = msg + answer
 	} else {
 		msg = sms;
 	}
@@ -356,5 +361,4 @@ One of the most common side effects of a stroke is trouble with speech. Because 
 }
 
 </script>
-
 </html>
