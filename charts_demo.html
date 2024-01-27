@@ -1,0 +1,333 @@
+<html>
+<head>
+<script type="text/javascript" src="loader.js"></script>
+</head>
+<body>
+	<h2>Vertical and Horizontal, Bars and Columns Charts</h2>
+	<hr>
+	<table>
+	<tr><td>
+	<div id="wordtree1" style="width: 80%; height: 100%;"></div>
+	</td></tr></td></tr>
+	<tr><td>
+	<div id="table1" style="width: 80%; height: 100%;"></div>
+	</td></tr></td></tr>
+	<tr><td>
+	<div id="chart0" style="width: 80%; height: 100%;"></div>
+	</td></tr></td></tr>
+	</table>
+	<table>
+	<tr><td>
+	<div id="chart1" style="width: 30%; height: 500px;"></div>
+	</td><td>
+	<div id="chart2" style="width: 30%; height: 500px;"></div>
+	</td></tr>
+	<tr><td>
+	<div id="chart3" style="width: 30%; height: 500px;"></div>
+	</td><td>	
+	<div id="chart4" style="width: 30%; height: 500px;"></div>
+	</td></tr>
+	<tr><td>
+	<div id="chart5" style="width: 30%; height: 500px;"></div>
+	</td><td>
+	<div id="chart6" style="width: 30%; height: 500px;"></div>
+	</td></tr>
+	<tr><td>
+	<div id="chart7" style="width: 30%; height: 500px;"></div>
+	</td><td>
+	<div id="chart8" style="width: 30%; height: 500px;"></div>
+	</td></tr>
+	<tr><td>
+	<div id="chart9" style="width: 30%; height: 500px;"></div>
+	</td><td>
+	<div id="chart10" style="width: 30%; height: 500px;"></div>
+	</td></tr>
+	</table>
+	<hr>
+</body>
+<script type="text/javascript">
+	// https://developers.google.com/chart/interactive/docs/gallery/barchart
+	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
+	// https://developers.google.com/chart/interactive/docs/gallery/ganttchart
+	// https://developers.google.com/chart/interactive/docs/gallery/wordtree
+	google.charts.load('current', {'packages':['bar', 'corechart', 'scatter', 'table', 'gantt', 'wordtree']});
+	google.charts.setOnLoadCallback(drawChart);
+	
+    function daysToMilliseconds(days) {
+      return days * 24 * 60 * 60 * 1000;
+    }
+	
+	function drawChart() {
+		var data1 = new google.visualization.arrayToDataTable([
+			['Galaxy', 'Distance', 'Brightness'],
+			['Canis Major Dwarf', 8000, 23.3],
+			['Sagittarius Dwarf', 24000, 4.5],
+			['Ursa Major II Dwarf', 30000, 14.3],
+			['Lg. Magellanic Cloud', 50000, 0.9],
+			['Bootes I', 60000, 13.1]
+		]);
+
+		var options1 = {
+			width: 600,
+			chart: {
+				title: 'Nearby galaxies',
+				subtitle: 'distance on the left, brightness on the right'
+			},
+			bars: 'horizontal', // Required for Material Bar Charts.
+			series: {
+				0: { axis: 'distance' }, // Bind series 0 to an axis named 'distance'.
+				1: { axis: 'brightness' } // Bind series 1 to an axis named 'brightness'.
+			},
+			axes: {
+				x: {
+					distance: {label: 'parsecs'}, // Bottom x-axis.
+					brightness: {side: 'top', label: 'apparent magnitude'} // Top x-axis.
+				}
+			}
+		};
+
+		var options3 = {
+			title: 'Nearby galaxies',
+			width: 600,
+			bar: { groupWidth: '75%' },
+			legend: { position: 'top', maxLines: 3 },
+		};
+		
+		var data2 = google.visualization.arrayToDataTable([
+			['Genre', 'Fantasy & Sci Fi', 'Romance', 'Mystery/Crime', 'General',
+			 'Western', 'Literature', { role: 'annotation' } ],
+			['2010', 10, 24, 20, 32, 18, 5, ''],
+			['2020', 16, 22, 23, 30, 16, 9, ''],
+			['2030', 28, 19, 29, 30, 12, 13, '']
+		]);
+
+		var options2 = {
+			isStacked: true,
+			width: 600,
+			height: 400,
+			legend: { position: 'top', maxLines: 3 },
+			bar: { groupWidth: '75%' },
+			hAxis: {
+				minValue: 0,
+				ticks: [0, .3, .6, .9, 1]
+			}
+		};
+
+		var data3 = new google.visualization.DataTable();
+		data3.addColumn('number', 'Day');
+		data3.addColumn('number', 'Guardians of the Galaxy');
+		data3.addColumn('number', 'The Avengers');
+		data3.addColumn('number', 'Transformers: Age of Extinction');
+
+		data3.addRows([
+			[1,  37.8, 80.8, 41.8],
+			[2,  30.9, 69.5, 32.4],
+			[3,  25.4,   57, 25.7],
+			[4,  11.7, 18.8, 10.5],
+			[5,  11.9, 17.6, 10.4],
+			[6,   8.8, 13.6,  7.7],
+			[7,   7.6, 12.3,  9.6],
+			[8,  12.3, 29.2, 10.6],
+			[9,  16.9, 42.9, 14.8],
+			[10, 12.8, 30.9, 11.6],
+			[11,  5.3,  7.9,  4.7],
+			[12,  6.6,  8.4,  5.2],
+			[13,  4.8,  6.3,  3.6],
+			[14,  4.2,  6.2,  3.4]
+			]);
+
+		var options5 = {
+			chart: {
+			  title: 'Box Office Earnings in First Two Weeks of Opening',
+			  subtitle: 'in millions of dollars (USD)'
+			},
+			width: 900,
+			height: 500,
+			axes: {
+			  x: {
+				0: {side: 'top'}
+			  }
+			}
+		};
+
+        var data4 = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options6 = {
+			width: 1000,
+			title: 'My Daily Activities',
+        };
+
+        var options7 = {
+			width: 1000,
+			title: 'My Daily Activities',
+			is3D: true,
+        };
+
+        var options8 = {
+			width: 1000,
+			title: 'My Daily Activities',
+			pieHole: 0.4,
+        };
+
+        var options9 = {
+			width: 1000,
+			title: 'My Daily Activities',
+			pieHole: 0.3,
+			slices: {
+					3: {offset: 0.4},
+					1: {offset: 0.3},
+			},
+        };
+
+        var options10 = {
+			width: 1000,
+        };
+
+		var data5 = new google.visualization.DataTable();
+		data5.addColumn('string', 'Task ID');
+		data5.addColumn('string', 'Task Name');
+		data5.addColumn('date', 'Start Date');
+		data5.addColumn('date', 'End Date');
+		data5.addColumn('number', 'Duration');
+		data5.addColumn('number', 'Percent Complete');
+		data5.addColumn('string', 'Dependencies');
+		data5.addRows([
+			['Research', 'Find sources',
+			 new Date(2015, 0, 1), new Date(2015, 0, 5), null,  100,  null],
+			['Write', 'Write paper',
+			 null, new Date(2015, 0, 9), daysToMilliseconds(3), 25, 'Research,Outline'],
+			['Cite', 'Create bibliography',
+			 null, new Date(2015, 0, 7), daysToMilliseconds(1), 20, 'Research'],
+			['Complete', 'Hand in paper',
+			 null, new Date(2015, 0, 10), daysToMilliseconds(1), 0, 'Cite,Write'],
+			['Outline', 'Outline paper',
+			 null, new Date(2015, 0, 6), daysToMilliseconds(1), 100, 'Research']
+			]);
+			
+        var options10 = {
+			title: 'A Simple Gantt Chart',
+        };
+
+        var data6 = new google.visualization.DataTable();
+        data6.addColumn('string', 'Name');
+        data6.addColumn('number', 'Salary');
+        data6.addColumn('boolean', 'Full Time Employee');
+        data6.addRows([
+			['Mike',  {v: 10000, f: '$10,000'}, true],
+			['Jim',   {v:8000,   f: '$8,000'},  false],
+			['Alice', {v: 12500, f: '$12,500'}, true],
+			['Bob',   {v: 7000,  f: '$7,000'},  true]
+        ]);
+		
+		var nodeListData7 = new google.visualization.arrayToDataTable([
+			['id', 'childLabel', 'parent', 'size', 'weight'],
+			[0, 'Life', -1, 1, 0],
+			[1, 'Archaea', 0, 1, 0],
+			[2, 'Eukarya', 0, 5, 0],
+			[3, 'Bacteria', 0, 1, 0],
+
+			[4, 'Crenarchaeota', 1, 1, 0],
+			[5, 'Euryarchaeota', 1, 1, 0],
+			[6, 'Korarchaeota', 1, 1, 0],
+			[7, 'Nanoarchaeota', 1, 1, 0],
+			[8, 'Thaumarchaeota', 1, 1, 0],
+
+			[9, 'Amoebae', 2, 1, 0],
+			[10, 'Plants', 2, 1, 0],
+			[11, 'Chromalveolata', 2, 1, 0],
+			[12, 'Opisthokonta', 2, 5, 0],
+			[13, 'Rhizaria', 2, 1, 0],
+			[14, 'Excavata', 2, 1, 0],
+
+			[15, 'Animalia', 12, 5, 0],
+			[16, 'Fungi', 12, 2, 0],
+
+			[17, 'Parazoa', 15, 2, 0],
+			[18, 'Eumetazoa', 15, 5, 0],
+
+			[19, 'Radiata', 18, 2, 0],
+			[20, 'Bilateria', 18, 5, 0],
+
+			[21, 'Orthonectida', 20, 2, 0],
+			[22, 'Rhombozoa', 20, 2, 0],
+			[23, 'Acoelomorpha', 20, 1, 0],
+			[24, 'Deuterostomia', 20, 5, 0],
+			[25, 'Chaetognatha', 20, 2, 0],
+			[26, 'Protostomia', 20, 2, 0],
+
+			[27, 'Chordata', 24, 5, 0],
+			[28, 'Hemichordata', 24, 1, 0],
+			[29, 'Echinodermata', 24, 1, 0],
+			[30, 'Xenoturbellida', 24, 1, 0],
+			[31, 'Vetulicolia', 24, 1, 0],
+
+			[32, 'Actinobacteria', 3, 1, 0],
+			[33, 'Firmicutes', 3, 1, 0],
+			[34, 'Tenericutes', 3, 1, 0],
+			[35, 'Aquificae', 3, 1, 0],
+			[36, 'Deinococcus-Thermus', 3, 1, 0],
+			[37, 'Fibrobacteres-Chlorobi/Bacteroidetes', 3, 1, 0],
+			[38, 'Fusobacteria', 3, 1, 0],
+			[39, 'Gemmatimonadetes', 3, 1, 0],
+			[40, 'Nitrospirae', 3, 1, 0],
+			[41, 'Planctomycetes-Verrucomicrobia/Chlamydiae', 3, 1, 0],
+			[42, 'Proteobacteria', 3, 1, 0],
+			[43, 'Spirochaetes', 3, 1, 0],
+			[44, 'Synergistetes', 3, 1, 0],
+			[45, 'Acidobacteria', 3, 1, 0],
+			[46, 'Chloroflexi', 3, 1, 0],
+			[47, 'Chrysiogenetes', 3, 1, 0],
+			[48, 'Cyanobacteria', 3, 1, 0],
+			[49, 'Deferribacteres', 3, 1, 0],
+			[50, 'Dictyoglomi', 3, 1, 0],
+			[51, 'Thermodesulfobacteria', 3, 1, 0],
+			[52, 'Thermotogae', 3, 1, 0]]);
+
+		var options11 = {
+			maxFontSize: 14,
+			width: 2000,
+			format: 'explicit',
+			backgroundColor: '#cba',
+			colors: ['black']
+		};
+
+		var wordtree1 = new google.visualization.WordTree(document.getElementById('wordtree1'));
+		var chart0 = new google.visualization.Gantt(document.getElementById('chart0'));
+		var table1 = new google.visualization.Table(document.getElementById('table1'));
+
+		var chart1 = new google.visualization.BarChart(document.getElementById('chart1'));
+		var chart2 = new google.visualization.BarChart(document.getElementById('chart2'));
+		var chart3 = new google.visualization.ColumnChart(document.getElementById('chart3'));
+		var chart4 = new google.visualization.ColumnChart(document.getElementById('chart4'));
+		var chart5 = new google.visualization.LineChart(document.getElementById('chart5'));
+		var chart6 = new google.visualization.ScatterChart(document.getElementById('chart6'));
+		var chart7 = new google.visualization.PieChart(document.getElementById('chart7'));
+		var chart8 = new google.visualization.PieChart(document.getElementById('chart8'));
+		var chart9 = new google.visualization.PieChart(document.getElementById('chart9'));
+		var chart10 = new google.visualization.PieChart(document.getElementById('chart10'));
+		
+		wordtree1.draw(nodeListData7, options11);
+		chart0.draw(data5, options10);
+        table1.draw(data6, {showRowNumber: true, width: '100%', height: '100%'});
+		
+		chart1.draw(data1, options1);
+		chart2.draw(data2, options2);
+		chart3.draw(data1, options3);
+		chart4.draw(data2, options2);
+		chart5.draw(data3, options5);
+		chart6.draw(data3, options5);
+		chart7.draw(data4, options6);
+		chart8.draw(data4, options7);
+		chart9.draw(data4, options8);
+		chart10.draw(data4, options9);
+	}
+	
+</script>
+</html>
