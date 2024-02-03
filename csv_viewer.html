@@ -35,6 +35,11 @@ td {
 <h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
 <h1>CSV Viewer</h1>
 <br/>
+<b>Search by :<br>
+	<input id="faq" type="text" placeholder="Search here" style="width: 600px">
+</b>
+<div id="msg"></div>
+<hr>
 <div id="hdr"></div>
 <br />
 <div id="aoa_table"></div>
@@ -66,7 +71,7 @@ function processData(csv) {
 	var nn = headers.length;
 	var jj = 0;
 	var txt = "";
-	var table_html = "<table class='table'><tr><th scope='col'>top menu</th><th scope='col'>vertical menu</th><th scope='col'>menu item</th></tr>";	
+	var table_html = "<table class='table'><tbody id='csv'><tr><th scope='col'>top menu</th><th scope='col'>vertical menu</th><th scope='col'>menu item</th></tr>";	
 	for( ii=0; ii < cnt; ii++ ) {
 		linedata = lines[ii].split(",");
 		kk = linedata.length;
@@ -101,7 +106,7 @@ function processData(csv) {
 		table_html = table_html + "</tr>";
 		aoa.push( rec );
 	}
-	table_html = table_html + "</table>";
+	table_html = table_html + "</tbody></table>";
 	document.getElementById("aoa_table").innerHTML = table_html;
 }
 
@@ -109,6 +114,26 @@ function processData(csv) {
 function replace_all(txt, sep) {
 	return txt.split(sep).join('');
 }
+
+$(document).ready(function () {
+	$("#faq").on("keyup", function () {
+		var value = $(this).val().toLowerCase().trim();
+		var cnt = value.length;
+		if ( cnt == 0 ) {
+			return;
+		}
+		var arr_values = value.split("+");			
+		arr_values.filter((x) => x.length > 0);
+		arr_values = arr_values.map((x) => x.trim() );
+		cnt = arr_values.length;
+		$("#csv tr").filter(function () {
+			$(this).toggle((arr_values.map((x) => ( ($(this).text().toLowerCase().indexOf(x) >= 0)?1:0 )).reduce((a, b) => a + b, 0) == cnt));
+		});
+		cnt = $('#csv tr:visible').length
+		document.getElementById("msg").innerHTML = "# of records = " + cnt.toString();
+	});
+});
+
 </script>
 
 </html>
