@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FAQ Bot</title>
-	<script type="text/javascript" src="https://wingsmaker.github.io/Github/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="faqlib.js"></script>
+	<script type="text/javascript" src="strokes_faq.js"></script>
 </head>
 <body>
 	<h2 align="center">FAQ bot</h2><br>
@@ -25,195 +27,49 @@
             Upload FAQ text file
         </label>
 		<br>
-		<input type="button" onClick="demofaq()" value="Demo"
-		style="font-size: 12px;background-color: #4caf50;color: #fff;width: 64px;height: 20px;" />
-
-		<input type="button" value="Example File"
-		onclick="location.href = 'https://wingsmaker.github.io/Github/Stroke_faq.txt'" 
+		<input type="button" onClick="demo_strokes()" value="Strokes Demo"
 		style="font-size: 12px;background-color: #4caf50;color: #fff;width: 88px;height: 20px;" />
-
     </div>
 </body>
 
 <script>
 console.clear();
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const prompt = urlParams.get('prompt')
 
-var faq_dict = {};
-var keys_list = [];
-var stopwords_list = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 
-'ourselves', 'you', "you're", "you've", "you'll", "you'd", 'your', 'yours', 'yourself', 
-'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers', 'herself', 
-'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves',
- 'what', 'which', 'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are',
- 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing',
- 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 
- 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 
- 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 
- 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 
- 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 
- 'can', 'will', 'just', 'don', "don't", 'should', "should've", 'now', 
- 'ain', 'aren', "aren't", 'couldn', "couldn't", 'didn', "didn't", 'doesn', "doesn't", 
- 'hadn', "hadn't", 'hasn', "hasn't", 'haven', "haven't", 'isn', "isn't", 'ma', 'mightn',
- "mightn't", 'mustn', "mustn't", 'needn', "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 
- 'wasn', "wasn't", 'weren', "weren't", 'won', "won't", 'wouldn', "wouldn't", '"',
- "leh", "lah", "lor", "liao", "meh"];
+var faq_list = [];
+var faq_scores = [];
+
 var messagePanel = document.getElementById("message-panel");
+demo_strokes()
 
-function remove_stopwords(txt) {
-	var txt_list = txt.split(" ");
-	var newlist = [];
-	txt_list.forEach((w)=>{
-		w = w.replace("?", "");
-		w = w.replace(".", "");
-		w = w.replace(",", "");
-		if ( stopwords_list.indexOf(w) == -1) {
-			newlist.push(w);
-		}
-	});
-	return newlist.join(" ");
+if (prompt != null) {
+	document.getElementById("user-input").value = prompt;
+	askbot_question();
 }
 
 function askbot_question() {
-	if ( keys_list.length == 0 ) {
+	if ( faq_list.length == 0 ) {
 		messagePanel.innerHTML = "Please upload the FAQ text file before asking any questions.";
 		return;
 	}
 	var inp = document.getElementById("user-input").value;
-	if ( inp.length == 0 ) {
-		messagePanel.innerHTML = "Enter your question in the input box";
+	var qns = inp.toLowerCase();
+	if ( qns.length == 0 ) {
 		return;
 	}
-	var score_list = [];
-	var newlist = [];
 	var max_score = 0;
-	var inp_score = 0;
-	var qns = "";
-	var n = 0;
-	var txt = "";
-	var answer = "";
 	var msg = "";
-	var sms = "";
 	document.getElementById("user-input").value = "";
-	qns = inp.toLowerCase();
-	Object.keys(faq_dict).forEach(function(k) {
-		inp_score = checkSimilarity(inp, k);
-		score_list.push( inp_score );
-	});
-	score1 = Math.max.apply(null, score_list);
-	newlist = [];
-	Object.keys(faq_dict).forEach(function(k) {
-		txt = faq_dict[ k ];
-		newlist.push( txt );
-	});
-	score_list2 = [];
-	m = 0;
-	newlist.forEach((w)=>{
-		if( w.length > 0 ) {
-			w_list = w.split("\n");
-			score_list3 = [];
-			w_list.forEach((x)=>{
-				txt = x.toLowerCase();
-				if ( txt.indexOf(qns) >= 0 ) {
-					sms = "Result : " + keys_list[m] + "\n\n" + w;
-					y = 1;
-				} else {
-					y = checkSimilarity(inp, x);
-				}				
-				score_list3.push( y );
-			})
-			inp_score = Math.max.apply(null, score_list3);
-			score_list2.push( inp_score );
-		} else {
-			score_list2.push( 0 );
-		}
-		m = m + 1;
-	});	
-	if ( sms == "" ) {
-		score2 = Math.max.apply(null, score_list2);
-		max_score = Math.max.apply(null,[score1, score2]);
-		if (max_score == 0) {
-			msg = "sorry no matching records found";
-		} else {
-			if ( score1 > score2 ) {
-				n = score_list.indexOf(score1);
-				qns = keys_list[n];
-				answer = faq_dict[qns];	
-			} else {
-				n = score_list2.indexOf(score2);
-				qns = keys_list[n];
-				answer = newlist[n];
-			}
-			msg = "Result : " + qns + "\n\n";
-			msg = msg + answer;
-		}
-	} else {
-		msg = sms;
+	faq_search(inp);
+	max_score = Math.max.apply(null, faq_scores);
+	n = faq_scores.indexOf(max_score);
+	if (n>=0) {
+		msg = "Result : \n\n" + faq_list[n];
+		post_message( inp, msg );
 	}
-	post_message( inp, msg );	
-}
-
-function checkSimilarity(text1, text2){
-	var txtA = text1.toLowerCase();
-	var txtB = text2.toLowerCase();
-	txtA = remove_stopwords(txtA);
-	txtB = remove_stopwords(txtB);
-	var similarity = textCosineSimilarity(txtA, txtB);
-	similarity = Math.round(similarity * 100)
-	return similarity;
-}
-
-function textCosineSimilarity(txtA,txtB){
-	let words1 = txtA.split(' ');
-	let wordCountA = {};
-	words1.forEach((w)=>{
-		wordCountA[w] = 0;
-	});
-	words1.forEach((w)=>{
-		wordCountA[w] = (wordCountA[w] || 0) +1;
-	});
-	let words2 = txtB.split(' ');
-	let wordCountB = {};
-	words2.forEach((w)=>{
-		wordCountB[w] = 0;
-	});
-	words2.forEach((w)=>{
-		wordCountB[w] = (wordCountB[w] || 0) +1;
-	});
-	let dict = {};
-	for(let key in wordCountA){
-		dict[key] = true;
-	}
-	for(let key in wordCountB){
-		dict[key] = true;
-	}
-	let vectorA = [];
-	for (let term in dict){
-		vectorA.push(wordCountA[term] || 0);
-	}
-	let vectorB = [];
-	for (let term in dict){
-		vectorB.push(wordCountB[term] || 0);
-	}
-	let product = 0;
-	var magA = magnitude(vectorA);
-	var magB = magnitude(vectorB);
-	var magnitudeAB = magA * magB
-	if ( magnitudeAB > 0 ) {
-		let n = vectorA.length;
-		for(let i=0; i < n ; i++) {
-			product = product + (vectorA[i] * vectorB[i]);
-		}
-		product = product / magnitudeAB;
-	}
-	return product;
-}
-
-function magnitude(vec){
-	let sum = 0;
-	for (let i = 0;i<vec.length;i++){
-		sum += vec[i] * vec[i];
-	}
-	return Math.sqrt(sum);
+	return;
 }
 
 function post_message(question, answer) {
@@ -257,7 +113,6 @@ function readSingleFile(evt) {
 			var t = e.target.result;
 			process_dictionary(t);
 			messagePanel.innerHTML = "file loaded, ready to answer questions.";
-			display_questions();
 		}
 		r.readAsText(f);
 	} else { 
@@ -265,99 +120,11 @@ function readSingleFile(evt) {
 	}
 }
 
-function process_dictionary(content) {
-	var lines = content.split("\n");
-	var cnt = lines.length;
-	var qns = "";
-	for (let x = 0; x < cnt; x++) {
-		var result = lines[x];
-		msg = result;
-		result = result.replace(String.fromCharCode(10), "");
-		result = result.replace(String.fromCharCode(13), "");
-		n = result.length;
-		if ( n > 0 ) {
-			if ( result.endsWith("\?") ) {
-				dkey = result.replace("\?", "");;
-				faq_dict[ dkey ] = "";
-			} else {
-				msg = faq_dict[ dkey ];
-				msg = msg + result + "\n";
-				faq_dict[ dkey ] = msg;
-			}
-		}
-	}
-	keys_list = Object.keys(faq_dict);
-	document.getElementById("user-input").value = "";
-}
-
-function display_questions() {
-	var msg = "List of questions in this FAQ demo :<br><br>";
-	for (let x = 0; x < 10; x++) {
-		msg = msg + keys_list[x] + "<br>";
-	}
-	msg = msg + "and more...."
-	messagePanel.innerHTML = msg;
-}
-
-function demofaq() {
-	keys_list = [];
-	faq_dict = {};
-	faq_dict['How do you identify a stroke']="\
-The earlier you can recognize that you or a loved one are having a stroke, the better. It's easy to identify a stroke by remembering the 'F.A.S.T.' acronym.\n\
-F: Face drooping. During a stroke, one side of the face can become numb or droop. This can cause a person's smile to appear uneven.\n\
-A: Arm weakness. A stroke will cause weakness in one arm or a feeling of numbness. If you ask a person who is having a stroke to raise both of their arms, one will drift downward.\n\
-S: Speech difficulty. Someone who is having a stroke will probably not be able to speak properly. Their words will be slurred, or it will be hard to understand them. They often will struggle to repeat a simple sentence.\n\
-T: Time to call 911. If a friend or loved one is exhibiting any of these symptoms, call 911 and get to a hospital. Don't hesitate! Even if only some of the symptoms are present, it's better to be safe than sorry. Be sure to take note of the time that the stroke symptoms started to show, even if they end up going away.\n\
-Common Signs and Symptoms of a Stroke,how to Spot a Stroke Fastsigns of a Possible Stroke\n\
-"
-	faq_dict['How are strokes treated']="\
-Whether a stroke is minor or severe, the most important part of the treatment process is to seek help as soon as possible. The more quickly you seek help, the better chance there is of reducing long-term damage. Depending on the type of stroke, treatment can include a variety of therapies, medications, or, in extreme cases, surgery.\n\
-"
-	faq_dict['Are strokes hereditary']="\
-It does seem that genetics can play a role in the risk for strokes. Some of the conditions that can lead to stroke have hereditary links, such as high blood pressure, high cholesterol, and diabetes. If these conditions run in your family, there is a chance that you share those risk factors.\n\
-Even if these risk factors don't run in your family, if you have a parent who has suffered a stroke, research has shown that you are more likely to have a stroke yourself. According to a study conducted by Boston University, children of individuals who had strokes before age 65 were two times more likely to have a stroke at some point in their lives and four times more likely of having a stroke by age 65, when compared to study participants whose parents had not experienced a stroke.\n\
-"
-	faq_dict['Can stroke patients recover fully']="\
-Yes, it is possible to recover completely from a stroke. Of all stroke patients, 10 percent will make a full recovery, while 25 percent will recover with minor impairments. Some patients (40 percent) will require special care due to more severe impairments, and 10 percent of individuals who had a stroke will need a nursing home or long-term care facility. Unfortunately, 15 percent of stroke patients die after their stroke.\n\
-Strokes have a big impact on the brain and nervous system, and parts of the brain can experience cell damage. Fortunately, the damage is sometimes temporary, and even in cases where the stroke permanently kills brain cells, healthy areas of the brain have been known to take over for the damaged portions. This type of recovery varies from patient to patient and cannot be predicted, but even stroke patients with severe damage sometimes make unexpected recoveries. Rehabilitation and therapy can help the recovery process both physically and mentally.\n\
-"
-	faq_dict['How long does it take to recover from a stroke']="\
-Most stroke patients will need some form of rehabilitation, and the recovery timeline varies by the individual. Some stroke patients recover rather quickly, but if the stroke or the related complications were severe, it can take months or years. The rehab process will change over time depending on the particular patient's needs and progress.\n\
-"
-	faq_dict['How can stroke patients reduce spasticity']="\
-Spasticity—the stiffness or tightness of the muscles that often occurs after a stroke—can be treated through therapy or surgery, depending on the severity of the problem. Minor spasticity can be controlled with oral or injectable medications and stretching, while other cases may require orthoses (braces) or casting. Dynamic splints like the SaeboStretch are important to help prevent spasticity. They are designed to relieve pressure on joints and provide a prolonged muscle stretch. Some medical professionals also recommend electrotherapeutics or cryotherapy to reduce spasticity, and in extreme cases, surgery is an option.\n\
-Saebostretch Dynamic Resting Hand Splint\n\
-"
-	faq_dict['Why are stroke survivors so tired after their stroke']="\
-Post-stroke fatigue is a common complication for stroke patients. This type of fatigue isn't simply being tired; it can feel all-encompassing and overwhelming. Between the physical toll that a stroke takes on a person and the emotional factors that come with a stroke, it's normal to feel constantly run-down. Scientists and doctors have not been able to pinpoint the exact reason why stroke patients feel this way, but it's extremely common after a stroke, regardless of whether the stroke was mild or severe.\n\
-"
-	faq_dict['Can stress cause a stroke']="\
-Yes, stress can absolutely be a contributing factor toward a stroke. While minor day-to-day stress will probably not increase your chance of a stroke, chronic or long-term stress very well could. A 2012 study published in the Journal of Neurology, Neurosurgery & Psychiatry found that individuals who reported chronic stress over the past year were four times more likely to have a stroke than those who did not have chronic stress in their lives.\n\
-"
-	faq_dict['Can a stroke cause paralysis']="\
-Yes, a stroke can cause some degree of paralysis. It's very common for a stroke patient to feel weakness or paralysis, usually on one side of the body. This phenomenon is known as hemiplegia or hemiparesis. If the stroke occurred in the left side of the brain (the part of the brain that controls language and memory), the patient will feel weakness or paralysis on their right side, while a stroke in the right side of the brain (the area of the brain that deals with nonverbal behavior and facial recognition) will result in paralysis or weakness on the left side of the body.\n\
-"
-	faq_dict['Can you recover from paralysis after a stroke']="\
-Yes—through therapy and rehab, patients experiencing hemiplegia or hemiparesis can regain some of the motion and movement that they lost as a result of their stroke. There are a number of techniques that can combat post-stroke paralysis, including range-of-motion exercises, flexibility training, electrical stimulation, assistive devices, and more.\n\
-"
-	faq_dict['Why do stroke survivors have seizures after their stroke']="\
-Just as physical wounds like cuts leave scars, a stroke can scar the brain. This impacts the electrical activity of the brain, sometimes leading to seizures. Seizures are more common in stroke patients who had a hemorrhagic (bleeding) stroke, as opposed to an ischemic stroke. Seizures are also more common after a stroke has occurred in the outer layer of brain tissue known as the cerebral cortex.\n\
-Symptoms of Seizures, Signs and Symptoms of Seizures, Sign and Symptoms of Seizures,\n\
-"
-	faq_dict['How can a caregiver keep a stroke survivor motivated']="\
-Recovering from a stroke can feel daunting and overwhelming, and it can be hard for a stroke patient to find the motivation needed to recover. Stroke patients commonly suffer from apathy and depression. If you are a friend, family member, or caregiver of a stroke patient, do your best to keep them motivated and thinking positively. For tips on how to do so, be sure to check out our blog post on staying motivated through stroke recovery.\n\
-"
-	faq_dict['Can young people have strokes']="\
-Contrary to popular belief, a person of any age can suffer from a stroke. This includes teenagers, children, and even infants. In fact, stroke is the sixth leading cause of death for children, although as children get older, their odds of suffering from a stroke decrease (the greatest chance of having a stroke is during a baby's first year). Considering that people of all ages can have a stroke, it's all the more important to know and recognize the warning signs.\n\
-"
-	faq_dict['How do strokes affect speech']="\
-One of the most common side effects of a stroke is trouble with speech. Because a stroke can damage the part of the brain that deals with language, many stroke patients are left with difficulty speaking or comprehending speech. Even if the language area of the brain isn't damaged by the stroke, the muscle weakness or paralysis that strokes often cause can still make it hard to speak if the face or mouth have been impacted.\n\
-"
-	keys_list = Object.keys(faq_dict);
-	qns = "Can young people have strokes";
+function demo_strokes() {
+	var txt = strokesfaq();
+	process_dictionary( txt );
 	messagePanel.innerHTML = "";
-	document.getElementById("user-input").value = qns;
-	display_questions();
+	document.getElementById("user-input").value = "young people strokes"; // Can young people have strokes ; Compass upgrade ; ZZ_9_5
 }
 
 </script>
