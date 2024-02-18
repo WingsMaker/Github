@@ -23,76 +23,26 @@
 </head>
 
 <body>
-
 	<div class="container">
-
 		<div class="row padded_row">
-
-			<!-- right side content -->
 			<div class="col-md-7">
-
 				<div class="chat_window">
-
 					<div class="top_menu">
 						<div class="title">KH Chatbot</div>
 					</div>
-
-					<!-- dynamically rendered -->
 					<ul class="messages"></ul>
-
-					<!-- input -->
 					<div class="bottom_wrapper">
 						<input id="msg_input" placeholder="Say Hi to begin chat..." />
 						<div id="send_button" class="app_button_1">Send</div>
 					</div>
 
 				</div>
-
 			</div>
-
-			<!-- left side content -->
-			<div class="col-md-5">
-				<div class="chat_window">
-
-					<div class="top_menu">
-						<div class="title">Help</div>
-					</div>
-
-					<!-- help container -->
-					<div class="panel-group" id="accordion">
-
-						<!-- help - 1 -->
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
-										href="#collapse1">About this chatbot</a>
-								</h4>
-							</div>
-							<div id="collapse1" class="panel-collapse collapse in">
-								<div class="panel-body">
-									This is a chatbot demo using Google GenAI.<br>
-									LLM model in use : text-bison-001.<br>
-									Powered by <b>WingsMaker</b>.
-								</div>
-							</div>
-						</div>
-
-					</div>
-
-				</div>
-			</div>
-
 		</div>
-
 	</div>
-
-	<!-- vendor script files -->
-	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+	<script src="jquery-2.2.4.min.js"></script>
+	<script src="bootstrap.min.js">
 	</script>
-
-	<!-- custom scripts -->
 	<script src="khbot.js"></script>
 </body>
 
