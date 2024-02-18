@@ -76,7 +76,7 @@
 		  }
 			r.readAsText(f);
 		} else { 
-			alert("Failed to load file");
+			document.getElementById("msg").innerHTML = "Failed to load file";
 		}
 	}
 
@@ -189,7 +189,6 @@
 		
 		$('#csv tr').on( 'click', 'td', function () {
 			var cell_content = $(this).html().trim();
-			alert(cell_content);
 			var colname = $('#csv tr th').eq($(this).index()).html().trim();
 			var colnum = fields_dict[ colname ];
 			$("#csv tr:visible").each(function(i) {
