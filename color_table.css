@@ -3,7 +3,7 @@ body {
 	background-color: #a0d2eb;
 	} 	
 table
-	{overflow-y: visible !important;}
+	{overflow-y: visible !important; }
 tbody
 	{overflow-y: overlay !important;}
 th
@@ -18,10 +18,12 @@ table
 tbody
 	{overflow-y: overlay !important;}
 th
-	{fontsize: 50px;
+	{fontsize: 50px;	
+	vertical-align: top;	
 	text-overflow: ellipsis !important;}
 td
-	{fontsize: 50px;
+	{fontsize: 50px;	
+	vertical-align: top;
 	text-overflow: ellipsis !important;}
 tr
 	{mso-height-source:auto;}
@@ -44,7 +46,6 @@ br
 	text-decoration:none;
 	font-family:Calibri, sans-serif;
 	mso-font-charset:0;
-	border:none;
 	mso-protection:locked visible;
 	mso-style-name:Normal;
 	mso-style-id:0;}
@@ -64,12 +65,23 @@ td
 	mso-number-format:General;
 	text-align:general;
 	vertical-align:bottom;
-	border:none;
 	mso-background-source:auto;
 	mso-pattern:auto;
 	mso-protection:locked visible;
 	white-space:nowrap;
 	mso-rotate:0;}
+.xl64
+	{mso-style-parent:style0;
+	color:white;
+	text-align:left;
+	border-top:.5pt solid #A9D08E;
+	border-right:none;
+	border-bottom:.5pt solid #A9D08E;
+	border-left:.5pt solid #A9D08E;
+	background:black;
+	border: 1px solid white;
+	mso-pattern:black none;
+	white-space:normal;}
 .xl65
 	{mso-style-parent:style0;
 	text-align:center;
@@ -130,6 +142,7 @@ td
 	border-bottom:.5pt solid #A9D08E;
 	border-left:.5pt solid #A9D08E;
 	background:#A0D2EB;
+	border: 1px solid black;
 	mso-pattern:black none;
 	white-space:normal;}
 .xl71
