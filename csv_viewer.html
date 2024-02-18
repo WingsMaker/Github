@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="mobile-web-app-capable" content="yes">	
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>UC3/4 Search</title>
+    <title>CSV Search</title>
 	<script type="text/javascript" src="jquery.min.js"></script>
 	<link rel="Stylesheet" href="color_table.css">
 </head>
@@ -52,17 +52,17 @@
 		arr_values.filter((x) => x.length > 0);
 		arr_values = arr_values.map((x) => x.trim() );
 		cnt = arr_values.length;
-		$("#uc3 tr").filter(function () {
+		$("#csv tr").filter(function () {
 			$(this).toggle((arr_values.map((x) => ( ($(this).text().toLowerCase().indexOf(x) >= 0)?1:0 )).reduce((a, b) => a + b, 0) == cnt));
 		});
-		document.getElementById("msg").innerHTML = "# of records = " + $('#uc3 tr:visible').length.toString();
+		document.getElementById("msg").innerHTML = "# of records = " + $('#csv tr:visible').length.toString();
 	}
 
 	function unfilter_rows() {
-		$("#uc3 tr").filter(function () {
+		$("#csv tr").filter(function () {
 			$(this).toggle( true );
 		});
-		var n = $('#uc3 tr:visible').length - 1;
+		var n = $('#csv tr:visible').length - 1;
 		document.getElementById("msg").innerHTML = "# of records = " + n.toString();
 	}
 
@@ -93,7 +93,7 @@
 		var txt = "";
 		arr_fields = {};
 		fields_dict = {};
-		var table_html = '<table><tbody id="uc3"><tr id="hdr">';
+		var table_html = '<table><tbody id="csv"><tr id="hdr">';
 		for (ii=0;ii<nn;ii++) {
 			fld = headers[ii];
 			table_html = table_html + "<th class=xl64>" + fld + "</th>"; // class=xl64 
@@ -164,7 +164,7 @@
 		}		
 		table_html = table_html + '</tbody></table>';
 		document.getElementById("csv_table").innerHTML = table_html;
-		nn = $('#uc3 tr:visible').length - 1;
+		nn = $('#csv tr:visible').length - 1;
 		document.getElementById("msg").innerHTML = "# of records = " + nn.toString();
 	}
 
@@ -178,24 +178,24 @@
 
 		$('#csv_table').on( 'click', 'td', function () {
 			var cell_content = $(this).html().trim();
-			var colname = $('#uc3 tr th').eq($(this).index()).html().trim();
+			var colname = $('#csv tr th').eq($(this).index()).html().trim();
 			var colnum = fields_dict[ colname ];
-			$("#uc3 tr:visible").each(function(i) {
+			$("#csv tr:visible").each(function(i) {
 				$(this).toggle( $(this).find("td:eq(" + colnum.toString() + ")").html() == cell_content );
 			});
-			document.getElementById("msg").innerHTML = "# of records = " + $('#uc3 tr:visible').length.toString();
+			document.getElementById("msg").innerHTML = "# of records = " + $('#csv tr:visible').length.toString();
 		});
 		
 		
-		$('#uc3 tr').on( 'click', 'td', function () {
+		$('#csv tr').on( 'click', 'td', function () {
 			var cell_content = $(this).html().trim();
 			alert(cell_content);
-			var colname = $('#uc3 tr th').eq($(this).index()).html().trim();
+			var colname = $('#csv tr th').eq($(this).index()).html().trim();
 			var colnum = fields_dict[ colname ];
-			$("#uc3 tr:visible").each(function(i) {
+			$("#csv tr:visible").each(function(i) {
 				$(this).toggle( $(this).find("td:eq(" + colnum.toString() + ")").html() == cell_content );
 			});
-			document.getElementById("msg").innerHTML = "# of records = " + $('#uc3 tr:visible').length.toString();
+			document.getElementById("msg").innerHTML = "# of records = " + $('#csv tr:visible').length.toString();
         });
 	});
 
@@ -207,7 +207,7 @@
 		var fld = "";
 		arr_fields = {};
 		fields_dict = {};
-		var table_html = '<table><tbody id="uc3"><tr id="hdr">';
+		var table_html = '<table><tbody id="csv"><tr id="hdr">';
 		for (ii=0;ii<nn;ii++) {
 			fld = headers[ii];
 			table_html = table_html + "<th>" + fld + "</th>"; // class=xl64 
@@ -228,7 +228,7 @@
 		}
 		table_html = table_html + '</tbody></table>';
 		document.getElementById("csv_table").innerHTML = table_html;
-		nn = $('#uc3 tr:visible').length - 1;
+		nn = $('#csv tr:visible').length - 1;
 		document.getElementById("msg").innerHTML = "# of records = " + nn.toString();
 	}
 
