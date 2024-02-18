@@ -6,282 +6,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="mobile-web-app-capable" content="yes">	
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>CSV Viewer</title>
+    <title>UC3/4 Search</title>
 	<script type="text/javascript" src="jquery.min.js"></script>
 	<link rel="Stylesheet" href="color_table.css">
 </head>
- <body>
+<body>
 	<img align="left" src="limkopi.jpg"/> 
     <h1>CSV Viewer</h1>
     <h3>Perform a real-time search and filter for csv table</h3>
-    <b>Search by:<br>
+    <b>Search by table name, fieldname, source or description:<br>
         <input id="faq" type="text" placeholder="Search here" style="width: 600px">
     </b>
 	<button id="clr">Clear</button>
+	<input type="file" id="fileinput" />
 	<div id="msg"></div>
 <hr>
-
-<table border=0 cellpadding=0 cellspacing=0 width=742 style='border-collapse:
- collapse;table-layout:fixed;width:557pt;box-sizing: border-box;border-spacing: 0px;
- max-width:100%;font-variant-ligatures: normal;font-variant-caps: normal;
- orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: 0px;
- text-decoration-thickness: initial;text-decoration-style: initial;text-decoration-color: initial'>
- <col width=115 style='mso-width-source:userset;mso-width-alt:4205;width:86pt'>
- <col width=238 style='mso-width-source:userset;mso-width-alt:8704;width:179pt'>
- <col width=389 style='mso-width-source:userset;mso-width-alt:14226;width:292pt'>
-<tbody id="csv">
-<tr id="hdr" height=41 style='height:30.75pt;box-sizing: border-box'>
-<th height=41 class=xl65 width=115 style='height:30.75pt;width:86pt'>top menu</th>
-<th class=xl65 width=238 style='border-left:none;width:179pt'>vertical menu</th>
-<th class=xl65 width=389 style='border-left:none;width:292pt'>menu item</th>
-</tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Apps</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>QR
-  Code Generator</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/qrgen.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Apps</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>QR
-  Code Import</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/qr_import.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Apps</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>QR
-  Code Scan</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/qrscan.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Apps</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Screen
-  Recording</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/screen_record.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Apps</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Text
-  Encryption</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/crypto.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Apps</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Menu
-  Editor</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/menu_editor.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Apps</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>CSV
-  Viewer</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/csv_viewer.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Apps</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Menu
-  Generator</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/menu_generator.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Apps</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Q
-  and A demo</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/qna_demo.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Image</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Ascii
-  Webcam</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/ascii_cam/</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Image</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Face
-  Mask</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/FaceMask.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Image</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Image
-  Classifier(NeuralNetwork)</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/ImageClassAB.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Image</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Image
-  Classifier(KNN)</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/ImageClassKNN.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>RPA</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>UiPath</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/UiPath</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>RPA</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>WinKeys</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/WinKeys</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Documentations</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>FHIR
-  HAPI</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/hapi-fhir</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Documentations</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>HAPI
-  Endpoint API</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>http://hapi.fhir.org/baseR4/swagger-ui/</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Documentations</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Infobase</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Infobase/index.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Documentations</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Telepot
-  - The Telegram API</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://telepot.readthedocs.io/en/latest/</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Documentations</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Awesome
-  AutoIt</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://j2team.github.io/awesome-AutoIt</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Github</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Ascii
-  Camera</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/ascii_cam</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Github</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Cryptosheet</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/crypto</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Github</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>AES
-  Encryption using Excel Macro</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/excel_aes</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Github</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>HDB
-  Sales</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://wingsmaker.github.io/Github/srx_info.html</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Github</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Menu
-  Generator</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/menu_generator</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Github</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Macro
-  Recorder</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/MacroRecorder</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Github</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>QR
-  Code Generator</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/qr_gen</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Github</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>QR
-  Reader</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/qr_reader</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Github</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Resume
-  Ranking</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/ResumeRanking</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Github</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Telepot
-  for telegram</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/telepot</td>
- </tr>
- <tr height=21 style='height:15.75pt;box-sizing: border-box'>
-  <td height=21 class=xl69 style='height:15.75pt;box-sizing: border-box;
-  border-image: initial'>Github</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>Text
-  Encryptor</td>
-  <td class=xl69 style='border-left:none;box-sizing: border-box;border-image: initial'>https://github.com/WingsMaker/text_encryptor</td>
- </tr>
-</tbody></table>
+<div id="csv_table"></div>
 </body>
 
 <script language="JavaScript">
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const search_string =  urlParams.get('search');
+	if (search_string != null) {
+		document.getElementById("faq").value = search_string;
+		filter_rows_by_value(search_string);
+	}	
 	var arr_fields = $("#hdr th").map( (x) => document.getElementById("hdr").getElementsByTagName("th")[x].innerHTML );
 	var fields_dict = {};
 	for (var i = 0; i < $("#hdr th").length; i++) {
-		fields_dict[ arr_fields[i] ] = i;
+		fields_dict[ arr_fields[i] ] = i;		
 	}
-	var n = $('#csv tr:visible').length - 1;
-	document.getElementById("msg").innerHTML = "# of records = " + n.toString();		
 	
 	function filter_rows() {
-		var value = $(this).val().toLowerCase().trim();
-		var cnt = value.length;
+		var filter_value = $(this).val().toLowerCase().trim();
+		filter_rows_by_value(filter_value);
+	}
+
+	function filter_rows_by_value(filter_value) {
+		var cnt = filter_value.length;
 		if ( cnt == 0 ) {
 			return;
 		}
-		var arr_values = value.split("+");			
+		var arr_values = filter_value.split("+");			
 		arr_values.filter((x) => x.length > 0);
 		arr_values = arr_values.map((x) => x.trim() );
 		cnt = arr_values.length;
-		$("#csv tr").filter(function () {
+		$("#uc3 tr").filter(function () {
 			$(this).toggle((arr_values.map((x) => ( ($(this).text().toLowerCase().indexOf(x) >= 0)?1:0 )).reduce((a, b) => a + b, 0) == cnt));
 		});
-		document.getElementById("msg").innerHTML = "# of records = " + $('#csv tr:visible').length.toString();
+		document.getElementById("msg").innerHTML = "# of records = " + $('#uc3 tr:visible').length.toString();
 	}
 
 	function unfilter_rows() {
-		$("#csv tr").filter(function () {
+		$("#uc3 tr").filter(function () {
 			$(this).toggle( true );
 		});
-		var n = $('#csv tr:visible').length - 1;
-		document.getElementById("msg").innerHTML = "# of records = " + n.toString();		
+		var n = $('#uc3 tr:visible').length - 1;
+		document.getElementById("msg").innerHTML = "# of records = " + n.toString();
+	}
+
+	function readSingleFile(evt) {
+		var f = evt.target.files[0]; 
+		if (f) {
+			var r = new FileReader();
+			r.onload = function(e) { 
+				csv = e.target.result;
+				processData(csv);
+		  }
+			r.readAsText(f);
+		} else { 
+			alert("Failed to load file");
+		}
+	}
+
+	function processData(csv) {
+		var lines = csv.split("\n");
+		var cnt = lines.length;
+		var headers = lines[0].split(",");
+		var nn = headers.length;
+		var fld = "";
+		var table_rows = {};
+		var p = 0;
+		var q = 0;
+		var r = 0;
+		var txt = "";
+		arr_fields = {};
+		fields_dict = {};
+		var table_html = '<table><tbody id="uc3"><tr id="hdr">';
+		for (ii=0;ii<nn;ii++) {
+			fld = headers[ii];
+			table_html = table_html + "<th class=xl64>" + fld + "</th>"; // class=xl64 
+			arr_fields[i] = fld;
+			fields_dict[ fld ] = ii;			
+		}	
+		table_html = table_html + "</tr>";
+		p = 0;
+		q = 0;
+		for( ii=1; ii < cnt; ii++ ) {
+			linedata = lines[ii]
+			if ( q == 0 ) {
+				if ( linedata.includes(',"') ) {
+					q = 1;				
+					if ( linedata.includes('",') ) {
+						q = 0;
+						table_rows[ p ] = linedata;
+						p = p + 1;					
+					} else {
+						q = 1;
+						table_rows[ p ] = linedata + "<br>";
+					}
+				} else {
+					q = 0;
+					table_rows[ p ] = linedata;
+					p = p + 1;
+				}
+			} else {
+				if ( linedata.includes('",') ) {
+					table_rows[ p ] = table_rows[ p ] + linedata;
+					if ( linedata.includes(',"') ) {
+						q = 1;
+						table_rows[ p ] = table_rows[ p ] + "<br>";
+					} else {
+						q = 0;
+						p = p + 1;
+					}
+				} else {
+					q = 1;
+					table_rows[ p ] = table_rows[ p ] + linedata + "<br>";
+				}			
+			}
+		}
+		txt =  table_rows[p - 1];
+		if ( txt.length == 0 ) {
+			p = p -1;
+		}
+		var t1={},t2={};
+		for( ii=0; ii < p; ii++ ) {
+			table_html = table_html + '<tr>'; 
+			txt =  table_rows[ii];
+			t1 = txt.split(',"');
+			if ( t1.length > 1 ) {
+				q = t1[1];
+				t2 = q.split('",');
+				q = t2[0];
+				q = q.replaceAll(",","`");
+				table_rows[ii] = t1[0] + "," + q + "," + t2[1];
+			}
+			linedata = table_rows[ii].split(",");
+			kk = linedata.length;
+			for( jj=0; jj < kk; jj++ ) {					
+				txt = linedata[jj];
+				txt = txt.replaceAll("`",",");
+				table_html = table_html + '<td class=xl70>' + txt + '</td>';
+			}
+			table_html = table_html + "</tr>";
+		}		
+		table_html = table_html + '</tbody></table>';
+		document.getElementById("csv_table").innerHTML = table_html;
+		nn = $('#uc3 tr:visible').length - 1;
+		document.getElementById("msg").innerHTML = "# of records = " + nn.toString();
 	}
 
 	$(document).ready(function () {
@@ -291,17 +175,68 @@
 		});	
 
 		$("#faq").on("keyup", filter_rows);
-		
-		$('#csv tr').on( 'click', 'td', function () {
+
+		$('#csv_table').on( 'click', 'td', function () {
 			var cell_content = $(this).html().trim();
-			var colname = $('#csv tr th').eq($(this).index()).html().trim();
+			var colname = $('#uc3 tr th').eq($(this).index()).html().trim();
 			var colnum = fields_dict[ colname ];
-			$("#csv tr:visible").each(function(i) {
+			$("#uc3 tr:visible").each(function(i) {
 				$(this).toggle( $(this).find("td:eq(" + colnum.toString() + ")").html() == cell_content );
 			});
-			document.getElementById("msg").innerHTML = "# of records = " + $('#csv tr:visible').length.toString();
+			document.getElementById("msg").innerHTML = "# of records = " + $('#uc3 tr:visible').length.toString();
+		});
+		
+		
+		$('#uc3 tr').on( 'click', 'td', function () {
+			var cell_content = $(this).html().trim();
+			alert(cell_content);
+			var colname = $('#uc3 tr th').eq($(this).index()).html().trim();
+			var colnum = fields_dict[ colname ];
+			$("#uc3 tr:visible").each(function(i) {
+				$(this).toggle( $(this).find("td:eq(" + colnum.toString() + ")").html() == cell_content );
+			});
+			document.getElementById("msg").innerHTML = "# of records = " + $('#uc3 tr:visible').length.toString();
         });
 	});
-</script>
 
+	function processData1(csv) {
+		var lines = csv.split("\n");
+		var cnt = lines.length;
+		var headers = lines[0].split(",");
+		var nn = headers.length;
+		var fld = "";
+		arr_fields = {};
+		fields_dict = {};
+		var table_html = '<table><tbody id="uc3"><tr id="hdr">';
+		for (ii=0;ii<nn;ii++) {
+			fld = headers[ii];
+			table_html = table_html + "<th>" + fld + "</th>"; // class=xl64 
+			arr_fields[i] = fld;
+			fields_dict[ fld ] = ii;			
+		}	
+		table_html = table_html + "</tr>";
+		for( ii=1; ii < cnt; ii++ ) {
+			linedata = lines[ii].split(",");
+			kk = linedata.length;
+			table_html = table_html + '<tr>'; 
+			for( jj=0; jj < kk; jj++ ) {					
+				txt = linedata[jj];
+				txt = txt.replaceAll("`",",");
+				table_html = table_html + '<td class=xl70>' + txt + '</td>';
+			}
+			table_html = table_html + "</tr>";
+		}
+		table_html = table_html + '</tbody></table>';
+		document.getElementById("csv_table").innerHTML = table_html;
+		nn = $('#uc3 tr:visible').length - 1;
+		document.getElementById("msg").innerHTML = "# of records = " + nn.toString();
+	}
+
+	
+	document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+	
+	fetch("https://wingsmaker.github.io/Github/Stroke_faq.csv").then( r => r.text() ).then( t => processData(t) );
+
+	
+</script>
 </html>
