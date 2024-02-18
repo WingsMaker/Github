@@ -1,134 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" type="image/x-icon" href="https://wingsmaker.github.io/Github/kh.ico">
-    <title>KH Bot</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-			background-color: darkcyan
-        }
-        #chat-container {
-			max-width: 80%;
-            margin: 20px auto;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        #message-panel {
-            height: 600px;
-            overflow-y: scroll;
-            padding: 10px;
-            background-color: #fff;
-        }
-        #input-bar {
-            display: flex;
-            padding: 10px;
-            background-color: #eee;
-        }
-        #user-input {
-            flex: 1;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-right: 5px;
-        }
-        #send-button {
-            background-color: #4caf50;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-    </style>
+
+	<!-- seo related -->
+	<title>KH Bot</title>
+
+	<!-- meta related -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<!-- vendor css & style files -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300|Open+Sans:300|Oxygen|Material+Icons"
+		rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+	<!-- custom css -->
+	<link rel="stylesheet" type="text/css" href="khbot.css">
+	<link rel="icon" type="image/x-icon" href="kh.ico">
+
 </head>
+
 <body>
-	<h2 align="center">KH Chatbot</h2><br>
-    <div id="chat-container">
-        <div id="message-panel"></div>
-        <div id="input-bar">
-            <input type="text" id="user-input" placeholder="Type your message...">
-            <button id="send-button" onclick="askbot_question()">Send</button>
-        </div>
-    </div>
+
+	<div class="container">
+
+		<div class="row padded_row">
+
+			<!-- right side content -->
+			<div class="col-md-7">
+
+				<div class="chat_window">
+
+					<div class="top_menu">
+						<div class="title">KH Chatbot</div>
+					</div>
+
+					<!-- dynamically rendered -->
+					<ul class="messages"></ul>
+
+					<!-- input -->
+					<div class="bottom_wrapper">
+						<input id="msg_input" placeholder="Say Hi to begin chat..." />
+						<div id="send_button" class="app_button_1">Send</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<!-- left side content -->
+			<div class="col-md-5">
+				<div class="chat_window">
+
+					<div class="top_menu">
+						<div class="title">Help</div>
+					</div>
+
+					<!-- help container -->
+					<div class="panel-group" id="accordion">
+
+						<!-- help - 1 -->
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+										href="#collapse1">About this chatbot</a>
+								</h4>
+							</div>
+							<div id="collapse1" class="panel-collapse collapse in">
+								<div class="panel-body">
+									This is a chatbot demo using Google GenAI.<br>
+									LLM model in use : text-bison-001.<br>
+									Powered by <b>WingsMaker</b>.
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- vendor script files -->
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+	</script>
+
+	<!-- custom scripts -->
+	<script src="khbot.js"></script>
 </body>
-
-<script>
-console.clear();
-
-function post_message(question, answer) {
-	var messagePanel = document.getElementById("message-panel");
-	if (answer.trim() == "") {
-		messagePanel.innerHTML = "";
-		return
-	} else {
-		messagePanel.innerHTML = "";
-		var botMessage = document.createElement("div");
-		var botImg = document.createElement("img");
-		botImg.src = "bot.png";
-		botImg.className = "avatar";
-		botMessage.appendChild(botImg);  		
-		var botQn = document.createElement("span");
-		botQn.innerText = question;
-		botMessage.appendChild(botQn);
-		messagePanel.appendChild(botMessage);
-		var botLn = document.createElement("span");
-		botLn.innerHTML = "<br><br>";
-		botMessage.appendChild(botLn);
-		messagePanel.appendChild(botMessage);
-		var botText = document.createElement("span");
-		botText.innerText = answer;
-		botMessage.appendChild(botText);
-		messagePanel.appendChild(botMessage);
-		messagePanel.scrollTop = messagePanel.scrollHeight;		
-	}
-}
-
-function askbot_question() {
-	var url =  "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyCHNsZU2T8NYy_VTfOT1q9Bgow_y-Hp_ss";
-	var msg = "";
-	var qn = document.getElementById("user-input").value;
-	if (qn == "") {
-		alert("Please enter the prompt for the chat");
-		return
-	}
-	var prompt = {
-		'text': qn
-	}
-	var requestBody = {
-		"prompt": prompt
-	}
-	payload = {
-		method: 'POST',
-		headers: {
-		  'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(requestBody)
-	}
-	var regExp = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/g;
-	if ( regExp.test(qn) == true ) {
-		msg = "Sorry, only pure English text is supported. Try Google Gemini.";
-		return "";
-	}
-	return fetch(url, payload)
-	.then(response => response.json())
-	.then(data => data.candidates[0].output)
-	.then(msg => {
-		post_message( qn, msg );
-		return msg;
-	})
-	.catch(error => {
-		msg = "Error calling api : " + error;
-		return "";
-	});
-}
-
-
-</script>
 
 </html>
