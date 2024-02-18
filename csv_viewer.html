@@ -198,40 +198,6 @@
 			document.getElementById("msg").innerHTML = "# of records = " + $('#csv tr:visible').length.toString();
         });
 	});
-
-	function processData1(csv) {
-		var lines = csv.split("\n");
-		var cnt = lines.length;
-		var headers = lines[0].split(",");
-		var nn = headers.length;
-		var fld = "";
-		arr_fields = {};
-		fields_dict = {};
-		var table_html = '<table><tbody id="csv"><tr id="hdr">';
-		for (ii=0;ii<nn;ii++) {
-			fld = headers[ii];
-			table_html = table_html + "<th>" + fld + "</th>"; // class=xl64 
-			arr_fields[i] = fld;
-			fields_dict[ fld ] = ii;			
-		}	
-		table_html = table_html + "</tr>";
-		for( ii=1; ii < cnt; ii++ ) {
-			linedata = lines[ii].split(",");
-			kk = linedata.length;
-			table_html = table_html + '<tr>'; 
-			for( jj=0; jj < kk; jj++ ) {					
-				txt = linedata[jj];
-				txt = txt.replaceAll("`",",");
-				table_html = table_html + '<td class=xl70>' + txt + '</td>';
-			}
-			table_html = table_html + "</tr>";
-		}
-		table_html = table_html + '</tbody></table>';
-		document.getElementById("csv_table").innerHTML = table_html;
-		nn = $('#csv tr:visible').length - 1;
-		document.getElementById("msg").innerHTML = "# of records = " + nn.toString();
-	}
-
 	
 	document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
 	
