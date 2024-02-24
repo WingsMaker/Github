@@ -84,6 +84,7 @@ body {
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	margin-right: 5px;
+	background-color: aquamarine;
 }
 #send-button {
 	background-color: #4caf50;
