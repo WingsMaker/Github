@@ -1,7 +1,10 @@
-SGP_01,Completed,1
-SGP_01,Cancelled,2
-SGP_03,In-Progress,3
-SGP_03,Cancelled,1
-SGP_02,In-Progress,1
-SGP_04,In-Progress,1
-SGP_04,Pending,1
+﻿Institutions,Responded,Never,Total
+IMH,2,2,4
+NCID,1,1,2
+NHGD,1,0,1
+NHGHQ,0,1,1
+NHGP,1,1,2
+NHGPh,0,1,1
+TTSH,0,2,2
+WH,1,0,1
+YH,3,0,3
