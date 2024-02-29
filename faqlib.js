@@ -255,6 +255,8 @@ function search_corpus( inp ) {
 		n = faq_scores.indexOf(max_score);
 		msg = "Search result for : " + inp + "\n\n";
 		msg = msg + faq_list[n] + "\n\n";
+	} else {
+		msg = "Unable to find the matching results.";
 	}
 	return msg;	
 }
