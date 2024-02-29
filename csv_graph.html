@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en-US" style="
+		margin: 0;
+		padding: 0;
+		min-height: 100%;
+		display: flex;
+		flex-direction: column;
+	">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>CSV Graph</title>
+	<link rel="icon" type="image/x-icon" href="kh.ico">
+	<link rel="stylesheet" href="khbot.css">
+	<script src="jquery-2.2.4.min.js"></script>	
+	<script src="charts.js"></script>
+</head>
+
+<body style="width: 100%; margin: 0px; padding: 0px; display: flex; flex-direction: column; flex-grow: 1; --chatbot-body-text-size: 16px;" class="dark">
+<div class="gradio-container gradio-container-4-17-0 svelte-182fdeq app" style="min-height: initial; flex-grow: 1;">
+<div class="main svelte-182fdeq">  
+<div class="wrap svelte-2mz9lo" style="min-height: 100%;">
+<div class="contain svelte-2mz9lo" style="flex-grow: 1;">
+<div id="component-2" class="svelte-vt1mxs gap" style="flex-grow: 1; min-width: min(0px, 100%);">
+<div id="component-3" class="block svelte-90oupt padded hide-container" style="border-style: solid; overflow: visible; min-width: min(0px, 100%); border-width: var(--block-border-width);">
+<div class="wrap center full svelte-1occ011 hide" style="position: absolute; padding: 0px;"></div> 
+<div class="svelte-1ed2p3z">
+<div class="prose  svelte-1yrv54" data-testid="markdown" dir="ltr"><span class="md svelte-1syupzx"><h1 style="text-align: center; margin-bottom: 1rem">CSV Graph</h1></span></div></div></div>
+<div id="component-4" class="block svelte-90oupt padded hide-container" style="border-style: solid; overflow: visible; min-width: min(0px, 100%); border-width: var(--block-border-width);">
+<div class="wrap center full svelte-1occ011 hide" style="position: absolute; padding: 0px;"></div> 
+<div class="svelte-1ed2p3z">
+<div class="prose  svelte-1yrv54" data-testid="markdown" dir="ltr"><span class="md svelte-1syupzx"><p>Visualization demo using CSV data file.</p></span></div></div></div>
+<div id="component-7" class="gr-group svelte-iyf88w">
+<div class="styler svelte-iyf88w" style="--block-radius: 0px; --block-border-width: 0px; --layout-gap: 1px; --form-gap-width: 1px; --button-border-width: 0px; --button-large-radius: 0px; --button-small-radius: 0px;">
+<div>
+<input type="file" id="fileinput" />
+<button class="lg primary svelte-cmf5ev" id="barchart" style="flex-grow: 1; min-width: min(150px, 100%);">Bar Chart</button>
+<button class="lg primary svelte-cmf5ev" id="hbarchart" style="flex-grow: 1; min-width: min(150px, 100%);">Horizontal Bar</button>
+<button class="lg primary svelte-cmf5ev" id="piechart" style="flex-grow: 1; min-width: min(150px, 100%);">Pie Chart</button>
+<button class="lg primary svelte-cmf5ev" id="doughnut" style="flex-grow: 1; min-width: min(150px, 100%);">Doughnut Chart</button>
+</div>
+</div></div>
+<div id="msg"></div>
+<hr>
+<table style='width:80%'>
+<tr><td><canvas id="chart" style="width:500px"></canvas></td></tr>
+<tr><td><div id="table"></div></td></tr>
+</table>
+</div></div> 
+<hr>
+<footer class="svelte-2mz9lo">Powered by WingsMaker</footer></div>  
+<div class="toast-wrap svelte-pu0yf1"></div></div> 
+</div>
+</body>
+
+<script>
+console.clear();
+
+var barColors = [
+	  "DeepPink", // #b91d47
+	  "#00aba9",
+	  "#2b5797",
+	  "purple", // #e8c3b9
+	  "DarkOrange",  // #1e7145
+	  "green",
+	  "cyan",
+	  "DarkKhaki",
+	  "blue",
+	  "yellow",
+	  "Fuchsia",
+	  "brown",
+	  "red"
+	];
+var grouping = [];
+var response_dataset = [];
+var max_scale = 0;
+var title = "";
+var table_html = "";
+
+document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+
+function readSingleFile(evt) {
+	var f = evt.target.files[0]; 
+	if (f) {
+		var r = new FileReader();
+		r.onload = function(e) { 
+			csv = e.target.result;
+			processData(csv);
+		}
+		r.readAsText(f);
+	}
+}
+
+function processData(csv) {	
+	var csv_data = "";
+	var value_list = [];
+	var words = [];	
+	var category = "";
+	var ii = 0;
+	var jj = 0;
+	var kk = 0;
+	var ll = 0;
+	var mm = 0;
+	var nn = 0;
+	var lines = csv.split("\n");
+	var cnt = lines.length;
+	var headers = lines[0].split(",");
+	kk = headers.length;
+	grouping = [];
+	response_dataset = [];
+	max_scale = 0;
+	title = "";
+	table_html = "";
+	table_html = "<table><tr><th>" + headers[0] + "</th>";
+	category = headers[0];
+	title = category + " view";
+	for( ii=1; ii < kk; ii++ ) {
+		var dict_x = {};
+		table_html = table_html + "<th>" + headers[ii] + "</th>";
+		dict_x["label"] = headers[ii];
+		dict_x["data"] = [];
+		dict_x["backgroundColor"] = barColors[ii-1];
+		response_dataset.push( dict_x );
+	}
+	table_html = table_html + "</tr>";
+	
+	for( ii=1; ii < cnt; ii++ ) {
+		var linedata = lines[ii];
+		nn = linedata.length;
+		if ( nn > 0 ) {
+			linedata = linedata.replace( "\r", "" );
+			csv_data = csv_data + ";" + linedata ;
+			var words = linedata.split(",");
+			mm = words.length;
+			grouping.push( words[0] );
+			table_html = table_html + "<tr>";
+			for( jj=0; jj < mm; jj++ ) {
+				table_html = table_html + "<td>" + words[jj] + "</td>";
+			}
+			table_html = table_html + "</tr>";
+			for( jj=1; jj < kk; jj++ ) {
+				response_dataset[jj-1]["data"].push( words[jj] );
+			}
+		}
+	}	
+	
+	for( jj=1; jj < kk; jj++ ) {
+		ll = Math.max.apply(null, response_dataset[jj-1]["data"]);
+		value_list.push( ll );			
+	}
+	table_html = table_html + "</table>";
+	max_scale = Math.max.apply(null, value_list) + 0.5;
+	show_table();
+	if( kk > 2 ) {
+		bar_chart();
+	} else {
+		hbar_chart();
+	}
+}
+
+function show_table() {
+	document.getElementById("table").innerHTML = table_html;
+}
+
+function bar_chart() {
+	new Chart("chart", { 
+		type: "bar", // bar horizontalBar pie  doughnut 
+		data: {
+		  labels: grouping,
+		  datasets: response_dataset
+		},
+		options: {
+		  title: {
+			display: true,
+			isStacked: true,
+			text: title
+		  },
+		  scales: {
+			yAxes: [{ticks: {min: 0, max: max_scale}}]
+		  }		  
+		}
+	});
+}
+
+function hbar_chart() {
+	new Chart("chart", { 
+		  type: "horizontalBar", // bar horizontalBar pie  doughnut 
+		  data: {
+		  labels: grouping,
+		  datasets: [{
+			backgroundColor: barColors,
+			data: response_dataset[0]["data"]
+		  }]
+		},
+		  options: {
+			legend: { position: 'labeled', display: false},  // true for bar, false for horizontalbar
+			title: {
+			  display: true,
+			  text: title
+			},
+			scales: {
+			  xAxes: [{ticks: {min: 0, max: max_scale}}]  // xAxes yAxes
+			}
+		  }
+		});
+}
+
+function pie_chart() {
+	new Chart("chart", { 
+	  type: "pie", // doughnut pie horizontalBar
+	  data: {
+		labels: grouping,
+		datasets: [{
+		  backgroundColor: barColors,
+		  data: response_dataset[0]["data"]
+		}]
+	  },
+	  options: {
+		title: {
+		  legend: { position: 'labeled', display: true},
+		  display: true,
+		  text: title
+		}
+	  }
+	});
+}
+
+function doughnut_chart() {
+	new Chart("chart", { 
+	  type: "doughnut", // doughnut pie horizontalBar
+	  data: {
+		labels: grouping,
+		datasets: [{
+		  backgroundColor: barColors,
+		  data: response_dataset[0]["data"]
+		}]
+	  },
+	  options: {
+		title: {
+		  legend: { position: 'labeled', display: true},
+		  display: true,
+		  text: title
+		}
+	  }
+	});
+}
+
+$('#hbarchart').click(function (e) {
+	if( table_html=="") {
+		new Chart("chart", {});
+		return;
+	}
+	hbar_chart();
+});	
+
+$('#barchart').click(function (e) {
+	if( table_html=="") {
+		new Chart("chart", {});
+		return;
+	}
+	bar_chart();
+});	
+
+$('#piechart').click(function (e) {
+	if( table_html=="") {
+		new Chart("chart", {});
+		return;
+	}
+	pie_chart();
+});
+
+$('#doughnut').click(function (e) {
+	if( table_html=="") {
+		new Chart("chart", {});
+		return;
+	}
+	doughnut_chart();
+});	
+
+</script>
+</html>
