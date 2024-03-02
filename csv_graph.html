@@ -38,6 +38,7 @@
 <button class="lg primary svelte-cmf5ev" id="hbarchart" style="flex-grow: 1; min-width: min(150px, 100%);">Horizontal Bar</button>
 <button class="lg primary svelte-cmf5ev" id="piechart" style="flex-grow: 1; min-width: min(150px, 100%);">Pie Chart</button>
 <button class="lg primary svelte-cmf5ev" id="doughnut" style="flex-grow: 1; min-width: min(150px, 100%);">Doughnut Chart</button>
+<button class="lg primary svelte-cmf5ev" id="linegraph" style="flex-grow: 1; min-width: min(150px, 100%);">Line Graph</button>
 </div>
 </div></div>
 <div id="msg"></div>
@@ -154,13 +155,23 @@ function processData(csv) {
 	show_table();
 	if( kk > 2 ) {
 		bar_chart();
+		return;
 	} else {
+		if ( kk == 2 ) {
+			var x_values = grouping.filter( function(x){ return !isNaN(parseInt(x)); });
+			var y_values = response_dataset[0]["data"].filter( function(x){ return !isNaN(parseInt(x)); });
+			var n = x_values.length * y_values.length;
+			if( n > 0 ) {
+				line_graph();
+				return;
+			}
+		}
 		if ( cnt > 5 ) {
 			hbar_chart();
 		} else {
 			doughnut_chart();
 		}
-		
+		return;		
 	}
 }
 
@@ -251,6 +262,32 @@ function doughnut_chart() {
 	});
 }
 
+function line_graph() {
+	new Chart("chart", {
+	  type: "line",
+	  data: {
+		labels: grouping,
+		datasets: [{
+		  fill: false,
+		  lineTension: 0,		  
+		  backgroundColor: "yellow",  // rgba(0,0,255,1.0)
+		  borderColor: "green", // rgba(0,0,255,0.1)
+		  data: response_dataset[0]["data"]
+		}]
+	  },
+	  options: {
+		legend: {display: false},
+		title: {
+		  display: true,
+		  text: title
+		},
+		scales: {
+		  yAxes: [{ticks: {min: 6, max:16}}],
+		}
+	  }
+	});
+}
+
 $('#hbarchart').click(function (e) {
 	if( table_html=="") {
 		new Chart("chart", {});
@@ -282,6 +319,21 @@ $('#doughnut').click(function (e) {
 	}
 	doughnut_chart();
 });	
+
+
+$('#linegraph').click(function (e) {
+	if( table_html=="") {
+		new Chart("chart", {});
+		return;
+	}
+	var x_values = grouping.filter( function(x){ return !isNaN(parseInt(x)); });
+	var y_values = response_dataset[0]["data"].filter( function(x){ return !isNaN(parseInt(x)); });
+	var n = x_values.length * y_values.length;
+	if( n > 0 ) {
+		line_graph();
+	}	
+});	
+
 
 </script>
 </html>
