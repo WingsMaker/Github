@@ -13,7 +13,7 @@
 	<link rel="icon" type="image/x-icon" href="kh.ico">
 	<link rel="stylesheet" href="khbot.css">
 	<script src="jquery.min.js"></script>	
-	<script src="charts.js"></script>
+	<script src="loader.js"></script>
 </head>
 
 <body style="width: 100%; margin: 0px; padding: 0px; display: flex; flex-direction: column; flex-grow: 1; --chatbot-body-text-size: 16px;" class="dark">
@@ -37,14 +37,14 @@
 <button class="lg primary svelte-cmf5ev" id="barchart" style="flex-grow: 1; min-width: min(150px, 100%);">Bar Chart</button>
 <button class="lg primary svelte-cmf5ev" id="hbarchart" style="flex-grow: 1; min-width: min(150px, 100%);">Horizontal Bar</button>
 <button class="lg primary svelte-cmf5ev" id="piechart" style="flex-grow: 1; min-width: min(150px, 100%);">Pie Chart</button>
-<button class="lg primary svelte-cmf5ev" id="doughnut" style="flex-grow: 1; min-width: min(150px, 100%);">Doughnut Chart</button>
 <button class="lg primary svelte-cmf5ev" id="linegraph" style="flex-grow: 1; min-width: min(150px, 100%);">Line Graph</button>
+<button class="lg primary svelte-cmf5ev" id="dotsgraph" style="flex-grow: 1; min-width: min(150px, 100%);">Scatter Graph</button>
 </div>
 </div></div>
 <div id="msg"></div>
 <hr>
 <table style='width:80%'>
-<tr><td><canvas id="chart" style="width:500px"></canvas></td></tr>
+<tr><td><div id="newchart"></div></td></tr>
 <tr><td><div id="table"></div></td></tr>
 </table>
 </div></div> 
@@ -72,11 +72,16 @@ var barColors = [
 	  "brown",
 	  "red"
 	];
+	
+var headers = [];	
 var grouping = [];
 var response_dataset = [];
 var max_scale = 0;
 var title = "";
 var table_html = "";
+var data_table;
+
+google.charts.load('current', {'packages':['bar', 'corechart', 'scatter', 'table', 'gantt', 'wordtree']});
 
 document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
 
@@ -104,11 +109,10 @@ function processData(csv) {
 	var mm = 0;
 	var nn = 0;
 	var lines = csv.split("\n");
+	lines = lines.filter( function(x){ return x.length > 0; });
 	var cnt = lines.length;
-	var headers = lines[0].split(",");
-	if( lines[cnt-1]=="" ) {
-		cnt = cnt - 1;
-	}
+	headers = lines[0].split(",");
+	data_table = lines.map( x => x.split(",") );
 	kk = headers.length;
 	grouping = [];
 	response_dataset = [];
@@ -154,7 +158,7 @@ function processData(csv) {
 	max_scale = Math.max.apply(null, value_list) + 0.5;
 	show_table();
 	if( kk > 2 ) {
-		bar_chart();
+		bar_chart(true, true, true, 0);
 		return;
 	} else {
 		if ( kk == 2 ) {
@@ -162,14 +166,16 @@ function processData(csv) {
 			var y_values = response_dataset[0]["data"].filter( function(x){ return !isNaN(parseInt(x)); });
 			var n = x_values.length * y_values.length;
 			if( n > 0 ) {
-				line_graph();
+				line_chart(true);
 				return;
 			}
 		}
 		if ( cnt > 5 ) {
-			hbar_chart();
+			bar_chart(false, true, true, 0);
+			return;
 		} else {
-			doughnut_chart();
+			pie_chart(true);
+			return;
 		}
 		return;		
 	}
@@ -179,161 +185,126 @@ function show_table() {
 	document.getElementById("table").innerHTML = table_html;
 }
 
-function bar_chart() {
-	new Chart("chart", { 
-		type: "bar", // bar horizontalBar pie  doughnut 
-		data: {
-		  labels: grouping,
-		  datasets: response_dataset
-		},
-		options: {
-		  title: {
-			display: true,
-			isStacked: true,
-			text: title
-		  },
-		  scales: {
-			yAxes: [{ticks: {min: 0, max: max_scale}}]
-		  }		  
-		}
-	});
-}
 
-function hbar_chart() {
-	new Chart("chart", { 
-		  type: "horizontalBar", // bar horizontalBar pie  doughnut 
-		  data: {
-		  labels: grouping,
-		  datasets: [{
-			backgroundColor: barColors,
-			data: response_dataset[0]["data"]
-		  }]
+function line_chart(line_mode) {
+	if ( line_mode ) {
+		var newchart = new google.visualization.LineChart(document.getElementById('newchart'));
+	} else {
+		var newchart = new google.visualization.ScatterChart(document.getElementById('newchart'));
+	}	
+	var options = {
+		chart: {
+		  title: title
 		},
-		  options: {
-			legend: { position: 'labeled', display: false},  // true for bar, false for horizontalbar
-			title: {
-			  display: true,
-			  text: title
-			},
-			scales: {
-			  xAxes: [{ticks: {min: 0, max: max_scale}}]  // xAxes yAxes
-			}
+		legend: { position: 'top', maxLines: 3 },
+		width: 800,
+		height: 600,
+		backgroundColor: '#cba', // grey
+		axes: {
+		  x: {
+			0: {side: 'top'}
 		  }
-		});
+		}
+	};
+	var nn = grouping.length;
+	var kk = data_table[0].length;
+	for (ii=0; ii < nn; ii++ ) {
+		for (jj=1; jj<kk; jj++ ) {
+			data_table[ ii+1 ][jj] = parseFloat(data_table[ ii+1 ][jj]);
+		}		
+	}
+	var chart_data = google.visualization.arrayToDataTable( data_table );
+	newchart.draw(chart_data, options);	
 }
 
-function pie_chart() {
-	new Chart("chart", { 
-	  type: "pie", // doughnut pie horizontalBar
-	  data: {
-		labels: grouping,
-		datasets: [{
-		  backgroundColor: barColors,
-		  data: response_dataset[0]["data"]
-		}]
-	  },
-	  options: {
-		title: {
-		  legend: { position: 'labeled', display: true},
-		  display: true,
-		  text: title
-		}
-	  }
-	});
+
+function bar_chart( vertical_type, stack_mode, three_d_mode, pie_hole_size) {
+	if (vertical_type) {
+		var newchart = new google.visualization.ColumnChart(document.getElementById('newchart'));
+	} else {
+		var newchart = new google.visualization.BarChart(document.getElementById('newchart'));
+	}	
+	var options = {
+		isStacked: stack_mode,
+		legend: { position: 'top', maxLines: 3 },
+		bar: { groupWidth: '75%' },
+		width: 800,
+		height: 600,
+		backgroundColor: '#cba', // grey
+		pieHole: pie_hole_size,	// 0.5 for example donut , or 0 for full pie chart
+		is3D: three_d_mode, // true false
+		title: title		
+	};
+	var nn = grouping.length;
+	var kk = data_table[0].length;
+	for (ii=0; ii < nn; ii++ ) {
+		for (jj=1; jj<kk; jj++ ) {
+			data_table[ ii+1 ][jj] = parseFloat(data_table[ ii+1 ][jj]);
+		}		
+	}
+	var chart_data = google.visualization.arrayToDataTable( data_table );	
+	newchart.draw(chart_data, options);	
 }
 
-function doughnut_chart() {
-	new Chart("chart", { 
-	  type: "doughnut", // doughnut pie horizontalBar
-	  data: {
-		labels: grouping,
-		datasets: [{
-		  backgroundColor: barColors,
-		  data: response_dataset[0]["data"]
-		}]
-	  },
-	  options: {
-		title: {
-		  legend: { position: 'labeled', display: true},
-		  display: true,
-		  text: title
-		}
-	  }
-	});
-}
-
-function line_graph() {
-	new Chart("chart", {
-	  type: "line",
-	  data: {
-		labels: grouping,
-		datasets: [{
-		  fill: false,
-		  lineTension: 0,		  
-		  backgroundColor: "yellow",  // rgba(0,0,255,1.0)
-		  borderColor: "green", // rgba(0,0,255,0.1)
-		  data: response_dataset[0]["data"]
-		}]
-	  },
-	  options: {
-		legend: {display: false},
-		title: {
-		  display: true,
-		  text: title
-		},
-		scales: {
-		  yAxes: [{ticks: {min: 6, max:16}}],
-		}
-	  }
-	});
+function pie_chart(three_d_mode) {
+	var newchart = new google.visualization.PieChart(document.getElementById('newchart'));
+	var options = {
+		width: 800,
+		height: 600,
+		backgroundColor: '#cba', // grey
+		pieHole: 0,	// 0.5
+		is3D: three_d_mode, // true false
+		title: title		
+	};
+	var nn = grouping.length;
+	for (ii=0; ii < nn; ii++ ) {
+		data_table[ ii+1 ][1] = parseFloat(data_table[ ii+1 ][1]);
+	}
+	var chart_data = google.visualization.arrayToDataTable( data_table );
+	newchart.draw(chart_data, options);	
 }
 
 $('#hbarchart').click(function (e) {
 	if( table_html=="") {
-		new Chart("chart", {});
 		return;
 	}
-	hbar_chart();
+	document.getElementById("newchart").innerHTML = "";
+	bar_chart(false, true, true, 0);
 });	
 
 $('#barchart').click(function (e) {
 	if( table_html=="") {
-		new Chart("chart", {});
 		return;
 	}
-	bar_chart();
+	document.getElementById("newchart").innerHTML = "";
+	bar_chart(true, true, true, 0);
 });	
 
 $('#piechart').click(function (e) {
 	if( table_html=="") {
-		new Chart("chart", {});
 		return;
 	}
-	pie_chart();
+	document.getElementById("newchart").innerHTML = "";
+	pie_chart(true);
 });
-
-$('#doughnut').click(function (e) {
-	if( table_html=="") {
-		new Chart("chart", {});
-		return;
-	}
-	doughnut_chart();
-});	
-
 
 $('#linegraph').click(function (e) {
 	if( table_html=="") {
 		new Chart("chart", {});
 		return;
 	}
-	var x_values = grouping.filter( function(x){ return !isNaN(parseInt(x)); });
-	var y_values = response_dataset[0]["data"].filter( function(x){ return !isNaN(parseInt(x)); });
-	var n = x_values.length * y_values.length;
-	if( n > 0 ) {
-		line_graph();
-	}	
+	document.getElementById("newchart").innerHTML = "";
+	line_chart(true);
 });	
 
+$('#dotsgraph').click(function (e) {
+	if( table_html=="") {
+		new Chart("chart", {});
+		return;
+	}
+	document.getElementById("newchart").innerHTML = "";
+	line_chart(false);
+});	
 
 </script>
 </html>
