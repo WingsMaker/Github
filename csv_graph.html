@@ -12,7 +12,7 @@
 	<title>CSV Graph</title>
 	<link rel="icon" type="image/x-icon" href="kh.ico">
 	<link rel="stylesheet" href="khbot.css">
-	<script src="jquery-2.2.4.min.js"></script>	
+	<script src="jquery.min.js"></script>	
 	<script src="charts.js"></script>
 </head>
 
@@ -29,11 +29,11 @@
 <div id="component-4" class="block svelte-90oupt padded hide-container" style="border-style: solid; overflow: visible; min-width: min(0px, 100%); border-width: var(--block-border-width);">
 <div class="wrap center full svelte-1occ011 hide" style="position: absolute; padding: 0px;"></div> 
 <div class="svelte-1ed2p3z">
-<div class="prose  svelte-1yrv54" data-testid="markdown" dir="ltr"><span class="md svelte-1syupzx"><p>Visualization demo using CSV data file.</p></span></div></div></div>
+<div class="prose  svelte-1yrv54" data-testid="markdown" dir="ltr"><span class="md svelte-1syupzx"><p>Bring-your-own-csv visualization demo.</p></span></div></div></div>
 <div id="component-7" class="gr-group svelte-iyf88w">
 <div class="styler svelte-iyf88w" style="--block-radius: 0px; --block-border-width: 0px; --layout-gap: 1px; --form-gap-width: 1px; --button-border-width: 0px; --button-large-radius: 0px; --button-small-radius: 0px;">
 <div>
-<input type="file" id="fileinput" />
+<input type="file" id="fileinput" /><br>
 <button class="lg primary svelte-cmf5ev" id="barchart" style="flex-grow: 1; min-width: min(150px, 100%);">Bar Chart</button>
 <button class="lg primary svelte-cmf5ev" id="hbarchart" style="flex-grow: 1; min-width: min(150px, 100%);">Horizontal Bar</button>
 <button class="lg primary svelte-cmf5ev" id="piechart" style="flex-grow: 1; min-width: min(150px, 100%);">Pie Chart</button>
@@ -105,6 +105,9 @@ function processData(csv) {
 	var lines = csv.split("\n");
 	var cnt = lines.length;
 	var headers = lines[0].split(",");
+	if( lines[cnt-1]=="" ) {
+		cnt = cnt - 1;
+	}
 	kk = headers.length;
 	grouping = [];
 	response_dataset = [];
@@ -122,8 +125,7 @@ function processData(csv) {
 		dict_x["backgroundColor"] = barColors[ii-1];
 		response_dataset.push( dict_x );
 	}
-	table_html = table_html + "</tr>";
-	
+	table_html = table_html + "</tr>";	
 	for( ii=1; ii < cnt; ii++ ) {
 		var linedata = lines[ii];
 		nn = linedata.length;
@@ -143,7 +145,6 @@ function processData(csv) {
 			}
 		}
 	}	
-	
 	for( jj=1; jj < kk; jj++ ) {
 		ll = Math.max.apply(null, response_dataset[jj-1]["data"]);
 		value_list.push( ll );			
@@ -154,7 +155,12 @@ function processData(csv) {
 	if( kk > 2 ) {
 		bar_chart();
 	} else {
-		hbar_chart();
+		if ( cnt > 5 ) {
+			hbar_chart();
+		} else {
+			doughnut_chart();
+		}
+		
 	}
 }
 
