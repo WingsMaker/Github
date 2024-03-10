@@ -13,6 +13,7 @@
 	<link rel="icon" type="image/x-icon" href="kh.ico">
 	<link rel="stylesheet" href="khbot.css">
 	<script src="jquery-2.2.4.min.js"></script>	
+	<script src="aes.js"></script> 
 </head>
 
 <body style="width: 100%; margin: 0px; padding: 0px; display: flex; flex-direction: column; flex-grow: 1; --chatbot-body-text-size: 16px;" class="dark">
@@ -55,9 +56,12 @@
 
 <script>
 console.clear();
+var apitxt = "";
 var messagePanel = document.getElementById("message-panel");
 var userinput = document.getElementById("user-input");
 userinput.value = "";
+
+fetch("https://wingsmaker.github.io/Github/khapi.dat").then( r => r.text() ).then( t => readconfig(t) );
 
 function post_message(question, answer) {
 	if (answer.trim() == "") {
@@ -93,7 +97,13 @@ $('#component-9').click(function (e) {
 });	
 
 function askbot_question() {
-	var url =  "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyCHNsZU2T8NYy_VTfOT1q9Bgow_y-Hp_ss";
+	var url =  "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=";
+	if (apitxt == "" ) {
+		post_message("unable to load api key","incomplete/incorrect key pass enter");
+		return
+	} else {
+		url = url + apitxt;
+	}
 	var msg = "";
 	var qn = userinput.value;
 	if (qn == "") {
@@ -131,6 +141,22 @@ function askbot_question() {
 		post_message(qn, msg)
 		return msg;
 	});
+}
+
+function readconfig(csv) {
+	var lines = csv.split("\n");
+	apitxt = lines[0];
+	let keypass = prompt("Enter keypass");
+	if (keypass == null ) {
+		apitxt = "";
+		post_message("unable to load api key","incomplete/incorrect key pass enter");
+	} else {
+		apitxt =  CryptoJS.AES.decrypt(apitxt, keypass).toString(CryptoJS.enc.Utf8);
+		if (apitxt == "" ) {
+			post_message("unable to load api key","incomplete/incorrect key pass enter");
+			return
+		}
+	}	
 }
 
 </script>

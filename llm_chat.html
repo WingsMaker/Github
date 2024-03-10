@@ -13,6 +13,7 @@
 	<link rel="icon" type="image/x-icon" href="kh.ico">
 	<link rel="stylesheet" href="khbot.css">
 	<script src="jquery-2.2.4.min.js"></script>	
+	<script src="aes.js"></script> 
 </head>
 
 <body style="width: 100%; margin: 0px; padding: 0px; display: flex; flex-direction: column; flex-grow: 1; --chatbot-body-text-size: 16px;" class="dark">
@@ -58,6 +59,9 @@ console.clear();
 var messagePanel = document.getElementById("message-panel");
 var userinput = document.getElementById("user-input");
 userinput.value = "";
+var apitxt = "";
+
+fetch("https://wingsmaker.github.io/Github/khapi.dat").then( r => r.text() ).then( t => readconfig(t) );
 
 function post_message(question, answer) {
 	if (answer.trim() == "") {
@@ -97,7 +101,13 @@ function askbot_question() {
 	let requestBody;
 	let payload;
 	let msg = "";
-	var url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyCHNsZU2T8NYy_VTfOT1q9Bgow_y-Hp_ss";
+	var url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=";
+	if (apitxt == "" ) {
+		post_message("unable to load api key","incomplete/incorrect key pass enter");
+		return
+	} else {
+		url = url + apitxt;
+	}
 	var qn = userinput.value;
 	if (qn == "") {
 		alert("Please enter the prompt for the chat");
@@ -131,6 +141,23 @@ function askbot_question() {
 		msg = "Error calling api : " + error;
 		post_message(qn, msg)
 	});	
+}
+
+
+function readconfig(csv) {
+	var lines = csv.split("\n");
+	apitxt = lines[0];
+	let keypass = prompt("Enter keypass");
+	if (keypass == null ) {
+		apitxt = "";
+		post_message("unable to load api key","incomplete/incorrect key pass enter");
+	} else {
+		apitxt =  CryptoJS.AES.decrypt(apitxt, keypass).toString(CryptoJS.enc.Utf8);
+		if (apitxt == "" ) {
+			post_message("unable to load api key","incomplete/incorrect key pass enter");
+			return
+		}
+	}	
 }
 
 </script>
