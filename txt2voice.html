@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<Title>Text to Speech App</Title>
+<head>
+</head>
+<body>
+<div id="html">
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>Text to Speech App</h1>
+
+<br>
+<input type="file" id="fileinput" />
+<div id="header"></div>	
+<form>
+<textarea id='msg' name="Message" rows="12" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
+<br />
+<input type="button" onClick="reset()" value="Clear"/>
+<input type="button" onClick="url_encode()" value="Share"/>
+<br>
+<input type="button" onClick="SpeakChinese()" value="Chinese (中文)"/>
+<input type="button" onClick="SpeakMalay()" value="Melayu"/>
+<input type="button" onClick="SpeakIndonesian()" value="Indonesia"/>
+<input type="button" onClick="SpeakTamil()" value="தமிழ் (Tamil)"/>
+<input type="button" onClick="SpeakHindi()" value="हिन्दी (Hindi)"/>
+<input type="button" onClick="SpeakJapanese()" value="日本語"/>
+<input type="button" onClick="SpeakKorean()" value="한국의"/>
+<br>
+<input type="button" onClick="SpeakEnglish()" value="English"/>
+<input type="button" onClick="SpeakGerman()" value="Deutsch (German)"/>
+<input type="button" onClick="SpeakFrench()" value="France (French)"/>
+<input type="button" onClick="SpeakDutch()" value="Nederlands (Dutch)"/>
+<input type="button" onClick="SpeakSpanish()" value="Español (Spanish)"/>
+<br />
+</form>
+<hr>
+</body>
+
+<script>
+console.clear();
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const inptxt = urlParams.get('txt')
+
+const synth = window.speechSynthesis;
+let voice = new SpeechSynthesisUtterance();
+voice.volume = 1;
+voice.rate = 1;
+voice.pitch = 1; // Can be 0, 1, or 2
+
+var msg = "";
+
+if (inptxt != null) {
+	document.getElementById("msg").innerHTML = inptxt;
+	textToSpeech(inptxt);
+}
+document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+
+function readSingleFile(evt) {
+	var f = evt.target.files[0]; 
+	if (f) {
+		var r = new FileReader();
+		r.onload = function(e) { 
+			document.getElementById('msg').value = e.target.result
+	  }
+		r.readAsText(f);
+	} else { 
+		alert("Failed to load file");
+	}
+}
+	
+function reset() {
+	document.getElementById("msg").innerHTML = "";
+}
+
+function readmsg() {
+	msg = document.getElementById('msg').value;
+	if (msg=="") {
+		document.write("There is nothing to read.");zh-TW
+		return;
+	}	
+	textToSpeech(msg);
+}
+
+function url_encode() {
+	msg = document.getElementById('msg').value;
+	if (msg == "") {
+		document.write("Please enter text and click the [Encrypt] button");
+		return;
+	}
+	var base_url = window.location.href.split("?")[0] + "?";
+	var codedString = base_url + "dec=";
+	var encoded_uri = encodeURIComponent(msg);
+	codedString =  codedString + encoded_uri;
+	codedString = "<h2>Share this link with others : </h2><a href='" + base_url;
+	codedString = codedString + "txt=" + encoded_uri + "'>you got a voice message.</a>";
+	document.write(codedString);
+}
+
+
+function SpeakEnglish() {
+	Speak("en-US");
+}
+
+
+function SpeakChinese() {
+	Speak("zh-TW");
+}
+
+function SpeakGerman() {
+	Speak("de-CH");
+}
+
+function SpeakFrench() {
+	Speak("fr-FR");
+}
+
+
+function SpeakDutch() {
+	Speak("nl-NL");
+}
+
+function SpeakSpanish() {
+	Speak("es-ES");
+}
+
+	
+function SpeakJapanese() {
+	Speak("ja-JP");
+}
+
+function SpeakKorean() {
+	Speak("ko-KR");
+}
+
+function SpeakMalay() {
+	Speak("ms-MY");
+}
+
+
+function SpeakIndonesian() {
+	Speak("id-ID");
+}
+
+function SpeakTamil() {
+	Speak("ta-SG");
+}
+
+function SpeakHindi() {
+	Speak("hi-IN");
+}
+
+function Speak(lang) {
+	msg = document.getElementById('msg').value;
+	if (msg == "") {
+		document.write("Please enter text and click the [Encrypt] button");
+		return;
+	}
+	voice.text = msg;
+	voice.lang = lang;
+	synth.speak(voice);
+}
+
+
+
+</script>
+</html>
