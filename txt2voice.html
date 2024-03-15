@@ -57,9 +57,9 @@ voice.pitch = 1; // Can be 0, 1, or 2
 var msg = "";
 
 if (inptxt != null) {
-	document.getElementById("msg").innerHTML = inptxt;
-	textToSpeech(inptxt);
+	document.getElementById("msg").innerHTML = inptxt;	
 }
+
 document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
 
 function readSingleFile(evt) {
@@ -79,14 +79,6 @@ function reset() {
 	document.getElementById("msg").innerHTML = "";
 }
 
-function readmsg() {
-	msg = document.getElementById('msg').value;
-	if (msg=="") {
-		document.write("There is nothing to read.");zh-TW
-		return;
-	}	
-	textToSpeech(msg);
-}
 
 function url_encode() {
 	msg = document.getElementById('msg').value;
