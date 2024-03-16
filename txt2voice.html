@@ -21,16 +21,19 @@
 <br>
 <div id="result"></div>
 <br>
-<input type="button" onClick="SpeakEnglish()" value="English"/>
 <input type="button" onClick="SpeakChinese()" value="Chinese (中文)"/>
-<input type="button" onClick="SpeakMalay()" value="Melayu"/>
-<input type="button" onClick="SpeakIndonesian()" value="Indonesia"/>
-<br>
-<input type="button" onClick="SpeakTamil()" value="தமிழ் (Tamil)"/>
-<input type="button" onClick="SpeakHindi()" value="हिन्दी (Hindi)"/>
 <input type="button" onClick="SpeakJapanese()" value="日本語"/>
 <input type="button" onClick="SpeakKorean()" value="한국의"/>
-<br/>
+<input type="button" onClick="SpeakMalay()" value="Melayu"/>
+<input type="button" onClick="SpeakIndonesian()" value="Indonesia"/>
+<br><br>
+<input type="button" onClick="SpeakThai()" value="Thai"/>
+<input type="button" onClick="SpeakVietnam()" value="Viet Nam"/>
+<input type="button" onClick="SpeakMyanmar()" value="Burmese"/>
+<input type="button" onClick="SpeakTamil()" value="தமிழ் (Tamil)"/>
+<input type="button" onClick="SpeakHindi()" value="हिन्दी (Hindi)"/>
+<br><br>
+<input type="button" onClick="SpeakEnglish()" value="English"/>
 <input type="button" onClick="SpeakGerman()" value="German"/>
 <input type="button" onClick="SpeakFrench()" value="French"/>
 <input type="button" onClick="SpeakDutch()" value="Dutch"/>
@@ -100,7 +103,8 @@ function readSingleFile(evt) {
 }
 	
 function reset() {
-	document.getElementById("msg").innerHTML = "";
+	document.getElementById("msg").value = "";
+	document.getElementById("result").innerHTML = "";
 }
 
 
@@ -108,11 +112,10 @@ function SpeakEnglish() {
 	Speak("en-US");
 }
 
-
 function SpeakChinese() {
 	Speak("zh-TW");
 }
-	
+
 function SpeakJapanese() {
 	Speak("ja-JP");
 }
@@ -130,8 +133,24 @@ function SpeakIndonesian() {
 	Speak("id-ID");
 }
 
+function SpeakThai() {
+	Speak("th-TH");
+}
+
+function SpeakVietnam() {
+	Speak("vi-VN");
+}
+
+function SpeakMyanmar() {
+	Speak("my-MM");
+}
+
 function SpeakTamil() {
 	Speak("ta-SG");
+}
+
+function SpeakSanskrit() {
+	Speak("sa-IN");
 }
 
 function SpeakHindi() {
