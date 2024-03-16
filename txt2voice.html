@@ -83,6 +83,7 @@ document.getElementById('fileinput').addEventListener('change', readSingleFile, 
 if (inptxt != null) {
 	document.getElementById("msg").innerHTML = inptxt;	
 	voice.text = inptxt;
+	times_repeat = parseInt(times_repeat);
 	for ( ii=0; ii < times_repeat; ii ++ ) {
 		synth.speak(voice);
 	}	
