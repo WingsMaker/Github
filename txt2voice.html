@@ -47,23 +47,42 @@ console.clear();
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const inptxt = urlParams.get('msg');
-const langcode = urlParams.get('lang');
+let langcode = urlParams.get('lang');
+let pitch = urlParams.get('pitch');
+let voice_rate = urlParams.get('rate');
+let voice_volume = urlParams.get('vol');
+let times_repeat = urlParams.get('repeat');
 
 const synth = window.speechSynthesis;
 let voice = new SpeechSynthesisUtterance();
-voice.volume = 1;
-voice.rate = 1;
-voice.pitch = 1; // Can be 0, 1, or 2
-
+if (langcode == null) {
+	langcode = "en-SG";
+}
+voice.lang = langcode;
+if (pitch == null) {
+	pitch = 1;
+}
+voice.pitch = pitch; // Can be 0, 1, or 2
+if (voice_rate == null) {
+	voice_rate = 1;
+}
+voice.rate = voice_rate;
+if (voice_volume == null) {
+	voice_volume = 1;
+}
+voice.volume = voice_volume;
+if (times_repeat == null) {
+	times_repeat = 1;
+}
 document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+
 
 if (inptxt != null) {
 	document.getElementById("msg").innerHTML = inptxt;	
-	if (langcode != null) {
-		voice.lang = langcode;
-	}
 	voice.text = inptxt;
-	synth.speak(voice);
+	for ( ii=0; ii < times_repeat; ii ++ ) {
+		synth.speak(voice);
+	}	
 }
 
 
