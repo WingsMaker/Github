@@ -25,12 +25,8 @@ function googleTranslateElementInit() {
 <hr>
 <br>
 <form>
-<textarea id='msg' name="Message" rows="10" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;">
-Saw these 2 cyclists along  Bishan to Toa Payoh, they were lost looking for their hotel in Clark Quay. They cycled from Chiang Mai down to Msia and to SG.  68 yrs old & 72 yrs old. Retirees Life style. They say SG cycling route is confusing.... 
-I hope I can cycle that far when I m old.
-</textarea>
+<textarea id='msg' name="Message" rows="10" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
 <br>
-<input type="button" onClick="reset()" value="Clear"/>
 <input type="button" onClick="send()" value="Send"/>
 <br>
 <hr>
@@ -38,12 +34,6 @@ I hope I can cycle that far when I m old.
 
 <script>
 console.clear();
-
-	
-function reset() {
-	document.getElementById("msg").value = "";
-	document.getElementById("result").innerHTML = "";
-}
 
 function send() {
 	document.getElementById("result").innerHTML = document.getElementById("msg").value;
