@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
+<head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="mobile-web-app-capable" content="yes">
 <Title>Text to Speech App</Title>
-<head>
 </head>
 <body>
 <div id="html">
 <h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
 <h1>Text to Speech App</h1>
-
-<br>
+<hr>
 <input type="button" onClick="reset()" value="Clear"/>
 <input type="file" id="fileinput" />
-<div id="header"></div>	
+<br>
 <form>
 <textarea id='msg' name="Message" rows="25" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
 <br>
 <div id="result"></div>
 <br>
-<input type="button" onClick="SpeakChinese()" value="Chinese (中文)"/>
-<input type="button" onClick="SpeakJapanese()" value="日本語"/>
+<input type="button" onClick="SpeakChina()" value="大陆"/>
+<input type="button" onClick="SpeakTaiwan()" value="台湾"/>
+<input type="button" onClick="SpeakCantonese()" value="香港"/>
+<input type="button" onClick="SpeakJapanese()" value="日本"/>
 <input type="button" onClick="SpeakKorean()" value="한국의"/>
 <input type="button" onClick="SpeakMalay()" value="Melayu"/>
 <input type="button" onClick="SpeakIndonesian()" value="Indonesia"/>
@@ -33,14 +34,13 @@
 <input type="button" onClick="SpeakTamil()" value="தமிழ் (Tamil)"/>
 <input type="button" onClick="SpeakHindi()" value="हिन्दी (Hindi)"/>
 <br><br>
+<input type="button" onClick="SpeakSinglish()" value="Singlish"/>
 <input type="button" onClick="SpeakEnglish()" value="English"/>
 <input type="button" onClick="SpeakGerman()" value="German"/>
 <input type="button" onClick="SpeakFrench()" value="French"/>
 <input type="button" onClick="SpeakDutch()" value="Dutch"/>
 <input type="button" onClick="SpeakSpanish()" value="Spanish"/>
-<input type="button" onClick="SpeakItalian()" value="Italian"/>
-
-</form>
+<br>
 <hr>
 </body>
 
@@ -79,16 +79,14 @@ if (times_repeat == null) {
 }
 document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
 
-
 if (inptxt != null) {
-	document.getElementById("msg").innerHTML = inptxt;	
+	document.getElementById("msg").innerHTML = inptxt;
 	voice.text = inptxt;
 	times_repeat = parseInt(times_repeat);
 	for ( ii=0; ii < times_repeat; ii ++ ) {
 		synth.speak(voice);
 	}	
 }
-
 
 function readSingleFile(evt) {
 	var f = evt.target.files[0]; 
@@ -109,12 +107,24 @@ function reset() {
 }
 
 
+function SpeakSinglish() {
+	Speak("en-SG");
+}
+
 function SpeakEnglish() {
 	Speak("en-US");
 }
 
-function SpeakChinese() {
+function SpeakChina() {
+	Speak("zh-CN");
+}
+
+function SpeakTaiwan() {
 	Speak("zh-TW");
+}
+
+function SpeakCantonese() {
+	Speak("zh-HK");
 }
 
 function SpeakJapanese() {
@@ -175,10 +185,6 @@ function SpeakSpanish() {
 	Speak("es-ES");
 }
 
-function SpeakItalian() {
-	Speak("it-IT");
-}
-
 function Speak(lang) {
 	msg = document.getElementById('msg').value;
 	if (msg == "") {
@@ -201,6 +207,6 @@ function url_encode(lang, msg) {
 	document.getElementById("result").innerHTML = codedString;
 }
 
-
 </script>
+
 </html>
