@@ -189,10 +189,9 @@ function Speak(lang) {
 
 function url_encode(lang, msg) {
 	var base_url = window.location.href.split("?")[0] + "?";
-	var codedString = base_url + "dec=";
 	var encoded_uri = encodeURIComponent(msg);
-	codedString =  codedString + encoded_uri;
-	codedString = "<b>Share this link with others : </b><a href='" + base_url;
+	encoded_uri = encoded_uri.replace("'","%27");
+	var codedString = "<b>Share this link with others : </b><a href='" + base_url;
 	codedString = codedString + "lang=" + lang + "&";
 	codedString = codedString + "msg=" + encoded_uri + "'>you got a voice message.</a>";
 	document.getElementById("result").innerHTML = codedString;
