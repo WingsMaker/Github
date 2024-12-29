@@ -16,19 +16,24 @@
 <body>
     <h1>Welcome to My Mini App!</h1>
     <button id="myButton">Click Me</button>
-
+	<p id="message"></p>
     <script>
+		const greetings = [ "Hello, world!", "Hi there!", "Greetings!", "Howdy!", "Hey!", "What's up?"];
+	
         document.addEventListener('DOMContentLoaded', function() {
           const tg = window.Telegram.WebApp;
           tg.ready(); // Makes the Web App fully ready
           document.getElementById("myButton").addEventListener("click", function(){
-              tg.MainButton.text = 'Loading...';
-              tg.MainButton.show();
-              tg.MainButton.disable();
+				tg.MainButton.text = 'Loading...';
+				tg.MainButton.show();
+				tg.MainButton.disable();
 
             setTimeout(function() {
-               tg.MainButton.text = 'Done';
-               tg.MainButton.enable();
+				const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)]; 
+				document.getElementById('message').textContent = randomGreeting;
+			
+				tg.MainButton.text = 'Done';
+				tg.MainButton.enable();
             }, 2000);
          });
 
