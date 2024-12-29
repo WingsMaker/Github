@@ -32,7 +32,7 @@
 				const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)]; 
 				document.getElementById('message').textContent = randomGreeting;
 			
-				tg.MainButton.text = 'Done';
+				tg.MainButton.text = randomGreeting;
 				tg.MainButton.enable();
             }, 2000);
          });
