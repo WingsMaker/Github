@@ -32,10 +32,9 @@
 				tg.MainButton.show();
 				tg.MainButton.disable();
 				let response = {
-					action: 'sendData',
+					action: 'chat',
 					data: {
-						name: "KH",
-						age: 60
+						"text": "hello kh"
 					}
 				}
 				webapp.sendData(JSON.stringify(response))
