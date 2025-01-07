@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <title>My Telegram Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+    </style>
+</head>
+<body>
+    <h1>Welcome to My Mini App!</h1>
+    <button id="myButton">Click Me</button>
+	<p id="message"></p>
+    <script>
+		const webapp = window.Telegram.WebApp
+		webapp.expand()
+	
+		const greetings = [ "Hello, world!", "Hi there!", "Greetings!", "Howdy!", "Hey!", "What's up?"];
+	
+        document.addEventListener('DOMContentLoaded', function() {
+          const tg = window.Telegram.WebApp;
+          tg.ready(); // Makes the Web App fully ready
+          document.getElementById("myButton").addEventListener("click", function(){
+				tg.MainButton.text = 'Loading...';
+				tg.MainButton.show();
+				tg.MainButton.disable();
+				let response = {
+					action: 'sendData',
+					data: {
+						name: "KH",
+						age: 60
+					}
+				}
+				webapp.sendData(JSON.stringify(response))
+	
+            setTimeout(function() {
+				const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)]; 
+				document.getElementById('message').textContent = randomGreeting;
+			
+				tg.MainButton.text = randomGreeting;
+				tg.MainButton.enable();
+            }, 2000);
+         });
+
+         //Access User Info
+         console.log('user:', tg.initDataUnsafe?.user)
+         console.log('initData:', tg.initData)
+
+        });
+    </script>
+</body>
+</html>
