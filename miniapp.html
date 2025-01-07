@@ -19,7 +19,7 @@
     <button id="myButton">Click Me</button>
 	<p id="message"></p>
     <script>
-		const webapp = window.Telegram.WebApp
+		const webapp = Telegram.WebApp
 		webapp.expand()
 	
 		const greetings = [ "Hello, world!", "Hi there!", "Greetings!", "Howdy!", "Hey!", "What's up?"];
@@ -31,13 +31,7 @@
 				tg.MainButton.text = 'Loading...';
 				tg.MainButton.show();
 				tg.MainButton.disable();
-				let response = {
-					action: 'chat',
-					data: {
-						"text": "hello kh"
-					}
-				}
-				webapp.sendData(JSON.stringify(response))
+				webapp.sendData("hello kh");
 	
             setTimeout(function() {
 				const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)]; 
