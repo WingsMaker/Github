@@ -1,42 +1,121 @@
 <!DOCTYPE html>
 <html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
 <head>
-	<meta charset="UTF-8">
-    <title>My Telegram Mini App</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-      body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-    </style>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+html {
+	height: 100%;
+	font-size: 25px;
+}
+</style>
+<script src="https://wingsmaker.github.io/Github/aes.js"></script>
+<link rel="icon" type="image/x-icon" href="kh.ico">
 </head>
-<body>
-    <h1>Welcome to My Mini App!</h1>
-    <button id="myButton">Click Me</button>
-	<p id="message"></p>
-    <script>
-		const webapp = Telegram.WebApp
-		webapp.expand()
+<Title>Data Analytics Bot</Title>
+<body style="background-color:black;color:rgb(150, 200, 255)"> 
+<div id="html">
+<h2>Data Analytics Chat</h2>
+<hr>
+<form>
+	<label for="password">Password:</label>
+	<input type="password" id="password" name="password" required>
+	<br>
+	<label for="prompt">Enter the prompt:</label>
+	<br>
+	<textarea id='prompt' name="Message" rows="3" cols="80" 
+	valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
+	<br>
+	<input type="button" onClick="ask_deepseek(1)" style="height:30px; width:100px" value="Send"/>
+	<input type="button" onClick="resetmsg()" style="height:30px; width:100px" value="Clear"/>
+	<br>
+	<label for="msg">Results:</label>
+	<br>
+	<textarea id='msg' name="Message" rows="20" cols="80" valign="top" style="font-size:12px; border:solid 1px orange;"></textarea>
+	<br />
+	<br>
 	
-		const greetings = [ "Hello, world!", "Hi there!", "Greetings!", "Howdy!", "Hey!", "What's up?"];
-	
-		webapp.readyWhenReady().then(() => {
-		  // Set the Telegram Web App loading text
-		webapp.setTitle('My Telegram Mini App');
-		const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)]; 
-		document.getElementById('message').textContent = randomGreeting;
-		webapp.sendData({
-			key: 'message',
-			value: randomGreeting,
-		});
-		webapp.showAlert(randomGreeting);
-		alert("does it work?")
-
-        });
-    </script>
+</form>
+</div>
 </body>
+
+<script>
+console.clear();
+document.getElementById("prompt").value = "";
+
+function readmsg() {
+	var qn = document.getElementById("prompt").value;
+	var msg = document.getElementById("msg").value;
+	var txt = qn + "\n" + msg;
+	textToSpeech(txt);
+}
+
+function resetmsg() {
+	document.getElementById("prompt").value = "";
+	document.getElementById("msg").value = "";	
+}
+
+function ask_deepseek(tmpr) {
+	var pw = document.getElementById("password").value;
+	if (pw == "") {
+		alert("Please enter the api password");
+		return;
+	}
+
+	var qn = document.getElementById("prompt").value;	
+	if (qn == "") {
+		alert("Please enter the prompt for the chat");
+		return;
+	}
+	
+	var token="U2FsdGVkX18U3ha341qe2TbJLZ5BEwwtCBkov2t8j/fu/XHi6ZOR0Anvl5JpkB745ZouUdJtZP+rZq8Yz418Xw==";
+	var apiKey =  CryptoJS.AES.decrypt(token, pw).toString(CryptoJS.enc.Utf8);
+	let bot_admin_type = "You are a helpful data analytics experts.";
+	var url_gpt = "https://api.deepseek.com/chat/completions"; 
+
+	let payload = {
+		"model": "deepseek-chat",
+		"temperature": tmpr,
+		"messages": [
+		  {"role": "system", "content": bot_admin_type},
+		  {"role": "user", "content": qn}
+		] 
+	};
+
+	let headers = {
+		"Authorization": "Bearer " + apiKey,
+		"Content-Type": "application/json"
+	};
+
+	let options = {
+		method: "POST",
+		headers: headers,
+		body: JSON.stringify(payload)
+	};
+
+	document.getElementById("msg").value = "Please wait...";
+
+	fetch(url_gpt, options)
+	.then(response => {
+	  if (!response.ok) {
+		throw new Error("HTTP error! Status: ${response.status}");
+	  }
+	  return response.json();
+	})
+	.then(data => {
+	  if (data.choices && data.choices[0] && data.choices[0].message) {
+		document.getElementById('msg').value = data.choices[0].message.content;
+	  } else {
+		throw new Error("Invalid response format from API");
+	  }
+	})
+	.catch(error => {
+	  document.getElementById('msg').value = "Error calling API: " + error.message;
+	});
+}
+
+</script>
 </html>
