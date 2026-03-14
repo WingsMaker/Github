@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name='web-app-capable' content='yes'>
+  <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+  <title>Sudoku</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; }
+    table { border-collapse: collapse; margin: 20px auto; }
+    td {
+      border: 1px solid #000;
+      width: 40px; height: 40px;
+      text-align: center;
+    }
+    input {
+      width: 38px; height: 38px;
+      text-align: center;
+      font-size: 18px;
+      border: none;
+      background: #f9f9f9;
+    }
+    .bold-top { border-top: 3px solid #000; }
+    .bold-left { border-left: 3px solid #000; }
+    .bold-right { border-right: 3px solid #000; }
+    .bold-bottom { border-bottom: 3px solid #000; }
+    .selected { background: #d0f0ff; }
+    .controls { margin: 15px; }
+    .controls button {
+      margin: 3px;
+      padding: 10px 15px;
+      font-size: 16px;
+    }
+    footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #555;
+    }
+    .hint {
+      background-color: #d4edda;
+      color: #155724;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sudoku</h1>
+  <table id="sudoku"></table>
+
+  <div class="controls">
+    <label for="difficulty">Difficulty:</label>
+    <select id="difficulty">
+      <option value="easy">Easy</option>
+      <option value="medium" selected>Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+    <br><br>
+    <button onclick="setNumber(1)">1</button>
+    <button onclick="setNumber(2)">2</button>
+    <button onclick="setNumber(3)">3</button>
+    <button onclick="newPuzzle()">Start</button>
+    <button onclick="resetPuzzle()">Reset</button>
+    <br>
+    <button onclick="setNumber(4)">4</button>
+    <button onclick="setNumber(5)">5</button>
+    <button onclick="setNumber(6)">6</button>
+    <button onclick="eraseCell()">Erase</button>
+    <button onclick="giveHint()">Hints</button>
+    <br>
+    <button onclick="setNumber(7)">7</button>
+    <button onclick="setNumber(8)">8</button>
+    <button onclick="setNumber(9)">9</button>
+    <button onclick="checkSolution()">Ok ?</button>
+    <button onclick="solvePuzzle()">Solve</button>
+  </div>
+  <p id="result"></p>
+
+  <footer>
+    Powered by WingsMaker
+  </footer>
+
+  <script>
+    let currentPuzzle = [];
+    let solutionGrid = [];
+    let selectedCell = null;
+    newPuzzle();
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function generateSolution(grid) {
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          if (grid[row][col] === 0) {
+            let numbers = shuffleArray([1,2,3,4,5,6,7,8,9]);
+            for (let num of numbers) {
+              if (isSafe(grid, row, col, num)) {
+                grid[row][col] = num;
+                if (generateSolution(grid)) return true;
+                grid[row][col] = 0;
+              }
+            }
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    function isSafe(grid, row, col, num) {
+      for (let x = 0; x < 9; x++) {
+        if (grid[row][x] === num || grid[x][col] === num) return false;
+      }
+      let startRow = row - row % 3, startCol = col - col % 3;
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          if (grid[startRow + r][startCol + c] === num) return false;
+        }
+      }
+      return true;
+    }
+
+    function generatePuzzle() {
+      let grid = Array.from({length: 9}, () => Array(9).fill(0));
+      generateSolution(grid);
+      solutionGrid = JSON.parse(JSON.stringify(grid));
+
+      let difficulty = document.getElementById("difficulty").value;
+      let attempts = difficulty === "easy" ? 30 : difficulty === "medium" ? 45 : 60;
+
+      while (attempts > 0) {
+        let row = Math.floor(Math.random() * 9);
+        let col = Math.floor(Math.random() * 9);
+        if (grid[row][col] !== 0) {
+          grid[row][col] = 0;
+          attempts--;
+        }
+      }
+      return grid;
+    }
+
+    function createBoard(puzzle) {
+      const table = document.getElementById("sudoku");
+      table.innerHTML = "";
+      for (let r = 0; r < 9; r++) {
+        const row = table.insertRow();
+        for (let c = 0; c < 9; c++) {
+          const cell = row.insertCell();
+          if (r % 3 === 0) cell.classList.add("bold-top");
+          if (c % 3 === 0) cell.classList.add("bold-left");
+          if (c % 3 === 2) cell.classList.add("bold-right");
+          if (r % 3 === 2) cell.classList.add("bold-bottom");
+
+          const input = document.createElement("input");
+          input.readOnly = true;
+          if (puzzle[r][c] !== 0) {
+            input.value = puzzle[r][c];
+            input.disabled = true;
+          }
+          input.onclick = () => selectCell(input);
+          cell.appendChild(input);
+        }
+      }
+    }
+
+    function selectCell(input) {
+      if (selectedCell) selectedCell.classList.remove("selected");
+      selectedCell = input;
+      selectedCell.classList.add("selected");
+    }
+
+    function setNumber(num) {
+      if (selectedCell && !selectedCell.disabled) {
+        selectedCell.value = num;
+      }
+    }
+
+    function eraseCell() {
+      if (selectedCell && !selectedCell.disabled) {
+        selectedCell.value = "";
+      }
+    }
+
+    function newPuzzle() {
+  currentPuzzle = generatePuzzle();
+  createBoard(currentPuzzle);
+  selectedCell = null;
+  document.getElementById("result").textContent = "";
+}
+
+    function resetPuzzle() {
+      currentPuzzle = generatePuzzle();
+      createBoard(currentPuzzle);
+      document.getElementById("result").textContent = "Puzzle reset!";
+    }
+
+    function checkSolution() {
+      const table = document.getElementById("sudoku");
+      let grid = [];
+      for (let r = 0; r < 9; r++) {
+        grid[r] = [];
+        for (let c = 0; c < 9; c++) {
+          const val = table.rows[r].cells[c].firstChild.value;
+          grid[r][c] = parseInt(val) || 0;
+        }
+      }
+      document.getElementById("result").textContent =
+        isValidSudoku(grid) ? "Valid so far!" : "Rule violation detected!";
+    }
+
+    function isValidSudoku(grid) {
+      for (let r = 0; r < 9; r++) if (!isValidSet(grid[r])) return false;
+      for (let c = 0; c < 9; c++) {
+        let col = [];
+        for (let r = 0; r < 9; r++) col.push(grid[r][c]);
+        if (!isValidSet(col)) return false;
+      }
+      for (let boxRow = 0; boxRow < 3; boxRow++) {
+        for (let boxCol = 0; boxCol < 3; boxCol++) {
+          let box = [];
+          for (let r = 0; r < 3; r++) {
+            for (let c = 0; c < 3; c++) {
+              box.push(grid[boxRow*3 + r][boxCol*3 + c]);
+            }
+          }
+          if (!isValidSet(box)) return false;
+        }
+      }
+      return true;
+    }
+
+    function isValidSet(arr) {
+      let nums = arr.filter(n => n !== 0);
+      return new Set(nums).size === nums.length;
+    }
+
+    function solvePuzzle() {
+      const table = document.getElementById("sudoku");
+      let grid = [];
+      for (let r = 0; r < 9; r++) {
+        grid[r] = [];
+        for (let c = 0; c < 9; c++) {
+          const val = table.rows[r].cells[c].firstChild.value;
+          grid[r][c] = parseInt(val) || 0;
+        }
+      }
+
+      if (solveGrid(grid)) {
+        for (let r = 0; r < 9; r++) {
+          for (let c = 0; c < 9; c++) {
+            table.rows[r].cells[c].firstChild.value = grid[r][c];
+          }
+        }
+        document.getElementById("result").textContent = "Puzzle solved!";
+      } else {
+        document.getElementById("result").textContent = "No solution found.";
+      }
+    }
+
+    function solveGrid(grid) {
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          if (grid[row][col] === 0) {
+            for (let num = 1; num <= 9; num++) {
+              if (isSafe(grid, row, col, num)) {
+                grid[row][col] = num;
+                if (solveGrid(grid)) return true;
+                grid[row][col] = 0;
+              }
+            }
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    function giveHint() {
+		const table = document.getElementById("sudoku");
+		if (selectedCell && !selectedCell.disabled && selectedCell.value === "") {
+			// Find selected cell position
+			let row = selectedCell.parentElement.parentElement.rowIndex;
+			let col = selectedCell.parentElement.cellIndex;
+			selectedCell.value = solutionGrid[row][col];
+			selectedCell.classList.add("hint");
+			document.getElementById("result").textContent = "Hint applied to selected cell!";
+			return;
+		}
+		// Fallback: fill first empty cell
+		for (let r = 0; r < 9; r++) {
+			for (let c = 0; c < 9; c++) {
+				const input = table.rows[r].cells[c].firstChild;
+				if (input.value === "") {
+					input.value = solutionGrid[r][c];
+					input.classList.add("hint");
+					document.getElementById("result").textContent = "Hint applied!";
+					return;
+				}
+			}
+		}
+		document.getElementById("result").textContent = "No hints available.";
+    }
+
+  </script>
+</body>
+</html>
+
