@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name='web-app-capable' content='yes'><meta http-equiv='X-UA-Compatible' content='ie=edge'>
+<script src="https://wingsmaker.github.io/Github/aes.js"></script> 
+<link rel="icon" href="https://wingsmaker.github.io/Github/lkh.ico" type="image/x-icon">
+<title>KH Password Manager 2026</title>
+<style>
+  :root{
+    --bg: #efefef;
+    --panel: #ffffff;
+    --teal: #2bb6bf;
+    --teal-dk:#19939b;
+    --console-bg:#2b2b2b;
+    --console-fg:#e6e6e6;
+    --btn:#f3f3f3;
+    --btn-border:#9e9e9e;
+    --btn-text:#222;
+    --shadow: 0 1px 2px rgba(0,0,0,.2);
+    --radius: 8px;
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", "Liberation Sans", sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+  html, body { height: 100%; }
+  body{
+    margin:0; background: var(--bg); font-family: var(--font); color:#222;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .app{
+    width: 340px; background: var(--panel); border: 2px solid #d6d6d6;
+    border-radius: 10px; padding: 12px; box-shadow: var(--shadow);
+  }
+  .titlebar{
+    font-weight: 700; text-align:center; color:#003b3f; letter-spacing:.5px;
+    background: linear-gradient(0deg, var(--teal), var(--teal-dk));
+    border-radius: 6px; padding: 8px 10px; margin-bottom: 10px;
+    text-shadow: 0 1px 0 rgba(255,255,255,.3);
+  }
+  .console{
+    background: var(--console-bg); color: var(--console-fg);
+    width: 100%; height: 140px; border-radius: 6px; padding: 10px;
+    font-family: var(--mono); border: 2px inset #1b1b1b; resize: vertical;
+    box-sizing: border-box;
+  }
+  .toolbar{
+    display:flex; gap:8px; margin:8px 0 12px 0; justify-content:flex-end;
+  }
+  .toolbtn{
+    background:#e9e9e9; border:1px solid #bbb; border-radius:6px;
+    padding:6px 10px; font-size:12px; cursor:pointer;
+  }
+  .toolbtn:hover{ background:#f2f2f2; }
+
+  .grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 10px 10px;
+  }
+  .btn{
+    background: var(--btn); border: 2px outset var(--btn-border);
+    border-radius: 6px; padding: 12px 10px; text-align:center; cursor:pointer;
+    color: var(--btn-text); font-weight: 650; user-select:none;
+  }
+  .btn:active{ border-style: inset; transform: translateY(1px); }
+  .footer{
+    margin-top:12px; font-size:12px; color:#666; text-align:left;
+  }
+</style>
+</head>
+<body>
+  <div class="app" role="application">
+    <div class="titlebar">NHG Password Manager Demo</div>
+    <textarea id="console" class="console" spellcheck="false" placeholder=""></textarea>
+    <div class="toolbar">
+	  <div id="prompt">Enter Pin code below</div>
+      <button class="toolbtn" id="copyBtn" title="Copy console text">Copy</button>
+      <button class="toolbtn" id="clearBtn" title="Clear console">Clear</button>
+      <input id="keypassBtn"  type="button" onClick="unlock()" value="Unlock"/>
+    </div>
+
+    <div class="grid" id="buttonGrid">
+      <button class="btn" id="btn01"></button>
+      <button class="btn" id="btn02"></button>
+      <button class="btn" id="btn03"></button>
+      <button class="btn" id="btn04"></button>
+      <button class="btn" id="btn05"></button>
+      <button class="btn" id="btn06"></button>
+      <button class="btn" id="btn07"></button>
+      <button class="btn" id="btn08"></button>
+      <button class="btn" id="btn09"></button>
+      <button class="btn" id="btn10"></button>
+    </div>
+
+    <div class="footer">Powered by Lim Kim Huat</div>
+  </div>
+
+<script>
+// reset the passwordkey and pincode using Unlock button
+var passwordkey = ""; 
+var pincode = ""; 
+var keypass = "";
+var dectxt = "";
+var msg = "";
+var unlocked = 0;
+var btn_labels = [];
+var btn_items = [];
+const out = document.getElementById('console');
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const keystring = urlParams.get('key');
+if (keystring != null) {
+	keypass = keystring;
+}
+var btn_list = "btn01,btn02,btn03,btn04,btn05,btn06,btn07,btn08,btn09,btn10".split(","); 
+var numpad_list = "0,1,2,3,4,5,6,7,8,9".split(","); 
+load_btn_items();
+show_numpad();
+if (passwordkey) {
+	out.value = 'welcome to the password manager';
+} else {
+	out.value = "Click Unlock button to reset.";
+}
+
+function load_btn_items() {
+	// btn01
+	btn_labels.push( "?" );
+	btn_items.push( "" );
+	// btn02
+	btn_labels.push( "?" );
+	btn_items.push( "");
+	// btn03
+	btn_labels.push( "?" );
+	btn_items.push( "");
+	// btn04
+	btn_labels.push( "?" );
+	btn_items.push( "");
+	// btn05
+	btn_labels.push( "?" );
+	btn_items.push( "");
+	// btn06
+	btn_labels.push( "?" );
+	btn_items.push( "");
+	// btn07
+	btn_labels.push( "?" );
+	btn_items.push( "");
+	// btn08
+	btn_labels.push( "?" );
+	btn_items.push( "");
+	// btn09
+	btn_labels.push( "?" );
+	btn_items.push( "");
+	// btn010
+	btn_labels.push( "?" );
+	btn_items.push( "");
+}
+
+(function(){
+    const grid = document.getElementById('buttonGrid');
+    const clearBtn = document.getElementById('clearBtn');
+    const copyBtn = document.getElementById('copyBtn');
+
+    function appendLine(text){
+      const stamp = new Date().toLocaleTimeString();
+      const line = `[${stamp}] ${text}`;
+      out.value += (out.value ? "\n" : "") + line + "\n";
+      out.scrollTop = out.scrollHeight;
+      out.focus();
+      const len = out.value.length;
+      out.setSelectionRange(len, len);
+    }
+	
+    grid.addEventListener('click', (e) => {
+		const btn = e.target.closest('.btn');
+		if(!btn) return;
+		if(unlocked==0) {
+			var nn = btn_list.indexOf( btn.getAttribute('ID') );
+			pincode = pincode + nn.toString();
+			return;			
+		} else {
+			var nn = btn_list.indexOf( btn.getAttribute('ID') );
+		}
+		var nn = btn_list.indexOf( btn.getAttribute('ID')  );
+		var lbl = btn_labels[nn];
+		if(lbl=="?") {
+			out.value = "you have not define the button label. ";
+			var numbtn = "btn" + (nn+1).toString().padStart(2, "0");
+			var pp = "";
+			pp = prompt("Define the button label:",numbtn);
+			if(pp) {
+				btn_labels[nn] = pp;
+				btn.innerHTML = pp;
+				out.value = "Modify the source code after '// btn02'\n"
+				out.value = out.value + 'btn_labels.push("' + pp + '");\n'
+				out.value = out.value + "\nSave the code and rerun the application."
+			}
+			return;
+		}
+		var txt = btn_items[nn];
+		if(txt=="") {
+			out.value = "Add the content for the button. ";
+			var numbtn = "btn" + (nn+1).toString().padStart(2, "0");
+			var pp = "my password";
+			pp = prompt("Define the button content:",pp);
+			if(pp) {
+				var enctxt = CryptoJS.AES.encrypt(pp, keypass);
+				txt = enctxt.toString();
+				btn_items[nn] = txt;
+				out.value = "Modify the source code after '// btn02'\n"
+				out.value = out.value + 'btn_items.push("' + txt + '");\n'
+				out.value = out.value + "\nSave the code and rerun the application."
+			}
+			return;
+		}
+		if ( txt.startsWith("U2F") ) {
+			msg = CryptoJS.AES.decrypt(txt, keypass).toString(CryptoJS.enc.Utf8);
+		} else {
+			msg = txt;
+		}
+		navigator.clipboard.writeText(msg);
+		appendLine(lbl);
+    });
+
+    // Clear console
+    clearBtn.addEventListener('click', () => {
+      out.value = '';
+      out.focus();
+	  navigator.clipboard.writeText("");
+	  pincode = "";
+    });
+
+    // Copy console
+    copyBtn.addEventListener('click', async () => {
+      try{
+        await navigator.clipboard.writeText(out.value);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => copyBtn.textContent = 'Copy', 900);
+      }catch(err){
+        // Fallback if clipboard permission denied
+        out.select();
+        document.execCommand('copy');
+      }
+    });
+
+    // Ctrl+Enter inserts newline without losing focus
+    out.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' && e.ctrlKey){
+        const start = out.selectionStart, end = out.selectionEnd;
+        const before = out.value.slice(0, start);
+        const after  = out.value.slice(end);
+        out.value = before + "\n" + after;
+        out.selectionStart = out.selectionEnd = start + 1;
+        e.preventDefault();
+      }
+    });
+})();
+  
+function unlock() {
+	if(document.getElementById("keypassBtn").value == "Lock") {
+		out.value = '';
+		out.focus();
+		navigator.clipboard.writeText("");
+		keypass="";
+		document.getElementById("keypassBtn").value = "Unlock";
+		applogoff();
+		return;
+	}
+	if(passwordkey=="") {
+		out.value = "you have not setup the encryption key.";
+		var pk = "password";
+		pk = prompt("Define your own encryption key:",pk);
+		out.value = "you have defined the encryption key.";
+		if(pk) {
+			var pp = "1234";
+			pp = prompt("Define your own pin code:",pp);
+			out.value = "you have defined the encryption key & pin code.";
+			if(pk) {
+				var enctxt = CryptoJS.AES.encrypt(pk, pp);
+				passwordkey = enctxt.toString();
+				pincode = pp;
+				out.value = "Modify the source code after line 99\n";
+				out.value = out.value + 'var passwordkey =\n"' + passwordkey + '";\n';
+				out.value = out.value + "\nSave the code and rerun the application.";
+				alert("do remember your pin code");
+			}
+		}
+		return;
+	}
+	keypass = "";
+	if (pincode != "") {
+		keypass = CryptoJS.AES.decrypt(passwordkey, pincode).toString(CryptoJS.enc.Utf8);		
+	}
+	if (keypass == "") {
+		msg = 'incorrect PIN number to unlock\nClick on [Clear] button and then try again\n';
+		out.value = msg;
+	} else {
+		applogon();
+	}
+}
+
+function applogon() {
+	out.value = 'welcome to the password manager\n';
+	out.focus();
+	document.getElementById("keypassBtn").value = "Lock";
+	document.getElementById("prompt").innerHTML = "Select below buttons";
+	unlocked = 1;
+	pincode = "";
+	show_keypad();
+}
+
+function applogoff() {
+	out.value = "";
+	out.focus();
+	document.getElementById("prompt").innerHTML = "Enter Pin code below";
+	unlocked = 0;
+	show_numpad();
+}
+
+function show_buttons() {
+	btn_list.forEach((btn) => showbtn(btn) );
+}
+
+function show_numpad() {
+	numpad_list.forEach((btn) => set_numpad_label(btn) );
+}
+
+function show_keypad() {
+	btn_list.forEach((btn) => set_btn_label(btn) );
+}
+
+function hide_buttons() {
+	btn_list.forEach((btn) => hidebtn(btn) );
+}
+
+function showbtn(btn) {
+	document.getElementById(btn).style.display = "inline";
+}
+
+function hidebtn(btn) {
+	document.getElementById(btn).style.display = "none";
+}
+
+function set_btn_label(btn) {
+	var nn = btn_list.indexOf( document.getElementById(btn).getAttribute('ID')  );
+	var txt = btn_labels[nn];
+	if( txt=="") {
+		hidebtn(btn);
+	} else {
+		showbtn(btn);
+	}
+	document.getElementById(btn).innerHTML = txt;
+}
+
+function set_numpad_label(btn) {
+	var nn = parseInt(btn,10) + 1;
+	var numbtn = "btn" + nn.toString().padStart(2, "0");
+	document.getElementById(numbtn).innerHTML = btn;
+	showbtn(numbtn);
+}
+
+</script>
+</body>
+</html>
