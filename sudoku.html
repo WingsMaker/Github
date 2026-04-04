@@ -179,6 +179,7 @@
       if (selectedCell && !selectedCell.disabled) {
         selectedCell.value = num;
       }
+	  document.getElementById("result").textContent  = "";
     }
 
     function eraseCell() {
@@ -258,6 +259,7 @@
           }
         }
         document.getElementById("result").textContent = "Puzzle solved!";
+		alert("You solved the puzzle !");
       } else {
         document.getElementById("result").textContent = "No solution found.";
       }
