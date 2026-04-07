@@ -115,7 +115,7 @@ var btn_list = "btn01,btn02,btn03,btn04,btn05,btn06,btn07,btn08,btn09,btn10".spl
 var numpad_list = "0,1,2,3,4,5,6,7,8,9".split(","); 
 load_btn_items();
 show_numpad();
-if (passwordkey) {
+if (passwordkey<>"") {
 	out.value = 'welcome to the password manager';
 } else {
 	out.value = "Click Unlock button to reset.";
