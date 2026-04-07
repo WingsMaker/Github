@@ -188,9 +188,9 @@ function load_btn_items() {
 			if(pp) {
 				btn_labels[nn] = pp;
 				btn.innerHTML = pp;
-				out.value = "Modify the source code after '// btn02'\n"
-				out.value = out.value + 'btn_labels.push("' + pp + '");\n'
-				out.value = out.value + "\nSave the code and rerun the application."
+				out.value = "Modify the source code after '// " + numbtn + "'\n";
+				out.value = out.value + 'btn_labels.push("' + pp + '");\n';
+				out.value = out.value + "\nSave the code and rerun the application.";
 			}
 			return;
 		}
@@ -204,9 +204,9 @@ function load_btn_items() {
 				var enctxt = CryptoJS.AES.encrypt(pp, keypass);
 				txt = enctxt.toString();
 				btn_items[nn] = txt;
-				out.value = "Modify the source code after '// btn02'\n"
-				out.value = out.value + 'btn_items.push("' + txt + '");\n'
-				out.value = out.value + "\nSave the code and rerun the application."
+				out.value = "Modify the source code after '// " + numbtn + "'\n";
+				out.value = out.value + 'btn_items.push("' + txt + '");\n';
+				out.value = out.value + "\nSave the code and rerun the application.";
 			}
 			return;
 		}
