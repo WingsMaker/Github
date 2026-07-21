@@ -1,0 +1,63 @@
+'    __    __ __ __  __
+'   / /   / //_// / / /
+'  / /   / ,<  / /_/ /
+' / /___/ /| |/ __  /
+'/_____/_/ |_/_/ /_/
+'
+'Filename : dlwb-bot.vbs
+'create desktop shortcut to call this script:
+'C:\Windows\System32\wscript.exe dlwb-bot.vbs
+' Define constant for reading mode
+Const ForReading = 1
+dim shell, yesno, strLine, strFilePath, txt, msg
+' Create FileSystemObject to interact with files
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+' Path to your text file
+strFilePath = "d:\temp\rpa_input.txt"
+
+function text_to_keystrokes(shell, pw)
+	dim n,i, ch, tt
+	n = len(pw)
+	For i = 1 To n
+		ch = Mid(pw, i, 1)
+		Select Case ch
+			Case "+", "^", "%", "(", ")", "{", "}"
+				tt = "{" & ch & "}"
+				shell.SendKeys tt
+			Case Else
+				shell.SendKeys ch
+		End Select
+	Next
+	shell.SendKeys "{Enter}"
+end function
+
+msg = "This script duplicates the content of " + strFilePath + " over to Databricks."
+msg = msg + chr(10) + chr(10) + "Typing over to Databricks now?"
+Set shell = WScript.CreateObject("WScript.Shell")
+yesno = msgbox(msg,vbYesNo,"Make sure cursor at the target system with a click.")
+If yesno = vbYes then
+	Wscript.Sleep 2000
+	' Check if the file exists before attempting to open it
+	If objFSO.FileExists(strFilePath) Then
+		' Open the text file for reading
+		Set objFile = objFSO.OpenTextFile(strFilePath, ForReading)
+		' Loop through the file until the end of the stream is reached
+		Do Until objFile.AtEndOfStream
+			' Read the current line and store it in a variable
+			strLine = objFile.ReadLine
+			' Type the line to the remote screen
+			call text_to_keystrokes(shell, strLine)
+			Wscript.Sleep 500
+		Loop
+		' Close the file to free up system resources
+		objFile.Close
+		Wscript.Sleep 1000
+		Wscript.echo "Done !"
+	Else
+		WScript.Echo "Unable to access the file " & strFilePath & " !"
+	End If
+End If
+' Clean up objects
+Set objFile = Nothing
+Set objFSO = Nothing
+WScript.Quit
