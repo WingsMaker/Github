@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Welcome to WingsMaker Github</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="mobile-web-app-capable" content="yes">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://wingsmaker.github.io/Github/menu_style.css">
+<link rel="stylesheet" href="https://wingsmaker.github.io/Github/search_button.css">
+<script type="text/javascript" src="https://wingsmaker.github.io/Github/menu.js"></script>
+<script type="text/javascript" src="https://wingsmaker.github.io/Github/skype.js"></script>
+
+<base target="_top" />
+</head>
+
+<body>
+
+<div class="container">
+<h3><a id="a-title" href="https://wingsmaker.github.io/Github/Index.html">WingsMaker</a></h3>
+<h1>My life long learning journey in coding.</h1>
+</div>
+<div id="menu"></div>  
+<hr>
+</header>
+
+<div class="mainlogo">
+	<form class="form">
+	<input type="text" id="searchbar" placeholder="Text Search or Type URL" onkeypress='do_searchbar(event)'>
+	<input type="button" value="Google" id="google_button" onclick="do_search('g')">
+	<input type="button" value="Bing" id="bing_button" onclick="do_search('b')">
+	<input type="button" value="HealthHub" id="healthhub_button" onclick="do_search('h')">
+	</form>
+</div>
+<hr>
+<input type="button" onClick="skype_menu()" value="add skype menu"/>
+</body>
+
+<script>
+fetch("https://wingsmaker.github.io/Github/menu.csv").then( r => r.text() ).then( t => processData(t) );
+
+function skype_menu() {
+	var skype_menu = '<a onclick="skypeShareKeyDownHandler(event)" class="skype-share">Skype</a></div>';
+	var menu_txt = '';
+	menu_text = document.getElementById("menu").innerHTML;
+	menu_text = menu_text.substring(0, menu_text.length-6);
+	menu_text = menu_text + skype_menu;
+	document.getElementById("menu").innerHTML = menu_text;	
+}
+
+</script>
+</html>
